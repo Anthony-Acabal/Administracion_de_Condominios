@@ -6,27 +6,27 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/26" fx:controller="proyecto_condominio.ui.RegistroPagoViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.RegistroPagoViewController">
    <children>
       <Label layoutX="229.0" layoutY="53.0" text="Registro de Pago de Cuota" />
-      <Label layoutX="120.0" layoutY="95.0" text="Número de Casa:" />
-      <ComboBox fx:id="cbCasa" layoutX="225.0" layoutY="91.0" prefWidth="150.0" />
-      <Label layoutX="120.0" layoutY="123.0" text="Nombre" />
+      <Label layoutX="108.0" layoutY="95.0" text="Número de Casa:" />
+      <ComboBox fx:id="cbCasa" layoutX="225.0" layoutY="91.0" onAction="#seleccionarCasa" prefWidth="150.0" />
+      <Label layoutX="105.0" layoutY="132.0" text="Nombre completo" />
       <TextField fx:id="txtNombre" editable="false" layoutX="225.0" layoutY="128.0" />
-      <Label layoutX="120.0" layoutY="154.0" text="Apellido" />
-      <TextField fx:id="txtNombre1" editable="false" layoutX="225.0" layoutY="159.0" />
-      <Label layoutX="120.0" layoutY="191.0" text="Teléfono:" />
+      <Label layoutX="110.0" layoutY="163.0" text="Apellidos completos:" />
+      <TextField fx:id="txtApellido" editable="false" layoutX="225.0" layoutY="159.0" />
+      <Label layoutX="110.0" layoutY="200.0" text="Número de teléfono:" />
       <TextField fx:id="txtTelefono" editable="false" layoutX="225.0" layoutY="196.0" />
-      <Label layoutX="120.0" layoutY="222.0" text="Cuota" />
+      <Label layoutX="112.0" layoutY="231.0" text="Cuota mensual:" />
       <TextField fx:id="txtCuota" editable="false" layoutX="225.0" layoutY="227.0" />
       <Label layoutX="120.0" layoutY="264.0" text="Mes" />
       <ComboBox fx:id="cbMes" layoutX="154.0" layoutY="260.0" prefHeight="26.0" prefWidth="114.0" />
       <Label layoutX="297.0" layoutY="263.0" text="Año" />
-      <ComboBox fx:id="bu" layoutX="331.0" layoutY="259.0" prefHeight="26.0" prefWidth="114.0" />
+      <ComboBox fx:id="cbAnio" layoutX="331.0" layoutY="259.0" prefHeight="26.0" prefWidth="114.0" />
       <Button fx:id="btnRegistrar" layoutX="164.0" layoutY="304.0" mnemonicParsing="false" text="Registrar Pago" />
       <Button fx:id="btnLimpiar" layoutX="269.0" layoutY="304.0" mnemonicParsing="false" text="Limpiar" />
       <Button fx:id="btnImprimir" layoutX="338.0" layoutY="304.0" mnemonicParsing="false" text="Imprimir Recibo" />
       <Label fx:id="lblEstado" layoutX="277.0" layoutY="348.0" text="Estado:" />
+      <Button fx:id="btnCerrar" layoutX="534.0" layoutY="357.0" mnemonicParsing="false" text="Cerrar" />
    </children>
 </AnchorPane>
