@@ -23,7 +23,7 @@
       <ComboBox fx:id="cbMes" layoutX="154.0" layoutY="260.0" prefHeight="26.0" prefWidth="114.0" />
       <Label layoutX="297.0" layoutY="263.0" text="Año" />
       <ComboBox fx:id="cbAnio" layoutX="331.0" layoutY="259.0" prefHeight="26.0" prefWidth="114.0" />
-      <Button fx:id="btnRegistrar" layoutX="164.0" layoutY="304.0" mnemonicParsing="false" text="Registrar Pago" />
+      <Button fx:id="btnRegistrar" layoutX="164.0" layoutY="304.0" mnemonicParsing="false" onAction="#registrarPago" text="Registrar Pago" />
       <Button fx:id="btnLimpiar" layoutX="269.0" layoutY="304.0" mnemonicParsing="false" text="Limpiar" />
       <Button fx:id="btnImprimir" layoutX="338.0" layoutY="304.0" mnemonicParsing="false" text="Imprimir Recibo" />
       <Label fx:id="lblEstado" layoutX="277.0" layoutY="348.0" text="Estado:" />
