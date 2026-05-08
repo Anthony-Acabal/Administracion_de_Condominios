@@ -58,6 +58,127 @@ public class RegistroPagoViewController implements Initializable {
 
     @FXML
     private Button btnCerrar;
+    
+    @FXML
+private void registrarPago() {
+
+    if (cbCasa.getValue() == null) {
+
+        lblEstado.setText(
+            "Seleccione un número de casa"
+        );
+
+        return;
+    }
+
+    String sqlValidar = """
+        SELECT COUNT(*) 
+        FROM pago_cuota pc
+        INNER JOIN propietario p
+            ON pc.id_propietario = p.id_propietario
+        WHERE p.numero_casa = ?
+        AND MONTH(pc.fecha_pago) = ?
+        AND YEAR(pc.fecha_pago) = ?
+    """;
+
+    int mesSeleccionado =
+        cbMes.getSelectionModel().getSelectedIndex() + 1;
+
+    int anioSeleccionado =
+        Integer.parseInt(cbAnio.getValue());
+
+    try (
+        Connection conn = Config.getConexion();
+        PreparedStatement ps =
+            conn.prepareStatement(sqlValidar);
+    ) {
+
+        ps.setInt(
+            1,
+            Integer.parseInt(cbCasa.getValue())
+        );
+
+        ps.setInt(2, mesSeleccionado);
+
+        ps.setInt(3, anioSeleccionado);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+
+            int cantidad = rs.getInt(1);
+
+            if (cantidad > 0) {
+
+                lblEstado.setText(
+                    "Ya existe un pago para ese mes y año"
+                );
+
+                return;
+            }
+        }
+
+        int mesAnterior = mesSeleccionado - 1;
+        int anioAnterior = anioSeleccionado;
+
+        if (mesAnterior == 0) {
+
+            mesAnterior = 12;
+            anioAnterior--;
+        }
+
+        String sqlMesAnterior = """
+            SELECT COUNT(*)
+            FROM pago_cuota pc
+            INNER JOIN propietario p
+                ON pc.id_propietario = p.id_propietario
+            WHERE p.numero_casa = ?
+            AND MONTH(pc.fecha_pago) = ?
+            AND YEAR(pc.fecha_pago) = ?
+        """;
+
+        PreparedStatement psAnterior =
+            conn.prepareStatement(sqlMesAnterior);
+
+        psAnterior.setInt(
+            1,
+            Integer.parseInt(cbCasa.getValue())
+        );
+
+        psAnterior.setInt(2, mesAnterior);
+
+        psAnterior.setInt(3, anioAnterior);
+
+        ResultSet rsAnterior =
+            psAnterior.executeQuery();
+
+        if (rsAnterior.next()) {
+
+            int pagosAnteriores =
+                rsAnterior.getInt(1);
+
+            if (pagosAnteriores == 0
+                && mesSeleccionado != 1) {
+
+                lblEstado.setText(
+                    "Tiene meses anteriores pendientes"
+                );
+
+                return;
+            }
+        }
+
+        lblEstado.setText("Pago válido");
+
+    } catch (Exception e) {
+
+        lblEstado.setText(
+            "Error al validar pago"
+        );
+
+        System.out.println(e.getMessage());
+    }
+}
     /**
      * Initializes the controller class.
      */
