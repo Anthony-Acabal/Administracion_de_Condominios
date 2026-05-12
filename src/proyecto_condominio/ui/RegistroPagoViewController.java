@@ -10,13 +10,21 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import proyecto_condominio.src.Config;
+import proyecto_condominio.model.Propietario;
+import proyecto_condominio.model.PagoCuota;
+import proyecto_condominio.model.Cuota;
+import proyecto_condominio.model.Casa;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 /**
  * FXML Controller class
  *
@@ -51,12 +59,6 @@ public class RegistroPagoViewController implements Initializable {
     private Button btnLimpiar;
 
     @FXML
-    private Button btnImprimir;
-
-    @FXML
-    private Label lblEstado;
-
-    @FXML
     private Button btnCerrar;
     
     @FXML
@@ -64,12 +66,25 @@ private void registrarPago() {
 
     if (cbCasa.getValue() == null) {
 
-        lblEstado.setText(
-            "Seleccione un número de casa"
-        );
+    mostrarAdvertencia(
+        "Validación de Registro",
+        "No se ha seleccionado una casa",
+        "Por favor, seleccione una casa antes de registrar el pago."
+    );
 
-        return;
-    }
+    return;
+}
+
+if (cbMes.getValue() == null) {
+
+    mostrarAdvertencia(
+        "Sin Pagos Pendientes",
+        "No existen cuotas pendientes",
+        "La casa seleccionada ya posee todos los pagos registrados para el año actual."
+    );
+
+    return;
+}
 
     String sqlValidar = """
         SELECT COUNT(*) 
@@ -82,7 +97,9 @@ private void registrarPago() {
     """;
 
     int mesSeleccionado =
-        cbMes.getSelectionModel().getSelectedIndex() + 1;
+    obtenerNumeroMes(
+        cbMes.getValue()
+    );
 
     int anioSeleccionado =
         Integer.parseInt(cbAnio.getValue());
@@ -105,14 +122,11 @@ private void registrarPago() {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+            
 
             int cantidad = rs.getInt(1);
 
             if (cantidad > 0) {
-
-                lblEstado.setText(
-                    "Ya existe un pago para ese mes y año"
-                );
 
                 return;
             }
@@ -158,63 +172,186 @@ private void registrarPago() {
                 rsAnterior.getInt(1);
 
             if (pagosAnteriores == 0
-                && mesSeleccionado != 1) {
+    && mesSeleccionado != 1) {
 
-                lblEstado.setText(
-                    "Tiene meses anteriores pendientes"
-                );
+    mostrarAdvertencia(
+        "Pago Pendiente Detectado",
+        "Existen meses anteriores pendientes",
+        "Debe registrar primero los meses pendientes anteriores antes de continuar con el pago seleccionado."
+    );
 
-                return;
-            }
+    return;
+}
         }
 
-        lblEstado.setText("Pago válido");
+        String sqlPropietario = """
+            SELECT id_propietario
+            FROM propietario
+            WHERE numero_casa = ?
+        """;
+
+        PreparedStatement psPropietario =
+            conn.prepareStatement(sqlPropietario);
+
+        psPropietario.setInt(
+            1,
+            Integer.parseInt(cbCasa.getValue())
+        );
+
+        ResultSet rsPropietario =
+            psPropietario.executeQuery();
+
+        int idPropietario = 0;
+
+        if (rsPropietario.next()) {
+
+            idPropietario =
+                rsPropietario.getInt("id_propietario");
+        }
+
+        PagoCuota pago =
+            new PagoCuota();
+        pago.setIdPropietario(
+    idPropietario
+);
+
+pago.setIdCuota(8);
+
+LocalDate fechaPago =
+    LocalDate.of(
+        anioSeleccionado,
+        mesSeleccionado,
+        1
+    );
+
+pago.setFechaPago(
+    fechaPago
+);
+
+pago.setImprimeComprobante("S");
+
+pago.setIdUsuarioCreacion(1);
+        String sqlInsertar = """
+            INSERT INTO pago_cuota
+            (
+                id_propietario,
+                id_cuota,
+                fecha_pago,
+                imprime_comprobante,
+                id_usuario_creacion
+            )
+            VALUES (?, ?, ?, ?, ?)
+        """;
+
+        PreparedStatement psInsertar =
+            conn.prepareStatement(sqlInsertar);
+
+        psInsertar.setInt(
+    1,
+    pago.getIdPropietario()
+);
+
+psInsertar.setInt(
+    2,
+    pago.getIdCuota()
+);
+
+        psInsertar.setDate(
+            3,
+            java.sql.Date.valueOf(
+    pago.getFechaPago()
+            )
+        );
+
+       psInsertar.setString(
+    4,
+    pago.getImprimeComprobante()
+);
+
+        psInsertar.setInt(
+    5,
+    pago.getIdUsuarioCreacion()
+);
+
+        psInsertar.executeUpdate();
+        
+        Alert alerta = new Alert(
+    Alert.AlertType.CONFIRMATION
+);
+
+alerta.setTitle(
+    "Registro Exitoso"
+);
+
+alerta.setHeaderText(
+    "¡Registro Exitoso!"
+);
+
+alerta.setContentText(
+    "¿Desea imprimir el recibo?"
+);
+
+ButtonType btnSi =
+    new ButtonType("Sí");
+
+ButtonType btnNo =
+    new ButtonType("No");
+
+alerta.getButtonTypes().setAll(
+    btnSi,
+    btnNo
+);
+
+alerta.showAndWait();
+cargarMesesPendientes();
 
     } catch (Exception e) {
 
-        lblEstado.setText(
-            "Error al validar pago"
-        );
+        
 
         System.out.println(e.getMessage());
     }
 }
+
+    @FXML
+private void limpiarCampos() {
+
+    cbCasa.setValue(null);
+
+    txtNombre.clear();
+
+    txtApellido.clear();
+
+    txtTelefono.clear();
+
+    txtCuota.clear();
+
+    cbMes.getItems().clear();
+
+    cbAnio.setValue(
+        String.valueOf(
+            LocalDate.now().getYear()
+        )
+    );
+}
     /**
      * Initializes the controller class.
      */
-    @Override
+@Override
 public void initialize(URL url, ResourceBundle rb) {
 
-    cbMes.getItems().addAll(
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-    );
-
-    cbAnio.getItems().addAll(
-        "2025",
-        "2026",
-        "2027",
-        "2028"
-    );
-
-    LocalDate fechaActual = LocalDate.now();
-
-    int mesActual = fechaActual.getMonthValue();
-    cbMes.getSelectionModel().select(mesActual - 1);
-
-    int anioActual = fechaActual.getYear();
-    cbAnio.setValue(String.valueOf(anioActual));
     
+    
+    LocalDate fechaActual =
+        LocalDate.now();
+
+    int anioActual =
+        fechaActual.getYear();
+
+    cbAnio.setValue(
+        String.valueOf(anioActual)
+    );
+
     cargarCasas();
 }
 private void cargarCasas() {
@@ -232,16 +369,107 @@ private void cargarCasas() {
     ) {
 
         while (rs.next()) {
+            Casa casa =
+                new Casa();
+            casa.setNumeroCasa(
+    rs.getInt("numero_casa")
+);
 
             cbCasa.getItems().add(
-                rs.getString("numero_casa")
-            );
+    String.valueOf(
+        casa.getNumeroCasa()
+    )
+);
 
         }
 
     } catch (Exception e) {
 
-        lblEstado.setText("Error al cargar casas");
+
+        System.out.println(e.getMessage());
+    }
+}
+private final String[] meses = {
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+};
+
+private void cargarMesesPendientes() {
+
+    cbMes.getItems().clear();
+
+    if (cbCasa.getValue() == null) {
+        return;
+    }
+
+    int anioActual =
+        Integer.parseInt(
+            cbAnio.getValue()
+        );
+
+    LocalDate fechaActual =
+    LocalDate.now();
+
+int mesActual =
+    fechaActual.getMonthValue();
+
+    String sql = """
+        SELECT MONTH(fecha_pago) AS mes
+        FROM pago_cuota pc
+        INNER JOIN propietario p
+            ON pc.id_propietario = p.id_propietario
+        WHERE p.numero_casa = ?
+        AND YEAR(fecha_pago) = ?
+    """;
+
+    try (
+        Connection conn = Config.getConexion();
+        PreparedStatement ps =
+            conn.prepareStatement(sql);
+    ) {
+
+        ps.setInt(
+            1,
+            Integer.parseInt(cbCasa.getValue())
+        );
+
+        ps.setInt(2, anioActual);
+
+        ResultSet rs =
+            ps.executeQuery();
+
+        boolean[] mesesPagados =
+            new boolean[12];
+
+        while (rs.next()) {
+
+            int mesPagado =
+                rs.getInt("mes");
+
+            mesesPagados[mesPagado - 1] = true;
+        }
+
+        for (int i = 0; i < mesActual; i++) {
+
+            if (!mesesPagados[i]) {
+
+                cbMes.getItems().add(
+                    meses[i]
+                );
+            }
+        }
+
+    } catch (Exception e) {
 
         System.out.println(e.getMessage());
     }
@@ -274,47 +502,133 @@ private void seleccionarCasa() {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+            Propietario propietario =
+            new Propietario();
 
-            String nombre = rs.getString("primer_nombre");
+            propietario.setPrimerNombre(
+    rs.getString("primer_nombre")
+);
 
-String segundoNombre = rs.getString("segundo_nombre");
-String tercerNombre = rs.getString("tercer_nombre");
+propietario.setSegundoNombre(
+    rs.getString("segundo_nombre")
+);
 
-if (segundoNombre != null) {
-    nombre += " " + segundoNombre;
+propietario.setTercerNombre(
+    rs.getString("tercer_nombre")
+);
+
+propietario.setPrimerApellido(
+    rs.getString("primer_apellido")
+);
+
+propietario.setSegundoApellido(
+    rs.getString("segundo_apellido")
+);
+
+propietario.setTelefono(
+    rs.getString("telefono")
+);
+
+String nombre =
+    propietario.getPrimerNombre();
+
+if (propietario.getSegundoNombre() != null) {
+
+    nombre += " " +
+        propietario.getSegundoNombre();
 }
 
-if (tercerNombre != null) {
-    nombre += " " + tercerNombre;
+if (propietario.getTercerNombre() != null) {
+
+    nombre += " " +
+        propietario.getTercerNombre();
 }
 
+String apellido =
+    propietario.getPrimerApellido();
+
+if (propietario.getSegundoApellido() != null) {
+
+    apellido += " " +
+        propietario.getSegundoApellido();
+}
 txtNombre.setText(nombre);
-
-            String apellido = rs.getString("primer_apellido");
-
-String segundoApellido = rs.getString("segundo_apellido");
-
-if (segundoApellido != null) {
-    apellido += " " + segundoApellido;
-}
 
 txtApellido.setText(apellido);
 
-            txtTelefono.setText(
-                rs.getString("telefono")
-            );
+txtTelefono.setText(
+    propietario.getTelefono()
+);
 
-            txtCuota.setText("Q1500");
+Cuota cuota =
+    new Cuota();
 
+cuota.setIdCuota(8);
+
+cuota.setMontoCuota(1500);
+
+txtCuota.setText(
+    "Q" + cuota.getMontoCuota()
+);
+cargarMesesPendientes();
         }
+        
 
     } catch (Exception e) {
 
-        lblEstado.setText(
-            "Error al cargar propietario"
-        );
-
         System.out.println(e.getMessage());
     }
+}
+private int obtenerNumeroMes(
+    String mes
+) {
+
+    for (int i = 0; i < meses.length; i++) {
+
+        if (meses[i].equals(mes)) {
+
+            return i + 1;
+        }
+    }
+
+    return 0;
+}
+private void mostrarAdvertencia(
+    String titulo,
+    String encabezado,
+    String mensaje
+) {
+
+    Alert alerta = new Alert(
+        Alert.AlertType.WARNING
+    );
+
+    alerta.setTitle(titulo);
+
+    alerta.setHeaderText(encabezado);
+
+    alerta.setContentText(
+    mensaje
+    + "\n"
+    + "\n"
+    + "La ventana se cerrará automáticamente en 5 segundos."
+    + "\n"
+    + "También puede presionar OK para continuar."
+);
+alerta.getDialogPane().setPrefWidth(450);
+
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(5),
+                event -> alerta.close()
+            )
+        );
+
+    timeline.setCycleCount(1);
+
+    timeline.play();
+
+    alerta.showAndWait();
 }
 }
