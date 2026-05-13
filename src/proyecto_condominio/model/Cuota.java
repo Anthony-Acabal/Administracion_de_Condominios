@@ -9,6 +9,10 @@ public class Cuota {
     private int idCuota;
 
     private double montoCuota;
+    
+    private double recaudacionMensual;
+
+    private String usuarioModificacion;
 
     public Cuota() {
 
@@ -29,4 +33,25 @@ public class Cuota {
     public void setMontoCuota(double montoCuota) {
         this.montoCuota = montoCuota;
     }
+    public double getRecaudacionMensual() {
+    return recaudacionMensual;
+}
+
+public void setRecaudacionMensual(
+    double recaudacionMensual
+) {
+    this.recaudacionMensual =
+        recaudacionMensual;
+}
+
+public String getUsuarioModificacion() {
+    return usuarioModificacion;
+}
+
+public void setUsuarioModificacion(
+    String usuarioModificacion
+) {
+    this.usuarioModificacion =
+        usuarioModificacion;
+}
 }
