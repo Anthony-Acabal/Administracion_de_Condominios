@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.HistorialPagosViewController">
+   <children>
+      <Label layoutX="325.0" layoutY="42.0" text="Historial de Pagos Recientes" />
+      <ComboBox fx:id="cbCasa" layoutX="107.0" layoutY="69.0" prefWidth="150.0" promptText="Seleccionar casa" />
+      <ComboBox fx:id="cbMes" layoutX="316.0" layoutY="69.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbAnio" layoutX="316.0" layoutY="101.0" prefWidth="150.0" />
+      <Label layoutX="25.0" layoutY="73.0" text="No. de Casa:" />
+      <Label layoutX="283.0" layoutY="73.0" text="Mes" />
+      <Label layoutX="283.0" layoutY="105.0" text="Año" />
+      <Label layoutX="510.0" layoutY="188.0" text="Vista:" />
+      <ComboBox fx:id="cbVista" layoutX="566.0" layoutY="184.0" prefHeight="26.0" prefWidth="209.0" />
+      <Button fx:id="btnBuscar" layoutX="316.0" layoutY="140.0" mnemonicParsing="false" onAction="#buscarPagos" text="Buscar" />
+      <Button fx:id="btnLimpiar" layoutX="410.0" layoutY="140.0" mnemonicParsing="false" onAction="#limpiarFiltros" text="Limpiar" />
+      <TableView fx:id="tblPagos" layoutX="25.0" layoutY="218.0" prefHeight="236.0" prefWidth="750.0">
+        <columns>
+          <TableColumn fx:id="colCasa" prefWidth="75.0" text="Casa" />
+          <TableColumn fx:id="colPropietario" prefWidth="268.0" text="Propietario" />
+            <TableColumn fx:id="colFecha" minWidth="0.0" prefWidth="103.99993896484375" text="Fecha" />
+            <TableColumn fx:id="colHora" minWidth="4.0" prefWidth="92.79998779296875" text="Hora" />
+            <TableColumn fx:id="colMonto" minWidth="0.0" prefWidth="104.00006103515625" text="Monto" />
+            <TableColumn fx:id="colComprobante" minWidth="0.0" prefWidth="110.39990234375" text="Comprobante" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnCerrar" layoutX="724.0" layoutY="461.0" mnemonicParsing="false" onAction="#cerrarVentana" text="Cerrar" />
+   </children>
+</AnchorPane>

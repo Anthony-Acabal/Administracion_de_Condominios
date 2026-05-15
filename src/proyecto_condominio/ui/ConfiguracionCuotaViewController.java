@@ -28,7 +28,7 @@ import javafx.util.Duration;
  * @author yecut
  */
 public class ConfiguracionCuotaViewController
-implements Initializable {
+        implements Initializable {
 
     private Cuota cuota = new Cuota();
 
@@ -64,8 +64,8 @@ implements Initializable {
      */
     @Override
     public void initialize(
-        URL url,
-        ResourceBundle rb
+            URL url,
+            ResourceBundle rb
     ) {
 
         cargarCuotaActual();
@@ -73,47 +73,44 @@ implements Initializable {
         cargarUsuarios();
 
         txtNuevaCuota
-            .textProperty()
-            .addListener(
+                .textProperty()
+                .addListener(
+                        (observable, oldValue, newValue) -> {
 
-            (observable, oldValue, newValue) -> {
+                            if (!newValue.matches("\\d*")) {
 
-                if (
-                    !newValue.matches("\\d*")
-                ) {
-
-                    txtNuevaCuota.setText(
-                        oldValue
-                    );
-                }
-            }
-        );
+                                txtNuevaCuota.setText(
+                                        oldValue
+                                );
+                            }
+                        }
+                );
 
         dpFechaModificacion.setValue(
-            java.time.LocalDate.now()
+                java.time.LocalDate.now()
         );
 
         lblHora.setText(
-            java.time.LocalTime.now()
-                .withNano(0)
-                .toString()
+                java.time.LocalTime.now()
+                        .withNano(0)
+                        .toString()
         );
 
         txtCuotaMensual.setEditable(false);
 
         txtCuotaMensual
-            .setFocusTraversable(false);
+                .setFocusTraversable(false);
 
         txtCuotaMensual.deselect();
 
         txtRecaudacionMensual
-            .setEditable(false);
+                .setEditable(false);
 
         txtRecaudacionMensual
-            .setFocusTraversable(false);
+                .setFocusTraversable(false);
 
         dpFechaModificacion
-            .setDisable(true);
+                .setDisable(true);
 
         lblHora.setEditable(false);
 
@@ -125,18 +122,16 @@ implements Initializable {
 
         btnGuardar.setDisable(true);
 
-        if (
-            txtNuevaCuota.getText() == null
-            || txtNuevaCuota
-                .getText()
-                .trim()
-                .isEmpty()
-        ) {
+        if (txtNuevaCuota.getText() == null
+                || txtNuevaCuota
+                        .getText()
+                        .trim()
+                        .isEmpty()) {
 
             mostrarAdvertencia(
-                "Campo Vacío",
-                "No se ingresó una cuota",
-                "Debe ingresar un monto válido para actualizar la cuota."
+                    "Campo Vacío",
+                    "No se ingresó una cuota",
+                    "Debe ingresar un monto válido para actualizar la cuota."
             );
 
             btnGuardar.setDisable(false);
@@ -144,14 +139,12 @@ implements Initializable {
             return;
         }
 
-        if (
-            cbUsuario.getValue() == null
-        ) {
+        if (cbUsuario.getValue() == null) {
 
             mostrarAdvertencia(
-                "Usuario requerido",
-                "No se seleccionó un usuario",
-                "Debe seleccionar un usuario antes de guardar la configuración."
+                    "Usuario requerido",
+                    "No se seleccionó un usuario",
+                    "Debe seleccionar un usuario antes de guardar la configuración."
             );
 
             btnGuardar.setDisable(false);
@@ -160,19 +153,17 @@ implements Initializable {
         }
 
         cuota.setMontoCuota(
-            Double.parseDouble(
-                txtNuevaCuota.getText()
-            )
+                Double.parseDouble(
+                        txtNuevaCuota.getText()
+                )
         );
 
-        if (
-            cuota.getMontoCuota() <= 0
-        ) {
+        if (cuota.getMontoCuota() <= 0) {
 
             mostrarAdvertencia(
-                "Monto inválido",
-                "La cuota no es válida",
-                "La cuota debe ser mayor a 0."
+                    "Monto inválido",
+                    "La cuota no es válida",
+                    "La cuota debe ser mayor a 0."
             );
 
             btnGuardar.setDisable(false);
@@ -180,14 +171,12 @@ implements Initializable {
             return;
         }
 
-        if (
-            cuota.getMontoCuota() > 100000
-        ) {
+        if (cuota.getMontoCuota() > 100000) {
 
             mostrarAdvertencia(
-                "Monto demasiado alto",
-                "La cuota excede el límite permitido",
-                "Ingrese una cuota razonable."
+                    "Monto demasiado alto",
+                    "La cuota excede el límite permitido",
+                    "Ingrese una cuota razonable."
             );
 
             btnGuardar.setDisable(false);
@@ -195,20 +184,17 @@ implements Initializable {
             return;
         }
 
-        if (
-            cuota.getMontoCuota()
-            ==
-            Double.parseDouble(
-                txtCuotaMensual
-                    .getText()
-                    .replace("Q", "")
-            )
-        ) {
+        if (cuota.getMontoCuota()
+                == Double.parseDouble(
+                        txtCuotaMensual
+                                .getText()
+                                .replace("Q", "")
+                )) {
 
             mostrarAdvertencia(
-                "Cuota sin cambios",
-                "La cuota ingresada ya existe",
-                "Debe ingresar un monto diferente\nal actual para realizar una actualización."
+                    "Cuota sin cambios",
+                    "La cuota ingresada ya existe",
+                    "Debe ingresar un monto diferente\nal actual para realizar una actualización."
             );
 
             btnGuardar.setDisable(false);
@@ -225,44 +211,39 @@ implements Initializable {
         """;
 
         try (
-
-            Connection conn =
-                Config.getConexion();
-
-            PreparedStatement ps =
-                conn.prepareStatement(sqlUsuario);
-
-        ) {
+                Connection conn
+                = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sqlUsuario);) {
 
             ps.setString(
-                1,
-                cbUsuario.getValue()
+                    1,
+                    cbUsuario.getValue()
             );
 
-            ResultSet rs =
-                ps.executeQuery();
+            ResultSet rs
+                    = ps.executeQuery();
 
             if (rs.next()) {
 
-                idUsuario =
-                    rs.getInt(
-                        "id_usuario"
-                    );
+                idUsuario
+                        = rs.getInt(
+                                "id_usuario"
+                        );
             }
 
         } catch (Exception e) {
 
             System.out.println(
-                e.getMessage()
+                    e.getMessage()
             );
         }
 
         if (idUsuario == 0) {
 
             mostrarAdvertencia(
-                "Usuario inválido",
-                "No se encontró el usuario",
-                "Seleccione un usuario válido."
+                    "Usuario inválido",
+                    "No se encontró el usuario",
+                    "Seleccione un usuario válido."
             );
 
             btnGuardar.setDisable(false);
@@ -282,18 +263,13 @@ implements Initializable {
         """;
 
         try (
-
-            Connection conn =
-                Config.getConexion();
-
-            PreparedStatement ps =
-                conn.prepareStatement(sql);
-
-        ) {
+                Connection conn
+                = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sql);) {
 
             ps.setDouble(
-                1,
-                cuota.getMontoCuota()
+                    1,
+                    cuota.getMontoCuota()
             );
 
             ps.setInt(2, 18);
@@ -307,13 +283,13 @@ implements Initializable {
             cargarCuotaActual();
 
             dpFechaModificacion.setValue(
-                java.time.LocalDate.now()
+                    java.time.LocalDate.now()
             );
 
             lblHora.setText(
-                java.time.LocalTime.now()
-                    .withNano(0)
-                    .toString()
+                    java.time.LocalTime.now()
+                            .withNano(0)
+                            .toString()
             );
 
             txtNuevaCuota.clear();
@@ -327,7 +303,7 @@ implements Initializable {
         } catch (Exception e) {
 
             System.out.println(
-                e.getMessage()
+                    e.getMessage()
             );
 
             btnGuardar.setDisable(false);
@@ -353,29 +329,22 @@ implements Initializable {
         """;
 
         try (
-
-            Connection conn =
-                Config.getConexion();
-
-            PreparedStatement ps =
-                conn.prepareStatement(sql);
-
-            ResultSet rs =
-                ps.executeQuery();
-
-        ) {
+                Connection conn
+                = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sql); ResultSet rs
+                = ps.executeQuery();) {
 
             if (rs.next()) {
 
                 cuota.setMontoCuota(
-                    rs.getDouble(
-                        "cuota"
-                    )
+                        rs.getDouble(
+                                "cuota"
+                        )
                 );
 
                 txtCuotaMensual.setText(
-                    "Q" +
-                    cuota.getMontoCuota()
+                        "Q"
+                        + cuota.getMontoCuota()
                 );
 
                 calcularRecaudacion();
@@ -383,7 +352,7 @@ implements Initializable {
             } else {
 
                 txtCuotaMensual.setText(
-                    "Q0"
+                        "Q0"
                 );
 
                 calcularRecaudacion();
@@ -392,7 +361,7 @@ implements Initializable {
         } catch (Exception e) {
 
             System.out.println(
-                e.getMessage()
+                    e.getMessage()
             );
         }
     }
@@ -405,77 +374,70 @@ implements Initializable {
         """;
 
         try (
-
-            Connection conn =
-                Config.getConexion();
-
-            PreparedStatement ps =
-                conn.prepareStatement(sql);
-
-            ResultSet rs =
-                ps.executeQuery();
-
-        ) {
+                Connection conn
+                = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sql); ResultSet rs
+                = ps.executeQuery();) {
 
             if (rs.next()) {
 
-                int totalCasas =
-                    rs.getInt(
-                        "total_casas"
-                    );
+                int totalCasas
+                        = rs.getInt(
+                                "total_casas"
+                        );
 
-                double recaudacion =
-                    totalCasas
-                    * cuota.getMontoCuota()
-                    * 12;
+                double recaudacion
+                        = totalCasas
+                        * cuota.getMontoCuota()
+                        * 12;
 
                 txtRecaudacionMensual
-                    .setText(
-                        "Q" +
-                        String.format(
-                            "%,.2f",
-                            recaudacion
-                        )
-                    );
+                        .setText(
+                                "Q"
+                                + String.format(
+                                        "%,.2f",
+                                        recaudacion
+                                )
+                        );
             }
 
         } catch (Exception e) {
 
             System.out.println(
-                e.getMessage()
+                    e.getMessage()
             );
         }
     }
 
     private void mostrarAdvertencia(
-        String titulo,
-        String encabezado,
-        String mensaje
+            String titulo,
+            String encabezado,
+            String mensaje
     ) {
 
-        Alert alerta =
-            new Alert(
-                Alert.AlertType.WARNING
-            );
+        Alert alerta
+                = new Alert(
+                        Alert.AlertType.WARNING
+                );
 
         alerta.setTitle(titulo);
 
         alerta.setHeaderText(encabezado);
 
         alerta.setContentText(
-            mensaje +
-            "\n\nEsta ventana se cerrará en 5 segundos."
+                mensaje
+                + "\n\nEsta ventana se cerrará en 5 segundos."
         );
 
         alerta.show();
 
-        Timeline timeline =
-            new Timeline(
-                new KeyFrame(
-                    Duration.seconds(5),
-                    event -> alerta.close()
-                )
-            );
+        Timeline timeline
+                = new Timeline(
+                        new KeyFrame(
+                                Duration.seconds(5),
+                                event -> alerta.close()
+                        )
+                );
 
         timeline.setCycleCount(1);
 
@@ -484,32 +446,32 @@ implements Initializable {
 
     private void mostrarExito() {
 
-        Alert alerta =
-            new Alert(
-                Alert.AlertType.INFORMATION
-            );
+        Alert alerta
+                = new Alert(
+                        Alert.AlertType.INFORMATION
+                );
 
         alerta.setTitle(
-            "Cuota Actualizada"
+                "Cuota Actualizada"
         );
 
         alerta.setHeaderText(
-            "Actualización exitosa"
+                "Actualización exitosa"
         );
 
         alerta.setContentText(
-            "La cuota mensual fue actualizada correctamente."
+                "La cuota mensual fue actualizada correctamente."
         );
 
         alerta.show();
 
-        Timeline timeline =
-            new Timeline(
-                new KeyFrame(
-                    Duration.seconds(5),
-                    event -> alerta.close()
-                )
-            );
+        Timeline timeline
+                = new Timeline(
+                        new KeyFrame(
+                                Duration.seconds(5),
+                                event -> alerta.close()
+                        )
+                );
 
         timeline.setCycleCount(1);
 
@@ -526,46 +488,37 @@ implements Initializable {
         """;
 
         try (
-
-            Connection conn =
-                Config.getConexion();
-
-            PreparedStatement ps =
-                conn.prepareStatement(sql);
-
-            ResultSet rs =
-                ps.executeQuery();
-
-        ) {
+                Connection conn
+                = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sql); ResultSet rs
+                = ps.executeQuery();) {
 
             while (rs.next()) {
 
                 cbUsuario
-                    .getItems()
-                    .add(
-                        rs.getString(
-                            "usuario"
-                        )
-                    );
+                        .getItems()
+                        .add(
+                                rs.getString(
+                                        "usuario"
+                                )
+                        );
             }
 
-            if (
-                cbUsuario
+            if (cbUsuario
                     .getItems()
-                    .isEmpty()
-            ) {
+                    .isEmpty()) {
 
                 mostrarAdvertencia(
-                    "Sin usuarios",
-                    "No hay usuarios registrados",
-                    "Debe existir al menos un usuario en el sistema."
+                        "Sin usuarios",
+                        "No hay usuarios registrados",
+                        "Debe existir al menos un usuario en el sistema."
                 );
             }
 
         } catch (Exception e) {
 
             System.out.println(
-                e.getMessage()
+                    e.getMessage()
             );
         }
     }
