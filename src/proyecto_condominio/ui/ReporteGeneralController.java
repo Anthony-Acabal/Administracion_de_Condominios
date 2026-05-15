@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.chart.PieChart;
 import proyecto_condominio.model.ReporteGeneral;
 import proyecto_condominio.model.ReporteGeneralDAO;
 
@@ -25,7 +26,7 @@ public class ReporteGeneralController implements Initializable {
     @FXML private TableColumn<ReporteGeneral, Double> colTotalPagado;
     @FXML private Label lblTotalRecaudado;
     @FXML private Button btnImprimirReporte;
-    @FXML private Button btnVerGrafica;
+    @FXML private PieChart charGraficaReporteGeneral;
 
     private ReporteGeneralDAO reporteDAO = new ReporteGeneralDAO();
     private ObservableList<ReporteGeneral> listaReporte;
@@ -47,7 +48,23 @@ public class ReporteGeneralController implements Initializable {
         List<ReporteGeneral> datos = reporteDAO.obtenerReporteGeneral();
         listaReporte = FXCollections.observableArrayList(datos);
         tbReporteGeneral.setItems(listaReporte);
+
         double[] resumen = reporteDAO.obtenerResumenMensual();
-        lblTotalRecaudado.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", resumen[0], resumen[1]));
+        double recaudado = resumen[0];
+        double esperado = resumen[1];
+        double pendiente = Math.max(0, esperado - recaudado);
+
+        lblTotalRecaudado.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudado, esperado));
+
+        actualizarGrafica(recaudado, pendiente);
+    }
+
+    private void actualizarGrafica(double recaudado, double pendiente) {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Recaudado ($" + String.format("%.2f", recaudado) + ")", recaudado),
+                new PieChart.Data("Pendiente ($" + String.format("%.2f", pendiente) + ")", pendiente)
+        );
+        charGraficaReporteGeneral.setData(pieChartData);
     }
 }
+
