@@ -25,12 +25,14 @@ import javafx.scene.control.ButtonType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
 /**
  * FXML Controller class
  *
  * @author yecut
  */
 public class RegistroPagoViewController implements Initializable {
+
     @FXML
     private ComboBox<String> cbCasa;
 
@@ -60,33 +62,33 @@ public class RegistroPagoViewController implements Initializable {
 
     @FXML
     private Button btnCerrar;
-    
+
     @FXML
-private void registrarPago() {
+    private void registrarPago() {
 
-    if (cbCasa.getValue() == null) {
+        if (cbCasa.getValue() == null) {
 
-    mostrarAdvertencia(
-        "Validación de Registro",
-        "No se ha seleccionado una casa",
-        "Por favor, seleccione una casa antes de registrar el pago."
-    );
+            mostrarAdvertencia(
+                    "Validación de Registro",
+                    "No se ha seleccionado una casa",
+                    "Por favor, seleccione una casa antes de registrar el pago."
+            );
 
-    return;
-}
+            return;
+        }
 
-if (cbMes.getValue() == null) {
+        if (cbMes.getValue() == null) {
 
-    mostrarAdvertencia(
-        "Sin Pagos Pendientes",
-        "No existen cuotas pendientes",
-        "La casa seleccionada ya posee todos los pagos registrados para el año actual."
-    );
+            mostrarAdvertencia(
+                    "Sin Pagos Pendientes",
+                    "No existen cuotas pendientes",
+                    "La casa seleccionada ya posee todos los pagos registrados para el año actual."
+            );
 
-    return;
-}
+            return;
+        }
 
-    String sqlValidar = """
+        String sqlValidar = """
         SELECT COUNT(*) 
         FROM pago_cuota pc
         INNER JOIN propietario p
@@ -96,52 +98,49 @@ if (cbMes.getValue() == null) {
         AND YEAR(pc.fecha_pago) = ?
     """;
 
-    int mesSeleccionado =
-    obtenerNumeroMes(
-        cbMes.getValue()
-    );
+        int mesSeleccionado
+                = obtenerNumeroMes(
+                        cbMes.getValue()
+                );
 
-    int anioSeleccionado =
-        Integer.parseInt(cbAnio.getValue());
+        int anioSeleccionado
+                = Integer.parseInt(cbAnio.getValue());
 
-    try (
-        Connection conn = Config.getConexion();
-        PreparedStatement ps =
-            conn.prepareStatement(sqlValidar);
-    ) {
+        try (
+                Connection conn = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sqlValidar);) {
 
-        ps.setInt(
-            1,
-            Integer.parseInt(cbCasa.getValue())
-        );
+            ps.setInt(
+                    1,
+                    Integer.parseInt(cbCasa.getValue())
+            );
 
-        ps.setInt(2, mesSeleccionado);
+            ps.setInt(2, mesSeleccionado);
 
-        ps.setInt(3, anioSeleccionado);
+            ps.setInt(3, anioSeleccionado);
 
-        ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-        if (rs.next()) {
-            
+            if (rs.next()) {
 
-            int cantidad = rs.getInt(1);
+                int cantidad = rs.getInt(1);
 
-            if (cantidad > 0) {
+                if (cantidad > 0) {
 
-                return;
+                    return;
+                }
             }
-        }
 
-        int mesAnterior = mesSeleccionado - 1;
-        int anioAnterior = anioSeleccionado;
+            int mesAnterior = mesSeleccionado - 1;
+            int anioAnterior = anioSeleccionado;
 
-        if (mesAnterior == 0) {
+            if (mesAnterior == 0) {
 
-            mesAnterior = 12;
-            anioAnterior--;
-        }
+                mesAnterior = 12;
+                anioAnterior--;
+            }
 
-        String sqlMesAnterior = """
+            String sqlMesAnterior = """
             SELECT COUNT(*)
             FROM pago_cuota pc
             INNER JOIN propietario p
@@ -151,87 +150,87 @@ if (cbMes.getValue() == null) {
             AND YEAR(pc.fecha_pago) = ?
         """;
 
-        PreparedStatement psAnterior =
-            conn.prepareStatement(sqlMesAnterior);
+            PreparedStatement psAnterior
+                    = conn.prepareStatement(sqlMesAnterior);
 
-        psAnterior.setInt(
-            1,
-            Integer.parseInt(cbCasa.getValue())
-        );
+            psAnterior.setInt(
+                    1,
+                    Integer.parseInt(cbCasa.getValue())
+            );
 
-        psAnterior.setInt(2, mesAnterior);
+            psAnterior.setInt(2, mesAnterior);
 
-        psAnterior.setInt(3, anioAnterior);
+            psAnterior.setInt(3, anioAnterior);
 
-        ResultSet rsAnterior =
-            psAnterior.executeQuery();
+            ResultSet rsAnterior
+                    = psAnterior.executeQuery();
 
-        if (rsAnterior.next()) {
+            if (rsAnterior.next()) {
 
-            int pagosAnteriores =
-                rsAnterior.getInt(1);
+                int pagosAnteriores
+                        = rsAnterior.getInt(1);
 
-            if (pagosAnteriores == 0
-    && mesSeleccionado != 1) {
+                if (pagosAnteriores == 0
+                        && mesSeleccionado != 1) {
 
-    mostrarAdvertencia(
-        "Pago Pendiente Detectado",
-        "Existen meses anteriores pendientes",
-        "Debe registrar primero los meses pendientes anteriores antes de continuar con el pago seleccionado."
-    );
+                    mostrarAdvertencia(
+                            "Pago Pendiente Detectado",
+                            "Existen meses anteriores pendientes",
+                            "Debe registrar primero los meses pendientes anteriores antes de continuar con el pago seleccionado."
+                    );
 
-    return;
-}
-        }
+                    return;
+                }
+            }
 
-        String sqlPropietario = """
+            String sqlPropietario = """
             SELECT id_propietario
             FROM propietario
             WHERE numero_casa = ?
         """;
 
-        PreparedStatement psPropietario =
-            conn.prepareStatement(sqlPropietario);
+            PreparedStatement psPropietario
+                    = conn.prepareStatement(sqlPropietario);
 
-        psPropietario.setInt(
-            1,
-            Integer.parseInt(cbCasa.getValue())
-        );
+            psPropietario.setInt(
+                    1,
+                    Integer.parseInt(cbCasa.getValue())
+            );
 
-        ResultSet rsPropietario =
-            psPropietario.executeQuery();
+            ResultSet rsPropietario
+                    = psPropietario.executeQuery();
 
-        int idPropietario = 0;
+            int idPropietario = 0;
 
-        if (rsPropietario.next()) {
+            if (rsPropietario.next()) {
 
-            idPropietario =
-                rsPropietario.getInt("id_propietario");
-        }
+                idPropietario
+                        = rsPropietario.getInt("id_propietario");
+            }
 
-        PagoCuota pago =
-            new PagoCuota();
-        pago.setIdPropietario(
-    idPropietario
-);
+            PagoCuota pago
+                    = new PagoCuota();
+            pago.setIdPropietario(
+                    idPropietario
+            );
 
-pago.setIdCuota(8);
+            pago.setIdCuota(8);
 
-LocalDate fechaPago =
-    LocalDate.of(
-        anioSeleccionado,
-        mesSeleccionado,
-        1
-    );
+            LocalDate fechaPago
+                    = LocalDate.of(
+                            anioSeleccionado,
+                            mesSeleccionado,
+                            1
+                    );
 
-pago.setFechaPago(
-    fechaPago
-);
+            pago.setFechaPago(
+                    fechaPago
+            );
 
-pago.setImprimeComprobante("S");
+            pago.setImprimeComprobante("S");
 
-pago.setIdUsuarioCreacion(1);
-        String sqlInsertar = """
+            pago.setIdUsuarioCreacion(1);
+            String sqlInsertar = """
             INSERT INTO pago_cuota
             (
                 id_propietario,
@@ -240,190 +239,179 @@ pago.setIdUsuarioCreacion(1);
                 imprime_comprobante,
                 id_usuario_creacion
             )
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, GETDATE(), ?, ?)
         """;
 
-        PreparedStatement psInsertar =
-            conn.prepareStatement(sqlInsertar);
+            PreparedStatement psInsertar
+                    = conn.prepareStatement(sqlInsertar);
 
-        psInsertar.setInt(
-    1,
-    pago.getIdPropietario()
-);
+            psInsertar.setInt(
+                    1,
+                    pago.getIdPropietario()
+            );
 
-psInsertar.setInt(
-    2,
-    pago.getIdCuota()
-);
+            psInsertar.setInt(
+                    2,
+                    pago.getIdCuota()
+            );
 
-        psInsertar.setDate(
-            3,
-            java.sql.Date.valueOf(
-    pago.getFechaPago()
-            )
-        );
+            psInsertar.setString(
+                    3,
+                    pago.getImprimeComprobante()
+            );
 
-       psInsertar.setString(
-    4,
-    pago.getImprimeComprobante()
-);
+            psInsertar.setInt(
+                    4,
+                    pago.getIdUsuarioCreacion()
+            );
 
-        psInsertar.setInt(
-    5,
-    pago.getIdUsuarioCreacion()
-);
+            psInsertar.executeUpdate();
 
-        psInsertar.executeUpdate();
-        
-        Alert alerta = new Alert(
-    Alert.AlertType.CONFIRMATION
-);
+            Alert alerta = new Alert(
+                    Alert.AlertType.CONFIRMATION
+            );
 
-alerta.setTitle(
-    "Registro Exitoso"
-);
+            alerta.setTitle(
+                    "Registro Exitoso"
+            );
 
-alerta.setHeaderText(
-    "¡Registro Exitoso!"
-);
+            alerta.setHeaderText(
+                    "¡Registro Exitoso!"
+            );
 
-alerta.setContentText(
-    "¿Desea imprimir el recibo?"
-);
+            alerta.setContentText(
+                    "¿Desea imprimir el recibo?"
+            );
 
-ButtonType btnSi =
-    new ButtonType("Sí");
+            ButtonType btnSi
+                    = new ButtonType("Sí");
 
-ButtonType btnNo =
-    new ButtonType("No");
+            ButtonType btnNo
+                    = new ButtonType("No");
 
-alerta.getButtonTypes().setAll(
-    btnSi,
-    btnNo
-);
+            alerta.getButtonTypes().setAll(
+                    btnSi,
+                    btnNo
+            );
 
-alerta.showAndWait();
-cargarMesesPendientes();
+            alerta.showAndWait();
+            cargarMesesPendientes();
 
-    } catch (Exception e) {
+        } catch (Exception e) {
 
-        
-
-        System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
+        }
     }
-}
 
     @FXML
-private void limpiarCampos() {
+    private void limpiarCampos() {
 
-    cbCasa.setValue(null);
+        cbCasa.setValue(null);
 
-    txtNombre.clear();
+        txtNombre.clear();
 
-    txtApellido.clear();
+        txtApellido.clear();
 
-    txtTelefono.clear();
+        txtTelefono.clear();
 
-    txtCuota.clear();
+        txtCuota.clear();
 
-    cbMes.getItems().clear();
+        cbMes.setValue(null);
 
-    cbAnio.setValue(
-        String.valueOf(
-            LocalDate.now().getYear()
-        )
-    );
-}
+        cbMes.getItems().clear();
+
+        cbAnio.setValue(
+                String.valueOf(
+                        LocalDate.now().getYear()
+                )
+        );
+    }
+
     /**
      * Initializes the controller class.
      */
-@Override
-public void initialize(URL url, ResourceBundle rb) {
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
 
-    
-    
-    LocalDate fechaActual =
-        LocalDate.now();
+        LocalDate fechaActual
+                = LocalDate.now();
 
-    int anioActual =
-        fechaActual.getYear();
+        int anioActual
+                = fechaActual.getYear();
 
-    cbAnio.setValue(
-        String.valueOf(anioActual)
-    );
+        cbAnio.setValue(
+                String.valueOf(anioActual)
+        );
 
-    cargarCasas();
-}
-private void cargarCasas() {
+        cargarCasas();
+    }
 
-    String sql = """
+    private void cargarCasas() {
+
+        String sql = """
     SELECT numero_casa
     FROM propietario
     ORDER BY numero_casa ASC
     """;
 
-    try (
-        Connection conn = Config.getConexion();
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-    ) {
+        try (
+                Connection conn = Config.getConexion(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
 
-        while (rs.next()) {
-            Casa casa =
-                new Casa();
-            casa.setNumeroCasa(
-    rs.getInt("numero_casa")
-);
+            while (rs.next()) {
+                Casa casa
+                        = new Casa();
+                casa.setNumeroCasa(
+                        rs.getInt("numero_casa")
+                );
 
-            cbCasa.getItems().add(
-    String.valueOf(
-        casa.getNumeroCasa()
-    )
-);
+                cbCasa.getItems().add(
+                        String.valueOf(
+                                casa.getNumeroCasa()
+                        )
+                );
 
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+        }
+    }
+    private final String[] meses = {
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+    };
+
+    private void cargarMesesPendientes() {
+
+        cbMes.getItems().clear();
+
+        if (cbCasa.getValue() == null) {
+            return;
         }
 
-    } catch (Exception e) {
+        int anioActual
+                = Integer.parseInt(
+                        cbAnio.getValue()
+                );
 
+        LocalDate fechaActual
+                = LocalDate.now();
 
-        System.out.println(e.getMessage());
-    }
-}
-private final String[] meses = {
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre"
-};
+        int mesActual
+                = fechaActual.getMonthValue();
 
-private void cargarMesesPendientes() {
-
-    cbMes.getItems().clear();
-
-    if (cbCasa.getValue() == null) {
-        return;
-    }
-
-    int anioActual =
-        Integer.parseInt(
-            cbAnio.getValue()
-        );
-
-    LocalDate fechaActual =
-    LocalDate.now();
-
-int mesActual =
-    fechaActual.getMonthValue();
-
-    String sql = """
+        String sql = """
         SELECT MONTH(fecha_pago) AS mes
         FROM pago_cuota pc
         INNER JOIN propietario p
@@ -432,52 +420,51 @@ int mesActual =
         AND YEAR(fecha_pago) = ?
     """;
 
-    try (
-        Connection conn = Config.getConexion();
-        PreparedStatement ps =
-            conn.prepareStatement(sql);
-    ) {
+        try (
+                Connection conn = Config.getConexion(); PreparedStatement ps
+                = conn.prepareStatement(sql);) {
 
-        ps.setInt(
-            1,
-            Integer.parseInt(cbCasa.getValue())
-        );
+            ps.setInt(
+                    1,
+                    Integer.parseInt(cbCasa.getValue())
+            );
 
-        ps.setInt(2, anioActual);
+            ps.setInt(2, anioActual);
 
-        ResultSet rs =
-            ps.executeQuery();
+            ResultSet rs
+                    = ps.executeQuery();
 
-        boolean[] mesesPagados =
-            new boolean[12];
+            boolean[] mesesPagados
+                    = new boolean[12];
 
-        while (rs.next()) {
+            while (rs.next()) {
 
-            int mesPagado =
-                rs.getInt("mes");
+                int mesPagado
+                        = rs.getInt("mes");
 
-            mesesPagados[mesPagado - 1] = true;
-        }
-
-        for (int i = 0; i < mesActual; i++) {
-
-            if (!mesesPagados[i]) {
-
-                cbMes.getItems().add(
-                    meses[i]
-                );
+                mesesPagados[mesPagado - 1] = true;
             }
+
+            for (int i = 0; i < mesActual; i++) {
+
+                if (!mesesPagados[i]) {
+
+                    cbMes.getItems().add(
+                            meses[i]
+                    );
+                }
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
         }
-
-    } catch (Exception e) {
-
-        System.out.println(e.getMessage());
     }
-}
-    @FXML
-private void seleccionarCasa() {
 
-    String sql = """
+    @FXML
+    private void seleccionarCasa() {
+
+        String sql = """
         SELECT 
             primer_nombre,
             segundo_nombre,
@@ -489,146 +476,145 @@ private void seleccionarCasa() {
         WHERE numero_casa = ?
     """;
 
-    try (
-        Connection conn = Config.getConexion();
-        PreparedStatement ps = conn.prepareStatement(sql);
+        try (
+                Connection conn = Config.getConexion(); PreparedStatement ps = conn.prepareStatement(sql);) {
+
+            ps.setInt(
+                    1,
+                    Integer.parseInt(cbCasa.getValue())
+            );
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Propietario propietario
+                        = new Propietario();
+
+                propietario.setPrimerNombre(
+                        rs.getString("primer_nombre")
+                );
+
+                propietario.setSegundoNombre(
+                        rs.getString("segundo_nombre")
+                );
+
+                propietario.setTercerNombre(
+                        rs.getString("tercer_nombre")
+                );
+
+                propietario.setPrimerApellido(
+                        rs.getString("primer_apellido")
+                );
+
+                propietario.setSegundoApellido(
+                        rs.getString("segundo_apellido")
+                );
+
+                propietario.setTelefono(
+                        rs.getString("telefono")
+                );
+
+                String nombre
+                        = propietario.getPrimerNombre();
+
+                if (propietario.getSegundoNombre() != null) {
+
+                    nombre += " "
+                            + propietario.getSegundoNombre();
+                }
+
+                if (propietario.getTercerNombre() != null) {
+
+                    nombre += " "
+                            + propietario.getTercerNombre();
+                }
+
+                String apellido
+                        = propietario.getPrimerApellido();
+
+                if (propietario.getSegundoApellido() != null) {
+
+                    apellido += " "
+                            + propietario.getSegundoApellido();
+                }
+                txtNombre.setText(nombre);
+
+                txtApellido.setText(apellido);
+
+                txtTelefono.setText(
+                        propietario.getTelefono()
+                );
+
+                Cuota cuota
+                        = new Cuota();
+
+                cuota.setIdCuota(8);
+
+                cuota.setMontoCuota(1500);
+
+                txtCuota.setText(
+                        "Q" + cuota.getMontoCuota()
+                );
+                cargarMesesPendientes();
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private int obtenerNumeroMes(
+            String mes
     ) {
 
-        ps.setInt(
-            1,
-            Integer.parseInt(cbCasa.getValue())
-        );
+        for (int i = 0; i < meses.length; i++) {
 
-        ResultSet rs = ps.executeQuery();
+            if (meses[i].equals(mes)) {
 
-        if (rs.next()) {
-            Propietario propietario =
-            new Propietario();
-
-            propietario.setPrimerNombre(
-    rs.getString("primer_nombre")
-);
-
-propietario.setSegundoNombre(
-    rs.getString("segundo_nombre")
-);
-
-propietario.setTercerNombre(
-    rs.getString("tercer_nombre")
-);
-
-propietario.setPrimerApellido(
-    rs.getString("primer_apellido")
-);
-
-propietario.setSegundoApellido(
-    rs.getString("segundo_apellido")
-);
-
-propietario.setTelefono(
-    rs.getString("telefono")
-);
-
-String nombre =
-    propietario.getPrimerNombre();
-
-if (propietario.getSegundoNombre() != null) {
-
-    nombre += " " +
-        propietario.getSegundoNombre();
-}
-
-if (propietario.getTercerNombre() != null) {
-
-    nombre += " " +
-        propietario.getTercerNombre();
-}
-
-String apellido =
-    propietario.getPrimerApellido();
-
-if (propietario.getSegundoApellido() != null) {
-
-    apellido += " " +
-        propietario.getSegundoApellido();
-}
-txtNombre.setText(nombre);
-
-txtApellido.setText(apellido);
-
-txtTelefono.setText(
-    propietario.getTelefono()
-);
-
-Cuota cuota =
-    new Cuota();
-
-cuota.setIdCuota(8);
-
-cuota.setMontoCuota(1500);
-
-txtCuota.setText(
-    "Q" + cuota.getMontoCuota()
-);
-cargarMesesPendientes();
+                return i + 1;
+            }
         }
-        
 
-    } catch (Exception e) {
-
-        System.out.println(e.getMessage());
-    }
-}
-private int obtenerNumeroMes(
-    String mes
-) {
-
-    for (int i = 0; i < meses.length; i++) {
-
-        if (meses[i].equals(mes)) {
-
-            return i + 1;
-        }
+        return 0;
     }
 
-    return 0;
-}
-private void mostrarAdvertencia(
-    String titulo,
-    String encabezado,
-    String mensaje
-) {
+    private void mostrarAdvertencia(
+            String titulo,
+            String encabezado,
+            String mensaje
+    ) {
 
-    Alert alerta = new Alert(
-        Alert.AlertType.WARNING
-    );
-
-    alerta.setTitle(titulo);
-
-    alerta.setHeaderText(encabezado);
-
-    alerta.setContentText(
-    mensaje
-    + "\n"
-    + "\n"
-    + "La ventana se cerrará automáticamente en 5 segundos."
-    + "\n"
-    + "También puede presionar OK para continuar."
-);
-alerta.getDialogPane().setPrefWidth(450);
-
-    Timeline timeline =
-        new Timeline(
-            new KeyFrame(
-                Duration.seconds(5),
-                event -> alerta.close()
-            )
+        Alert alerta = new Alert(
+                Alert.AlertType.WARNING
         );
 
-    timeline.setCycleCount(1);
+        alerta.setTitle(titulo);
 
-    timeline.play();
+        alerta.setHeaderText(encabezado);
 
-    alerta.showAndWait();
-}
+        alerta.setContentText(
+                mensaje
+                + "\n"
+                + "\n"
+                + "La ventana se cerrará automáticamente en 5 segundos."
+                + "\n"
+                + "También puede presionar OK para continuar."
+        );
+        alerta.getDialogPane().setPrefWidth(450);
+
+        Timeline timeline
+                = new Timeline(
+                        new KeyFrame(
+                                Duration.seconds(5),
+                                event -> alerta.close()
+                        )
+                );
+
+        timeline.setCycleCount(1);
+
+        timeline.play();
+
+        alerta.showAndWait();
+    }
 }
