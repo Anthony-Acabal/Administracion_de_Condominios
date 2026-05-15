@@ -47,8 +47,7 @@ public class ReporteGeneralController implements Initializable {
         List<ReporteGeneral> datos = reporteDAO.obtenerReporteGeneral();
         listaReporte = FXCollections.observableArrayList(datos);
         tbReporteGeneral.setItems(listaReporte);
-        
-        double totalRecaudado = datos.stream().mapToDouble(ReporteGeneral::getTotalPagado).sum();
-        lblTotalRecaudado.setText("Total recaudado acumulado: $" + String.format("%.2f", totalRecaudado));
+        double[] resumen = reporteDAO.obtenerResumenMensual();
+        lblTotalRecaudado.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", resumen[0], resumen[1]));
     }
 }

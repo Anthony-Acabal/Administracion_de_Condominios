@@ -18,7 +18,7 @@ public class ReporteGeneralLauncher extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Cargamos el FXML
+
         Parent root = FXMLLoader.load(getClass().getResource("ReporteGeneralView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);

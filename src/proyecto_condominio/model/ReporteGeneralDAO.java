@@ -54,4 +54,37 @@ public class ReporteGeneralDAO {
         }
         return lista;
     }
+
+    public double[] obtenerResumenMensual() {
+        double[] resumen = new double[2]; 
+        
+        String sql = "SELECT " +
+                     " (SELECT ISNULL(SUM(c.cuota), 0) " +
+                     "  FROM pago_cuota pc " +
+                     "  JOIN cuota c ON pc.id_cuota = c.id_cuota " +
+                     "  WHERE MONTH(pc.fecha_pago) = MONTH(GETDATE()) " +
+                     "  AND YEAR(pc.fecha_pago) = YEAR(GETDATE())) AS Recaudado, " +
+                     " (SELECT COUNT(*) FROM propietario) AS TotalCasas, " +
+                     " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
+
+        try (Connection con = Config.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                resumen[0] = rs.getDouble("Recaudado");
+                int totalCasas = rs.getInt("TotalCasas");
+                double ultimaCuota = rs.getDouble("UltimaCuota");
+                resumen[1] = totalCasas * ultimaCuota;
+                
+                System.out.println("Total Casas: " + totalCasas);
+                System.out.println("Ultima Cuota: " + ultimaCuota);
+                System.out.println("Calculo Esperado (" + totalCasas + " * " + ultimaCuota + "): " + resumen[1]);
+                System.out.println("Recaudado Real: " + resumen[0]);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en obtenerResumenMensual: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return resumen;
+    }
 }
