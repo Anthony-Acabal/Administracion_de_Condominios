@@ -26,17 +26,28 @@ public class ReporteGeneralDAO {
                      " AND YEAR(pc.fecha_pago) = YEAR(GETDATE())), 0) AS total_pagado " +
                      "FROM propietario p";
 
-        try (Connection con = Config.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = Config.getConexion()) {
+            try (PreparedStatement psTest = con.prepareStatement("SELECT COUNT(*) FROM propietario");
+                 ResultSet rsTest = psTest.executeQuery()) {
+                if (rsTest.next()) {
+                    System.out.println("Total propietarios en DB: " + rsTest.getInt(1));
+                }
+            }
 
-            while (rs.next()) {
-                lista.add(new ReporteGeneral(
-                        rs.getInt("numero_casa"),
-                        rs.getString("nombre_propietario"),
-                        rs.getString("estado_actual"),
-                        rs.getDouble("total_pagado")
-                ));
+            try (PreparedStatement ps = con.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+
+                int count = 0;
+                while (rs.next()) {
+                    lista.add(new ReporteGeneral(
+                            rs.getInt("numero_casa"),
+                            rs.getString("nombre_propietario"),
+                            rs.getString("estado_actual"),
+                            rs.getDouble("total_pagado")
+                    ));
+                    count++;
+                }
+                System.out.println("Registros recuperados por la consulta JOIN: " + count);
             }
         } catch (SQLException e) {
             e.printStackTrace();
