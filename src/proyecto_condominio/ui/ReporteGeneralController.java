@@ -1,5 +1,6 @@
 package proyecto_condominio.ui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -60,11 +61,34 @@ public class ReporteGeneralController implements Initializable {
     }
 
     private void actualizarGrafica(double recaudado, double pendiente) {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Recaudado ($" + String.format("%.2f", recaudado) + ")", recaudado),
-                new PieChart.Data("Pendiente ($" + String.format("%.2f", pendiente) + ")", pendiente)
-        );
+        double total = recaudado + pendiente;
+        if (total == 0) return;
+
+        double porcRecaudado = (recaudado / total) * 100;
+        double porcPendiente = (pendiente / total) * 100;
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        
+        PieChart.Data sliceRecaudado = new PieChart.Data(String.format("Recaudado (%.1f%%)", porcRecaudado), recaudado);
+        pieChartData.add(sliceRecaudado);
+
+        if (pendiente > 0) {
+            PieChart.Data slicePendiente = new PieChart.Data(String.format("Pendiente (%.1f%%)", porcPendiente), pendiente);
+            pieChartData.add(slicePendiente);
+        }
+
         charGraficaReporteGeneral.setData(pieChartData);
+        charGraficaReporteGeneral.setLabelsVisible(true);
+        charGraficaReporteGeneral.setLegendVisible(true);
+        charGraficaReporteGeneral.setTitle(null);
+
+        Platform.runLater(() -> {
+            if (sliceRecaudado.getNode() != null) {
+                sliceRecaudado.getNode().setStyle("-fx-pie-color: #2ecc71;");
+            }
+            if (pendiente > 0 && pieChartData.size() > 1 && pieChartData.get(1).getNode() != null) {
+                pieChartData.get(1).getNode().setStyle("-fx-pie-color: #9b59b6;");
+            }
+        });
     }
 }
-
