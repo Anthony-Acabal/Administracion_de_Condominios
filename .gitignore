@@ -1,0 +1,7 @@
+# Ocultar la configuración local de la base de datos o credenciales
+src/proyecto_condominio/src/Config.java
+
+# Ignorar archivos privados y carpetas compiladas de NetBeans
+nbproject/private/
+build/
+dist/
