@@ -56,12 +56,10 @@ public class CasasPendientesPagoController implements Initializable {
         String nombreMes = nombresMeses[mes - 1];
         lblCPPFecha.setText("Cuota de " + nombreMes + " del " + anio);
 
-        // Obtener datos del DAO
         List<CasasPendientesPago> datos = casasDAO.obtenerCasasPendientes(mes, anio);
         listaCasas = FXCollections.observableArrayList(datos);
         tbCasasPendientesPago.setItems(listaCasas);
 
-        // Actualizar etiqueta de cantidad
         lblCPPCantidad.setText("Casas pendientes de pago: " + datos.size());
     }
 }
