@@ -12,6 +12,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.chart.PieChart;
 import javafx.geometry.Side;
+import javafx.scene.control.ChoiceBox;
+import java.time.LocalDate;
 import proyecto_condominio.model.ReporteGeneral;
 import proyecto_condominio.model.ReporteGeneralDAO;
 
@@ -31,6 +33,8 @@ public class ReporteGeneralController implements Initializable {
     @FXML private Button btnImprimirReporte;
     @FXML private PieChart charGraficaReporteGeneralMes;
     @FXML private PieChart charGraficaReporteGeneralAno;
+    @FXML private ChoiceBox<Integer> choiceBoxReporteGeneralFiltroMes;
+    @FXML private ChoiceBox<Integer> choiceBoxReporteGeneralFiltroAno;
 
     private ReporteGeneralDAO reporteDAO = new ReporteGeneralDAO();
     private ObservableList<ReporteGeneral> listaReporte;
@@ -38,6 +42,7 @@ public class ReporteGeneralController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
+        inicializarFiltros();
         cargarDatos();
     }
 
@@ -48,27 +53,61 @@ public class ReporteGeneralController implements Initializable {
         colTotalPagado.setCellValueFactory(new PropertyValueFactory<>("totalPagado"));
     }
 
+    private void inicializarFiltros() {
+        LocalDate fechaActual = LocalDate.now();
+        
+        // Meses 1-12
+        for (int i = 1; i <= 12; i++) {
+            choiceBoxReporteGeneralFiltroMes.getItems().add(i);
+        }
+        choiceBoxReporteGeneralFiltroMes.setValue(fechaActual.getMonthValue());
+
+        // Años 2000-2040
+        for (int i = 2000; i <= 2040; i++) {
+            choiceBoxReporteGeneralFiltroAno.getItems().add(i);
+        }
+        choiceBoxReporteGeneralFiltroAno.setValue(fechaActual.getYear());
+
+        // Listeners para actualizar al cambiar selección
+        choiceBoxReporteGeneralFiltroMes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) cargarDatos();
+        });
+        choiceBoxReporteGeneralFiltroAno.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) cargarDatos();
+        });
+    }
+
     private void cargarDatos() {
-        List<ReporteGeneral> datos = reporteDAO.obtenerReporteGeneral();
+        if (choiceBoxReporteGeneralFiltroMes.getValue() == null || choiceBoxReporteGeneralFiltroAno.getValue() == null) {
+            return;
+        }
+
+        int mesSeleccionado = choiceBoxReporteGeneralFiltroMes.getValue();
+        int anioSeleccionado = choiceBoxReporteGeneralFiltroAno.getValue();
+
+        // Datos de la tabla
+        List<ReporteGeneral> datos = reporteDAO.obtenerReporteGeneral(mesSeleccionado, anioSeleccionado);
         listaReporte = FXCollections.observableArrayList(datos);
         tbReporteGeneral.setItems(listaReporte);
 
         // Resumen Mensual
-        double[] resumenMes = reporteDAO.obtenerResumenMensual();
+        double[] resumenMes = reporteDAO.obtenerResumenMensual(mesSeleccionado, anioSeleccionado);
         double recaudadoMes = resumenMes[0];
         double esperadoMes = resumenMes[1];
         double pendienteMes = Math.max(0, esperadoMes - recaudadoMes);
 
-        lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudadoMes, esperadoMes));
+        lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes %d/%d: $%.2f / esperado: $%.2f", 
+                mesSeleccionado, anioSeleccionado, recaudadoMes, esperadoMes));
         actualizarGrafica(charGraficaReporteGeneralMes, recaudadoMes, pendienteMes, "#2ecc71", "#9b59b6");
 
-        // Resumen Anual
-        double[] resumenAno = reporteDAO.obtenerResumenAnual();
+        // Resumen Anual (hasta el mes seleccionado)
+        double[] resumenAno = reporteDAO.obtenerResumenAnual(mesSeleccionado, anioSeleccionado);
         double recaudadoAno = resumenAno[0];
         double esperadoAno = resumenAno[1];
         double pendienteAno = Math.max(0, esperadoAno - recaudadoAno);
 
-        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año: $%.2f / esperado: $%.2f", recaudadoAno, esperadoAno));
+        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año %d (hasta mes %d): $%.2f / esperado: $%.2f", 
+                anioSeleccionado, mesSeleccionado, recaudadoAno, esperadoAno));
         actualizarGrafica(charGraficaReporteGeneralAno, recaudadoAno, pendienteAno, "#3498db", "#e67e22");
     }
 
