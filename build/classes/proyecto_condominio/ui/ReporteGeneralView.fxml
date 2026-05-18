@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ReporteGeneralController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ReporteGeneralController">
    <children>
       <Label layoutX="214.0" layoutY="14.0" text="Reporte General">
          <font>
@@ -26,12 +26,18 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="lblTotalRecaudadoMes" layoutX="14.0" layoutY="271.0" text="Total recaudado del mes versus el total esperado">
+      <Label fx:id="lblTotalRecaudadoMes" layoutX="61.0" layoutY="281.0" text="Total recaudado del mes">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnImprimirReporte" layoutX="705.0" layoutY="61.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="126.0" text="Imprimir Reporte " />
-      <PieChart fx:id="charGraficaReporteGeneralMes" layoutX="14.0" layoutY="302.0" prefHeight="200.0" prefWidth="356.0" />
+      <Button fx:id="btnImprimirReporte" layoutX="888.0" layoutY="14.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="126.0" text="Imprimir Reporte " />
+      <PieChart fx:id="charGraficaReporteGeneral" layoutX="10.0" layoutY="304.0" prefHeight="400.0" prefWidth="500.0" />
+      <PieChart fx:id="charGraficaReporteGeneralAno" layoutX="514.0" layoutY="304.0" />
+      <Label fx:id="lblTotalRecaudadoAno" layoutX="613.0" layoutY="281.0" text="Total recaudado del año">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
