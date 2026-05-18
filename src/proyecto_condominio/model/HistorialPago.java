@@ -14,15 +14,12 @@ public class HistorialPago {
 
     private double monto;
 
-    private String hora;
-
     private String comprobante;
 
     public HistorialPago(
             int casa,
             String propietario,
             String fecha,
-            String hora,
             double monto,
             String comprobante
     ) {
@@ -32,8 +29,6 @@ public class HistorialPago {
         this.propietario = propietario;
 
         this.fecha = fecha;
-
-        this.hora = hora;
 
         this.monto = monto;
 
@@ -55,11 +50,6 @@ public class HistorialPago {
     public double getMonto() {
         return monto;
     }
-
-    public String getHora() {
-        return hora;
-    }
-
     public String getComprobante() {
         return comprobante;
     }
