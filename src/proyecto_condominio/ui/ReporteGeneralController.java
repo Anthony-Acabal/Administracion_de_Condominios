@@ -28,7 +28,7 @@ public class ReporteGeneralController implements Initializable {
     @FXML private TableColumn<ReporteGeneral, Double> colTotalPagado;
     @FXML private Label lblTotalRecaudadoMes;
     @FXML private Button btnImprimirReporte;
-    @FXML private PieChart charGraficaReporteGeneral;
+    @FXML private PieChart charGraficaReporteGeneralMes;
 
     private ReporteGeneralDAO reporteDAO = new ReporteGeneralDAO();
     private ObservableList<ReporteGeneral> listaReporte;
@@ -84,11 +84,11 @@ public class ReporteGeneralController implements Initializable {
             pieChartData.add(slicePendiente);
         }
 
-        charGraficaReporteGeneral.setData(pieChartData);
-        charGraficaReporteGeneral.setLabelsVisible(true);
-        charGraficaReporteGeneral.setLegendVisible(true);
-        charGraficaReporteGeneral.setLegendSide(Side.RIGHT);
-        charGraficaReporteGeneral.setTitle(null);
+        charGraficaReporteGeneralMes.setData(pieChartData);
+        charGraficaReporteGeneralMes.setLabelsVisible(true);
+        charGraficaReporteGeneralMes.setLegendVisible(true);
+        charGraficaReporteGeneralMes.setLegendSide(Side.RIGHT);
+        charGraficaReporteGeneralMes.setTitle(null);
 
         Platform.runLater(() -> {
             // Colores consistentes: Recaudado (Verde), Pendiente (Púrpura)
@@ -104,7 +104,7 @@ public class ReporteGeneralController implements Initializable {
             
             // Sincronizar los símbolos de la leyenda
             int i = 0;
-            for (javafx.scene.Node node : charGraficaReporteGeneral.lookupAll(".chart-legend-item-symbol")) {
+            for (javafx.scene.Node node : charGraficaReporteGeneralMes.lookupAll(".chart-legend-item-symbol")) {
                 if (i == 0) {
                     node.setStyle("-fx-background-color: " + colorRecaudado + ";");
                 } else if (i == 1) {
