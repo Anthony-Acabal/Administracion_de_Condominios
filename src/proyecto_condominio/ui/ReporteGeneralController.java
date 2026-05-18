@@ -44,9 +44,12 @@ public class ReporteGeneralController implements Initializable {
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     };
 
+    private int[] limitesGlobales;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
+        limitesGlobales = reporteDAO.obtenerLimitesFechas();
         inicializarFiltros();
         cargarDatos();
     }
@@ -61,29 +64,66 @@ public class ReporteGeneralController implements Initializable {
     private void inicializarFiltros() {
         LocalDate fechaActual = LocalDate.now();
         
-        choiceBoxReporteGeneralFiltroMes.getItems().addAll(nombresMeses);
-        choiceBoxReporteGeneralFiltroMes.setValue(nombresMeses[fechaActual.getMonthValue() - 1]);
+        int anioMin = Math.min(limitesGlobales[0], fechaActual.getYear());
+        int anioMax = Math.max(limitesGlobales[2], fechaActual.getYear());
 
-        int[] rangoAnios = reporteDAO.obtenerRangoAnios();
-        int anioInicio = Math.min(rangoAnios[0], fechaActual.getYear());
-        int anioFin = Math.max(rangoAnios[1], fechaActual.getYear());
-
-        for (int i = anioInicio; i <= anioFin; i++) {
+        choiceBoxReporteGeneralFiltroAno.getItems().clear();
+        for (int i = anioMin; i <= anioMax; i++) {
             choiceBoxReporteGeneralFiltroAno.getItems().add(i);
         }
         
         if (choiceBoxReporteGeneralFiltroAno.getItems().contains(fechaActual.getYear())) {
             choiceBoxReporteGeneralFiltroAno.setValue(fechaActual.getYear());
-        } else if (!choiceBoxReporteGeneralFiltroAno.getItems().isEmpty()) {
-            choiceBoxReporteGeneralFiltroAno.setValue(choiceBoxReporteGeneralFiltroAno.getItems().get(choiceBoxReporteGeneralFiltroAno.getItems().size() - 1));
+        } else {
+            choiceBoxReporteGeneralFiltroAno.setValue(anioMax);
         }
+
+        actualizarMesesDisponibles(choiceBoxReporteGeneralFiltroAno.getValue());
+
+        choiceBoxReporteGeneralFiltroAno.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                actualizarMesesDisponibles(newVal);
+                cargarDatos();
+            }
+        });
 
         choiceBoxReporteGeneralFiltroMes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) cargarDatos();
         });
-        choiceBoxReporteGeneralFiltroAno.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) cargarDatos();
-        });
+    }
+
+    private void actualizarMesesDisponibles(int anioSeleccionado) {
+        String mesActualSeleccionado = choiceBoxReporteGeneralFiltroMes.getValue();
+        choiceBoxReporteGeneralFiltroMes.getItems().clear();
+
+        int mesInicio = 1;
+        int mesFin = 12;
+
+        if (anioSeleccionado == limitesGlobales[0]) {
+            mesInicio = limitesGlobales[1];
+        }
+        if (anioSeleccionado == limitesGlobales[2]) {
+            mesFin = limitesGlobales[3];
+        }
+
+        if (anioSeleccionado == LocalDate.now().getYear()) {
+            mesFin = Math.max(mesFin, LocalDate.now().getMonthValue());
+        }
+
+        for (int i = mesInicio; i <= mesFin; i++) {
+            choiceBoxReporteGeneralFiltroMes.getItems().add(nombresMeses[i - 1]);
+        }
+
+        if (mesActualSeleccionado != null && choiceBoxReporteGeneralFiltroMes.getItems().contains(mesActualSeleccionado)) {
+            choiceBoxReporteGeneralFiltroMes.setValue(mesActualSeleccionado);
+        } else if (!choiceBoxReporteGeneralFiltroMes.getItems().isEmpty()) {
+            int mesActual = LocalDate.now().getMonthValue();
+            if (anioSeleccionado == LocalDate.now().getYear() && mesActual >= mesInicio && mesActual <= mesFin) {
+                choiceBoxReporteGeneralFiltroMes.setValue(nombresMeses[mesActual - 1]);
+            } else {
+                choiceBoxReporteGeneralFiltroMes.setValue(choiceBoxReporteGeneralFiltroMes.getItems().get(choiceBoxReporteGeneralFiltroMes.getItems().size() - 1));
+            }
+        }
     }
 
     private void cargarDatos() {

@@ -111,22 +111,39 @@ public class ReporteGeneralDAO {
         return resumen;
     }
 
-    public int[] obtenerRangoAnios() {
-        int[] rango = new int[]{LocalDate.now().getYear(), LocalDate.now().getYear()};
-        String sql = "SELECT MIN(YEAR(fecha_pago)) as min_anio, MAX(YEAR(fecha_pago)) as max_anio FROM pago_cuota";
+    public int[] obtenerLimitesFechas() {
+        int[] limites = new int[]{
+            LocalDate.now().getYear(), LocalDate.now().getMonthValue(), // min anio, min mes
+            LocalDate.now().getYear(), LocalDate.now().getMonthValue()  // max anio, max mes
+        };
+        String sql = "SELECT " +
+                     "MIN(YEAR(fecha_pago)) as min_anio, " +
+                     "MIN(CASE WHEN YEAR(fecha_pago) = (SELECT MIN(YEAR(fecha_pago)) FROM pago_cuota) THEN MONTH(fecha_pago) ELSE 12 END) as min_mes, " +
+                     "MAX(YEAR(fecha_pago)) as max_anio, " +
+                     "MAX(CASE WHEN YEAR(fecha_pago) = (SELECT MAX(YEAR(fecha_pago)) FROM pago_cuota) THEN MONTH(fecha_pago) ELSE 1 END) as max_mes " +
+                     "FROM pago_cuota";
 
-        try (Connection con = Config.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                int min = rs.getInt("min_anio");
-                int max = rs.getInt("max_anio");
-                if (min > 0) rango[0] = min;
-                if (max > 0) rango[1] = max;
+        String sqlMin = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota ORDER BY fecha_pago ASC";
+        String sqlMax = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota ORDER BY fecha_pago DESC";
+
+        try (Connection con = Config.getConexion()) {
+            try (PreparedStatement ps = con.prepareStatement(sqlMin);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    limites[0] = rs.getInt("anio");
+                    limites[1] = rs.getInt("mes");
+                }
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlMax);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    limites[2] = rs.getInt("anio");
+                    limites[3] = rs.getInt("mes");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rango;
+        return limites;
     }
 }
