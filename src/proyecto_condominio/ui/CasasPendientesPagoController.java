@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -123,7 +124,19 @@ public class CasasPendientesPagoController implements Initializable {
 
         if (seleccionMes.equals("Ver todo")) {
             lblCPPFecha.setText("Pendientes del año " + anio);
-            datos = casasDAO.obtenerCasasPendientesAnual(anio);
+            
+            // Calcular límites para el año seleccionado
+            int mesInicio = 1;
+            int mesFin = 12;
+
+            if (anio == limitesGlobales[0]) {
+                mesInicio = limitesGlobales[1];
+            }
+            if (anio == LocalDate.now().getYear()) {
+                mesFin = LocalDate.now().getMonthValue();
+            }
+
+            datos = casasDAO.obtenerCasasPendientesAnual(anio, mesInicio, mesFin);
         } else {
             int mes = 1;
             for (int i = 0; i < nombresMeses.length; i++) {

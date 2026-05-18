@@ -48,7 +48,7 @@ public class CasasPendientesPagoDAO {
         return lista;
     }
 
-    public List<CasasPendientesPago> obtenerCasasPendientesAnual(int anio) {
+    public List<CasasPendientesPago> obtenerCasasPendientesAnual(int anio, int mesInicio, int mesFin) {
         List<CasasPendientesPago> lista = new ArrayList<>();
 
         String sql = "WITH Meses AS (" +
@@ -62,7 +62,7 @@ public class CasasPendientesPagoDAO {
                      "       m.mes " +
                      "FROM propietario p " +
                      "CROSS JOIN Meses m " +
-                     "WHERE NOT EXISTS (" +
+                     "WHERE m.mes >= ? AND m.mes <= ? AND NOT EXISTS (" +
                      "    SELECT 1 FROM pago_cuota pc " +
                      "    WHERE pc.id_propietario = p.id_propietario " +
                      "    AND MONTH(pc.fecha_pago) = m.mes " +
@@ -72,7 +72,9 @@ public class CasasPendientesPagoDAO {
 
         try (Connection con = Config.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, anio);
+            ps.setInt(1, mesInicio);
+            ps.setInt(2, mesFin);
+            ps.setInt(3, anio);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
