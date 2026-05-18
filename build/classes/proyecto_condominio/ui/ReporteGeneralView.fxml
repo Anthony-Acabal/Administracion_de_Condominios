@@ -16,7 +16,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="tbReporteGeneral" layoutX="14.0" layoutY="61.0" prefHeight="200.0" prefWidth="573.0">
+      <TableView fx:id="tbReporteGeneral" layoutX="14.0" layoutY="61.0" prefHeight="200.0" prefWidth="697.0">
         <columns>
           <TableColumn fx:id="colNumeroCasa" prefWidth="107.0" text="Número de casa" />
           <TableColumn fx:id="colNombrePropietario" prefWidth="199.0" text="Nombre del propietario" />
@@ -27,20 +27,20 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="lblTotalRecaudadoMes" layoutX="61.0" layoutY="281.0" text="Total recaudado del mes">
+      <Label fx:id="lblTotalRecaudadoMes" layoutX="14.0" layoutY="281.0" text="Total recaudado del mes">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnImprimirReporte" layoutX="888.0" layoutY="14.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="126.0" text="Imprimir Reporte " />
+      <Button fx:id="btnImprimirReporte" layoutX="755.0" layoutY="200.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="150.0" text="Imprimir Reporte " />
       <PieChart fx:id="charGraficaReporteGeneralMes" layoutX="10.0" layoutY="304.0" prefHeight="400.0" prefWidth="500.0" />
       <PieChart fx:id="charGraficaReporteGeneralAno" layoutX="514.0" layoutY="304.0" />
-      <Label fx:id="lblTotalRecaudadoAno" layoutX="613.0" layoutY="281.0" text="Total recaudado del año">
+      <Label fx:id="lblTotalRecaudadoAno" layoutX="514.0" layoutY="281.0" text="Total recaudado del año">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" layoutX="607.0" layoutY="61.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroAno" layoutX="607.0" layoutY="161.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" layoutX="755.0" layoutY="61.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroAno" layoutX="755.0" layoutY="96.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
