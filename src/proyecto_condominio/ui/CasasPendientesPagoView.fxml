@@ -7,12 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="136.0" layoutY="32.0" text="Casas pendientes de pago del mes actual">
+      <Label layoutX="82.0" layoutY="14.0" text="Casas pendientes de pago del mes actual">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font>
       </Label>
       <Label fx:id="lblCPPFecha" layoutX="231.0" layoutY="59.0" text="Cuota de Mayo del 2026">
