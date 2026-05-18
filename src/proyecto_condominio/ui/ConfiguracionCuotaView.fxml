@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ConfiguracionCuotaViewController">
+<AnchorPane id="AnchorPane" prefHeight="290.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ConfiguracionCuotaViewController">
    <children>
       <Label layoutX="237.0" layoutY="14.0" text="Configuración de Cuota" />
       <Label layoutX="101.0" layoutY="48.0" text="Cuota mensual de mantenimiento:" />
@@ -19,8 +19,8 @@
       <Label layoutX="154.0" layoutY="163.0" text="Fecha:" />
       <Label layoutX="156.0" layoutY="204.0" text="Hora (24h):" />
       <DatePicker fx:id="dpFechaModificacion" layoutX="217.0" layoutY="159.0" prefHeight="26.0" prefWidth="150.0" />
-      <Button fx:id="btnGuardar" layoutX="213.0" layoutY="291.0" mnemonicParsing="false" onAction="#guardarConfiguracion" text="Guardar" />
-      <Button fx:id="btnLimpiar" layoutX="335.0" layoutY="291.0" mnemonicParsing="false" onAction="#limpiarCampos" text="Limpiar" />
-      <Button fx:id="btnCerrar" layoutX="276.0" layoutY="338.0" mnemonicParsing="false" text="Cerrar" />
+      <Button fx:id="btnGuardar" layoutX="217.0" layoutY="235.0" mnemonicParsing="false" onAction="#guardarConfiguracion" text="Guardar" />
+      <Button fx:id="btnCancelar" layoutX="312.0" layoutY="235.0" mnemonicParsing="false" onAction="#regresarMenu" text="Cancelar" />
+      <Button fx:id="btnRegresar" layoutX="512.0" layoutY="10.0" mnemonicParsing="false" onAction="#regresarMenu" text="Regresar" />
    </children>
 </AnchorPane>
