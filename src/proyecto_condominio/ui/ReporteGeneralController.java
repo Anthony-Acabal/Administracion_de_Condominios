@@ -91,23 +91,26 @@ public class ReporteGeneralController implements Initializable {
         charGraficaReporteGeneral.setTitle(null);
 
         Platform.runLater(() -> {
+            // Colores consistentes: Recaudado (Verde), Pendiente (Púrpura)
+            String colorRecaudado = "#2ecc71";
+            String colorPendiente = "#9b59b6";
+
             if (sliceRecaudado.getNode() != null) {
-                sliceRecaudado.getNode().setStyle("-fx-pie-color: #2ecc71;");
+                sliceRecaudado.getNode().setStyle("-fx-pie-color: " + colorRecaudado + ";");
             }
             if (pendiente > 0 && pieChartData.size() > 1 && pieChartData.get(1).getNode() != null) {
-                pieChartData.get(1).getNode().setStyle("-fx-pie-color: #9b59b6;");
+                pieChartData.get(1).getNode().setStyle("-fx-pie-color: " + colorPendiente + ";");
             }
             
+            // Sincronizar los símbolos de la leyenda
+            int i = 0;
             for (javafx.scene.Node node : charGraficaReporteGeneral.lookupAll(".chart-legend-item-symbol")) {
-                for (int i = 0; i < pieChartData.size(); i++) {
-                    if (node.getStyleClass().contains("pie-legend-symbol" + i)) {
-                        if (i == 0) {
-                            node.setStyle("-fx-background-color: #2ecc71;");
-                        } else if (i == 1) {
-                            node.setStyle("-fx-background-color: #9b59b6;");
-                        }
-                    }
+                if (i == 0) {
+                    node.setStyle("-fx-background-color: " + colorRecaudado + ";");
+                } else if (i == 1) {
+                    node.setStyle("-fx-background-color: " + colorPendiente + ";");
                 }
+                i++;
             }
         });
     }
