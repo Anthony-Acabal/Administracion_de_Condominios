@@ -2,6 +2,7 @@
 
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -39,5 +40,7 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" layoutX="607.0" layoutY="61.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroAno" layoutX="607.0" layoutY="161.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
