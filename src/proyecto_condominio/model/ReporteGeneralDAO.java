@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,5 +109,24 @@ public class ReporteGeneralDAO {
             e.printStackTrace();
         }
         return resumen;
+    }
+
+    public int[] obtenerRangoAnios() {
+        int[] rango = new int[]{LocalDate.now().getYear(), LocalDate.now().getYear()};
+        String sql = "SELECT MIN(YEAR(fecha_pago)) as min_anio, MAX(YEAR(fecha_pago)) as max_anio FROM pago_cuota";
+
+        try (Connection con = Config.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int min = rs.getInt("min_anio");
+                int max = rs.getInt("max_anio");
+                if (min > 0) rango[0] = min;
+                if (max > 0) rango[1] = max;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rango;
     }
 }

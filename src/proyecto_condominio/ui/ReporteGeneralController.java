@@ -64,10 +64,19 @@ public class ReporteGeneralController implements Initializable {
         choiceBoxReporteGeneralFiltroMes.getItems().addAll(nombresMeses);
         choiceBoxReporteGeneralFiltroMes.setValue(nombresMeses[fechaActual.getMonthValue() - 1]);
 
-        for (int i = 2000; i <= 2040; i++) {
+        int[] rangoAnios = reporteDAO.obtenerRangoAnios();
+        int anioInicio = Math.min(rangoAnios[0], fechaActual.getYear());
+        int anioFin = Math.max(rangoAnios[1], fechaActual.getYear());
+
+        for (int i = anioInicio; i <= anioFin; i++) {
             choiceBoxReporteGeneralFiltroAno.getItems().add(i);
         }
-        choiceBoxReporteGeneralFiltroAno.setValue(fechaActual.getYear());
+        
+        if (choiceBoxReporteGeneralFiltroAno.getItems().contains(fechaActual.getYear())) {
+            choiceBoxReporteGeneralFiltroAno.setValue(fechaActual.getYear());
+        } else if (!choiceBoxReporteGeneralFiltroAno.getItems().isEmpty()) {
+            choiceBoxReporteGeneralFiltroAno.setValue(choiceBoxReporteGeneralFiltroAno.getItems().get(choiceBoxReporteGeneralFiltroAno.getItems().size() - 1));
+        }
 
         choiceBoxReporteGeneralFiltroMes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) cargarDatos();
