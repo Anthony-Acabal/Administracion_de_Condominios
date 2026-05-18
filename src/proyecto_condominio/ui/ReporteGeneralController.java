@@ -33,11 +33,16 @@ public class ReporteGeneralController implements Initializable {
     @FXML private Button btnImprimirReporte;
     @FXML private PieChart charGraficaReporteGeneralMes;
     @FXML private PieChart charGraficaReporteGeneralAno;
-    @FXML private ChoiceBox<Integer> choiceBoxReporteGeneralFiltroMes;
+    @FXML private ChoiceBox<String> choiceBoxReporteGeneralFiltroMes;
     @FXML private ChoiceBox<Integer> choiceBoxReporteGeneralFiltroAno;
 
     private ReporteGeneralDAO reporteDAO = new ReporteGeneralDAO();
     private ObservableList<ReporteGeneral> listaReporte;
+    
+    private final String[] nombresMeses = {
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    };
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,13 +61,9 @@ public class ReporteGeneralController implements Initializable {
     private void inicializarFiltros() {
         LocalDate fechaActual = LocalDate.now();
         
-        // Meses 1-12
-        for (int i = 1; i <= 12; i++) {
-            choiceBoxReporteGeneralFiltroMes.getItems().add(i);
-        }
-        choiceBoxReporteGeneralFiltroMes.setValue(fechaActual.getMonthValue());
+        choiceBoxReporteGeneralFiltroMes.getItems().addAll(nombresMeses);
+        choiceBoxReporteGeneralFiltroMes.setValue(nombresMeses[fechaActual.getMonthValue() - 1]);
 
-        // Años 2000-2040
         for (int i = 2000; i <= 2040; i++) {
             choiceBoxReporteGeneralFiltroAno.getItems().add(i);
         }
@@ -82,7 +83,15 @@ public class ReporteGeneralController implements Initializable {
             return;
         }
 
-        int mesSeleccionado = choiceBoxReporteGeneralFiltroMes.getValue();
+        String mesNombre = choiceBoxReporteGeneralFiltroMes.getValue();
+        int mesSeleccionado = 1;
+        for (int i = 0; i < nombresMeses.length; i++) {
+            if (nombresMeses[i].equals(mesNombre)) {
+                mesSeleccionado = i + 1;
+                break;
+            }
+        }
+        
         int anioSeleccionado = choiceBoxReporteGeneralFiltroAno.getValue();
 
         // Datos de la tabla
@@ -90,24 +99,22 @@ public class ReporteGeneralController implements Initializable {
         listaReporte = FXCollections.observableArrayList(datos);
         tbReporteGeneral.setItems(listaReporte);
 
-        // Resumen Mensual
         double[] resumenMes = reporteDAO.obtenerResumenMensual(mesSeleccionado, anioSeleccionado);
         double recaudadoMes = resumenMes[0];
         double esperadoMes = resumenMes[1];
         double pendienteMes = Math.max(0, esperadoMes - recaudadoMes);
 
-        lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes %d/%d: $%.2f / esperado: $%.2f", 
-                mesSeleccionado, anioSeleccionado, recaudadoMes, esperadoMes));
+        lblTotalRecaudadoMes.setText(String.format("Total recaudado de %s %d: Q%.2f / esperado: Q%.2f", 
+                mesNombre, anioSeleccionado, recaudadoMes, esperadoMes));
         actualizarGrafica(charGraficaReporteGeneralMes, recaudadoMes, pendienteMes, "#2ecc71", "#9b59b6");
 
-        // Resumen Anual (hasta el mes seleccionado)
         double[] resumenAno = reporteDAO.obtenerResumenAnual(mesSeleccionado, anioSeleccionado);
         double recaudadoAno = resumenAno[0];
         double esperadoAno = resumenAno[1];
         double pendienteAno = Math.max(0, esperadoAno - recaudadoAno);
 
-        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año %d (hasta mes %d): $%.2f / esperado: $%.2f", 
-                anioSeleccionado, mesSeleccionado, recaudadoAno, esperadoAno));
+        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año %d (hasta %s): Q%.2f / esperado: Q%.2f", 
+                anioSeleccionado, mesNombre, recaudadoAno, esperadoAno));
         actualizarGrafica(charGraficaReporteGeneralAno, recaudadoAno, pendienteAno, "#3498db", "#e67e22");
     }
 
@@ -121,14 +128,14 @@ public class ReporteGeneralController implements Initializable {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         
         PieChart.Data sliceRecaudado = new PieChart.Data(
-            String.format("Recaudado: $%.2f (%.1f%%)", recaudado, porcRecaudado), 
+            String.format("Recaudado: Q%.2f (%.1f%%)", recaudado, porcRecaudado), 
             recaudado
         );
         pieChartData.add(sliceRecaudado);
 
         if (pendiente > 0) {
             PieChart.Data slicePendiente = new PieChart.Data(
-                String.format("Pendiente: $%.2f (%.1f%%)", pendiente, porcPendiente), 
+                String.format("Pendiente: Q%.2f (%.1f%%)", pendiente, porcPendiente), 
                 pendiente
             );
             pieChartData.add(slicePendiente);
@@ -138,7 +145,7 @@ public class ReporteGeneralController implements Initializable {
         grafica.setLabelsVisible(true);
         grafica.setLegendVisible(true);
         grafica.setLegendSide(Side.RIGHT);
-        grafica.setTitle(null); // Quitar encabezado
+        grafica.setTitle(null);
 
         Platform.runLater(() -> {
             if (sliceRecaudado.getNode() != null) {
