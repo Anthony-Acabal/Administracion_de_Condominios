@@ -27,17 +27,17 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="lblTotalRecaudadoMes" layoutX="14.0" layoutY="281.0" text="Total recaudado del mes">
+      <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" layoutX="14.0" layoutY="268.0" prefHeight="45.0" prefWidth="480.0" text="Total recaudado del mes" textAlignment="CENTER" wrapText="true">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnImprimirReporte" layoutX="755.0" layoutY="200.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="150.0" text="Imprimir Reporte " />
-      <PieChart fx:id="charGraficaReporteGeneralMes" layoutX="10.0" layoutY="304.0" prefHeight="400.0" prefWidth="500.0" />
-      <PieChart fx:id="charGraficaReporteGeneralAno" layoutX="514.0" layoutY="304.0" />
-      <Label fx:id="lblTotalRecaudadoAno" layoutX="514.0" layoutY="281.0" text="Total recaudado del año">
+      <Button fx:id="btnImprimirReporte" layoutX="888.0" layoutY="14.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="126.0" text="Imprimir Reporte " />
+      <PieChart fx:id="charGraficaReporteGeneralMes" layoutX="10.0" layoutY="315.0" prefHeight="400.0" prefWidth="500.0" />
+      <PieChart fx:id="charGraficaReporteGeneralAno" layoutX="514.0" layoutY="315.0" prefHeight="400.0" prefWidth="500.0" />
+      <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" layoutX="524.0" layoutY="268.0" prefHeight="45.0" prefWidth="480.0" text="Total recaudado del año" textAlignment="CENTER" wrapText="true">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" layoutX="755.0" layoutY="61.0" prefWidth="150.0" />
