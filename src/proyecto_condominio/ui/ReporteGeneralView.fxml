@@ -26,7 +26,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="lblTotalRecaudado" layoutX="14.0" layoutY="271.0" text="Total recaudado del mes versus el total esperado">
+      <Label fx:id="lblTotalRecaudadoMes" layoutX="14.0" layoutY="271.0" text="Total recaudado del mes versus el total esperado">
          <font>
             <Font size="14.0" />
          </font>

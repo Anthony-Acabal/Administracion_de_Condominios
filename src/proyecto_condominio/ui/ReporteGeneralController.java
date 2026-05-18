@@ -25,7 +25,7 @@ public class ReporteGeneralController implements Initializable {
     @FXML private TableColumn<ReporteGeneral, String> colNombrePropietario;
     @FXML private TableColumn<ReporteGeneral, String> colEstadoActual;
     @FXML private TableColumn<ReporteGeneral, Double> colTotalPagado;
-    @FXML private Label lblTotalRecaudado;
+    @FXML private Label lblTotalRecaudadoMes;
     @FXML private Button btnImprimirReporte;
     @FXML private PieChart charGraficaReporteGeneral;
 
@@ -55,7 +55,7 @@ public class ReporteGeneralController implements Initializable {
         double esperado = resumen[1];
         double pendiente = Math.max(0, esperado - recaudado);
 
-        lblTotalRecaudado.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudado, esperado));
+        lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudado, esperado));
 
         actualizarGrafica(recaudado, pendiente);
     }
