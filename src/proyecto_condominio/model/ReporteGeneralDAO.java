@@ -75,6 +75,7 @@ public class ReporteGeneralDAO {
                 double ultimaCuota = rs.getDouble("UltimaCuota");
                 resumen[1] = totalCasas * ultimaCuota;
                 
+                System.out.println("--- Resumen Mensual ---");
                 System.out.println("Total Casas: " + totalCasas);
                 System.out.println("Ultima Cuota: " + ultimaCuota);
                 System.out.println("Calculo Esperado (" + totalCasas + " * " + ultimaCuota + "): " + resumen[1]);
@@ -82,6 +83,42 @@ public class ReporteGeneralDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error en obtenerResumenMensual: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return resumen;
+    }
+
+    public double[] obtenerResumenAnual() {
+        double[] resumen = new double[2]; 
+        
+        String sql = "SELECT " +
+                     " (SELECT ISNULL(SUM(c.cuota), 0) " +
+                     "  FROM pago_cuota pc " +
+                     "  JOIN cuota c ON pc.id_cuota = c.id_cuota " +
+                     "  WHERE YEAR(pc.fecha_pago) = YEAR(GETDATE())) AS RecaudadoAnual, " +
+                     " (SELECT COUNT(*) FROM propietario) AS TotalCasas, " +
+                     " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota, " +
+                     " MONTH(GETDATE()) AS MesesTrascurridos";
+
+        try (Connection con = Config.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                resumen[0] = rs.getDouble("RecaudadoAnual");
+                int totalCasas = rs.getInt("TotalCasas");
+                double ultimaCuota = rs.getDouble("UltimaCuota");
+                int meses = rs.getInt("MesesTrascurridos");
+                
+                // El esperado es casas * cuota * meses transcurridos
+                resumen[1] = totalCasas * ultimaCuota * meses;
+                
+                System.out.println("--- Resumen Anual ---");
+                System.out.println("Meses Transcurridos: " + meses);
+                System.out.println("Recaudado Anual: " + resumen[0]);
+                System.out.println("Esperado Anual (" + totalCasas + " * " + ultimaCuota + " * " + meses + "): " + resumen[1]);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en obtenerResumenAnual: " + e.getMessage());
             e.printStackTrace();
         }
         return resumen;

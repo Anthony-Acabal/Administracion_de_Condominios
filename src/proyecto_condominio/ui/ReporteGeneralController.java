@@ -27,8 +27,10 @@ public class ReporteGeneralController implements Initializable {
     @FXML private TableColumn<ReporteGeneral, String> colEstadoActual;
     @FXML private TableColumn<ReporteGeneral, Double> colTotalPagado;
     @FXML private Label lblTotalRecaudadoMes;
+    @FXML private Label lblTotalRecaudadoAno;
     @FXML private Button btnImprimirReporte;
     @FXML private PieChart charGraficaReporteGeneralMes;
+    @FXML private PieChart charGraficaReporteGeneralAno;
 
     private ReporteGeneralDAO reporteDAO = new ReporteGeneralDAO();
     private ObservableList<ReporteGeneral> listaReporte;
@@ -47,21 +49,31 @@ public class ReporteGeneralController implements Initializable {
     }
 
     private void cargarDatos() {
+        // Datos de la tabla
         List<ReporteGeneral> datos = reporteDAO.obtenerReporteGeneral();
         listaReporte = FXCollections.observableArrayList(datos);
         tbReporteGeneral.setItems(listaReporte);
 
-        double[] resumen = reporteDAO.obtenerResumenMensual();
-        double recaudado = resumen[0];
-        double esperado = resumen[1];
-        double pendiente = Math.max(0, esperado - recaudado);
+        // Resumen Mensual
+        double[] resumenMes = reporteDAO.obtenerResumenMensual();
+        double recaudadoMes = resumenMes[0];
+        double esperadoMes = resumenMes[1];
+        double pendienteMes = Math.max(0, esperadoMes - recaudadoMes);
 
-        lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudado, esperado));
+        lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudadoMes, esperadoMes));
+        actualizarGrafica(charGraficaReporteGeneralMes, recaudadoMes, pendienteMes, "Mensual");
 
-        actualizarGrafica(recaudado, pendiente);
+        // Resumen Anual
+        double[] resumenAno = reporteDAO.obtenerResumenAnual();
+        double recaudadoAno = resumenAno[0];
+        double esperadoAno = resumenAno[1];
+        double pendienteAno = Math.max(0, esperadoAno - recaudadoAno);
+
+        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año: $%.2f / esperado: $%.2f", recaudadoAno, esperadoAno));
+        actualizarGrafica(charGraficaReporteGeneralAno, recaudadoAno, pendienteAno, "Anual");
     }
 
-    private void actualizarGrafica(double recaudado, double pendiente) {
+    private void actualizarGrafica(PieChart grafica, double recaudado, double pendiente, String tipo) {
         double total = recaudado + pendiente;
         if (total == 0) return;
 
@@ -84,16 +96,15 @@ public class ReporteGeneralController implements Initializable {
             pieChartData.add(slicePendiente);
         }
 
-        charGraficaReporteGeneralMes.setData(pieChartData);
-        charGraficaReporteGeneralMes.setLabelsVisible(true);
-        charGraficaReporteGeneralMes.setLegendVisible(true);
-        charGraficaReporteGeneralMes.setLegendSide(Side.RIGHT);
-        charGraficaReporteGeneralMes.setTitle(null);
+        grafica.setData(pieChartData);
+        grafica.setLabelsVisible(true);
+        grafica.setLegendVisible(true);
+        grafica.setLegendSide(Side.RIGHT);
+        grafica.setTitle("Resumen " + tipo);
 
         Platform.runLater(() -> {
-            // Colores consistentes: Recaudado (Verde), Pendiente (Púrpura)
-            String colorRecaudado = "#2ecc71";
-            String colorPendiente = "#9b59b6";
+            String colorRecaudado = "#2ecc71"; // Esmeralda
+            String colorPendiente = "#9b59b6"; // Amatista
 
             if (sliceRecaudado.getNode() != null) {
                 sliceRecaudado.getNode().setStyle("-fx-pie-color: " + colorRecaudado + ";");
@@ -102,9 +113,8 @@ public class ReporteGeneralController implements Initializable {
                 pieChartData.get(1).getNode().setStyle("-fx-pie-color: " + colorPendiente + ";");
             }
             
-            // Sincronizar los símbolos de la leyenda
             int i = 0;
-            for (javafx.scene.Node node : charGraficaReporteGeneralMes.lookupAll(".chart-legend-item-symbol")) {
+            for (javafx.scene.Node node : grafica.lookupAll(".chart-legend-item-symbol")) {
                 if (i == 0) {
                     node.setStyle("-fx-background-color: " + colorRecaudado + ";");
                 } else if (i == 1) {
