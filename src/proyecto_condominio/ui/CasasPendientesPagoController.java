@@ -23,12 +23,16 @@ public class CasasPendientesPagoController implements Initializable {
     @FXML private TableColumn<CasasPendientesPago, Integer> colCPPNumeroCasa;
     @FXML private TableColumn<CasasPendientesPago, String> colCPPNombrePropietario;
     @FXML private TableColumn<CasasPendientesPago, String> colCPPTelefono;
+    @FXML private TableColumn<CasasPendientesPago, String> colCPPFecha;
+    @FXML private ChoiceBox<String> choiceBoxCPPFiltroMes;
+    @FXML private ChoiceBox<Integer> choiceBoxCPPFiltroAno;
     @FXML private Label lblCPPCantidad;
     @FXML private Button btnCPPRegresar;
     @FXML private Button btnCPPGenerarReporte;
 
     private CasasPendientesPagoDAO casasDAO = new CasasPendientesPagoDAO();
     private ObservableList<CasasPendientesPago> listaCasas;
+    private int[] limitesGlobales;
 
     private final String[] nombresMeses = {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -38,6 +42,8 @@ public class CasasPendientesPagoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
+        limitesGlobales = casasDAO.obtenerLimitesFechas();
+        inicializarFiltros();
         cargarDatos();
     }
 
@@ -45,21 +51,93 @@ public class CasasPendientesPagoController implements Initializable {
         colCPPNumeroCasa.setCellValueFactory(new PropertyValueFactory<>("numeroCasa"));
         colCPPNombrePropietario.setCellValueFactory(new PropertyValueFactory<>("nombrePropietario"));
         colCPPTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colCPPFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+    }
+
+    private void inicializarFiltros() {
+        LocalDate fechaActual = LocalDate.now();
+        
+        int anioMin = limitesGlobales[0];
+        int anioMax = fechaActual.getYear();
+
+        choiceBoxCPPFiltroAno.getItems().clear();
+        for (int i = anioMin; i <= anioMax; i++) {
+            choiceBoxCPPFiltroAno.getItems().add(i);
+        }
+        choiceBoxCPPFiltroAno.setValue(anioMax);
+
+        actualizarMesesDisponibles(anioMax);
+
+        choiceBoxCPPFiltroAno.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                actualizarMesesDisponibles(newVal);
+                cargarDatos();
+            }
+        });
+
+        choiceBoxCPPFiltroMes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) cargarDatos();
+        });
+    }
+
+    private void actualizarMesesDisponibles(int anioSeleccionado) {
+        String mesPrevio = choiceBoxCPPFiltroMes.getValue();
+        choiceBoxCPPFiltroMes.getItems().clear();
+        choiceBoxCPPFiltroMes.getItems().add("Ver todo");
+
+        int mesInicio = 1;
+        int mesFin = 12;
+
+        if (anioSeleccionado == limitesGlobales[0]) {
+            mesInicio = limitesGlobales[1];
+        }
+        
+        if (anioSeleccionado == LocalDate.now().getYear()) {
+            mesFin = LocalDate.now().getMonthValue();
+        }
+
+        for (int i = mesInicio; i <= mesFin; i++) {
+            choiceBoxCPPFiltroMes.getItems().add(nombresMeses[i - 1]);
+        }
+
+        if (mesPrevio != null && choiceBoxCPPFiltroMes.getItems().contains(mesPrevio)) {
+            choiceBoxCPPFiltroMes.setValue(mesPrevio);
+        } else {
+            int mesActual = LocalDate.now().getMonthValue();
+            if (anioSeleccionado == LocalDate.now().getYear()) {
+                choiceBoxCPPFiltroMes.setValue(nombresMeses[mesActual - 1]);
+            } else {
+                choiceBoxCPPFiltroMes.setValue(choiceBoxCPPFiltroMes.getItems().get(choiceBoxCPPFiltroMes.getItems().size() - 1));
+            }
+        }
     }
 
     private void cargarDatos() {
-        LocalDate fechaActual = LocalDate.now();
-        int mes = fechaActual.getMonthValue();
-        int anio = fechaActual.getYear();
+        if (choiceBoxCPPFiltroMes.getValue() == null || choiceBoxCPPFiltroAno.getValue() == null) {
+            return;
+        }
 
-        // Actualizar etiqueta de fecha
-        String nombreMes = nombresMeses[mes - 1];
-        lblCPPFecha.setText("Cuota de " + nombreMes + " del " + anio);
+        String seleccionMes = choiceBoxCPPFiltroMes.getValue();
+        int anio = choiceBoxCPPFiltroAno.getValue();
+        List<CasasPendientesPago> datos;
 
-        List<CasasPendientesPago> datos = casasDAO.obtenerCasasPendientes(mes, anio);
+        if (seleccionMes.equals("Ver todo")) {
+            lblCPPFecha.setText("Pendientes del año " + anio);
+            datos = casasDAO.obtenerCasasPendientesAnual(anio);
+        } else {
+            int mes = 1;
+            for (int i = 0; i < nombresMeses.length; i++) {
+                if (nombresMeses[i].equals(seleccionMes)) {
+                    mes = i + 1;
+                    break;
+                }
+            }
+            lblCPPFecha.setText("Cuota de " + seleccionMes + " del " + anio);
+            datos = casasDAO.obtenerCasasPendientes(mes, anio);
+        }
+
         listaCasas = FXCollections.observableArrayList(datos);
         tbCasasPendientesPago.setItems(listaCasas);
-
         lblCPPCantidad.setText("Casas pendientes de pago: " + datos.size());
     }
 }
