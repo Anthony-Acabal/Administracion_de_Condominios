@@ -101,7 +101,7 @@ public class ReporteGeneralDAO {
                     resumen[0] = rs.getDouble("RecaudadoAnual");
                     int totalCasas = rs.getInt("TotalCasas");
                     double ultimaCuota = rs.getDouble("UltimaCuota");
-                    resumen[1] = totalCasas * ultimaCuota * mesHasta;
+                    resumen[1] = totalCasas * ultimaCuota * 12;
                 }
             }
         } catch (SQLException e) {

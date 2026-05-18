@@ -69,7 +69,6 @@ public class ReporteGeneralController implements Initializable {
         }
         choiceBoxReporteGeneralFiltroAno.setValue(fechaActual.getYear());
 
-        // Listeners para actualizar al cambiar selección
         choiceBoxReporteGeneralFiltroMes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) cargarDatos();
         });
@@ -113,7 +112,7 @@ public class ReporteGeneralController implements Initializable {
         double esperadoAno = resumenAno[1];
         double pendienteAno = Math.max(0, esperadoAno - recaudadoAno);
 
-        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año %d (hasta %s): Q%.2f / esperado: Q%.2f", 
+        lblTotalRecaudadoAno.setText(String.format("Total recaudado del año %d (acumulado a %s): Q%.2f / esperado anual: Q%.2f", 
                 anioSeleccionado, mesNombre, recaudadoAno, esperadoAno));
         actualizarGrafica(charGraficaReporteGeneralAno, recaudadoAno, pendienteAno, "#3498db", "#e67e22");
     }
