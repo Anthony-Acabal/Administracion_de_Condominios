@@ -17,10 +17,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import proyecto_condominio.src.Config;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import java.time.format.DateTimeFormatter;
 
 /**
  * FXML Controller class
@@ -56,9 +56,6 @@ public class ConfiguracionCuotaViewController
     @FXML
     private Button btnCerrar;
 
-    @FXML
-    private ComboBox<String> cbUsuario;
-
     /**
      * Initializes the controller class.
      */
@@ -69,9 +66,6 @@ public class ConfiguracionCuotaViewController
     ) {
 
         cargarCuotaActual();
-
-        cargarUsuarios();
-
         txtNuevaCuota
                 .textProperty()
                 .addListener(
@@ -92,8 +86,11 @@ public class ConfiguracionCuotaViewController
 
         lblHora.setText(
                 java.time.LocalTime.now()
-                        .withNano(0)
-                        .toString()
+                        .format(
+                                DateTimeFormatter.ofPattern(
+                                        "HH:mm"
+                                )
+                        )
         );
 
         txtCuotaMensual.setEditable(false);
@@ -109,8 +106,9 @@ public class ConfiguracionCuotaViewController
         txtRecaudacionMensual
                 .setFocusTraversable(false);
 
-        dpFechaModificacion
-                .setDisable(true);
+        dpFechaModificacion.setEditable(false);
+        
+        dpFechaModificacion.setMouseTransparent(true);
 
         lblHora.setEditable(false);
 
@@ -132,19 +130,6 @@ public class ConfiguracionCuotaViewController
                     "Campo Vacío",
                     "No se ingresó una cuota",
                     "Debe ingresar un monto válido para actualizar la cuota."
-            );
-
-            btnGuardar.setDisable(false);
-
-            return;
-        }
-
-        if (cbUsuario.getValue() == null) {
-
-            mostrarAdvertencia(
-                    "Usuario requerido",
-                    "No se seleccionó un usuario",
-                    "Debe seleccionar un usuario antes de guardar la configuración."
             );
 
             btnGuardar.setDisable(false);
@@ -175,8 +160,8 @@ public class ConfiguracionCuotaViewController
 
             mostrarAdvertencia(
                     "Monto demasiado alto",
-                    "La cuota excede el límite permitido",
-                    "Ingrese una cuota razonable."
+                    "La cuota no puede exceder Q100,000.",
+                    "Ingrese una nueva cuota."
             );
 
             btnGuardar.setDisable(false);
@@ -202,56 +187,9 @@ public class ConfiguracionCuotaViewController
             return;
         }
 
-        int idUsuario = 0;
-
-        String sqlUsuario = """
-            SELECT id_usuario
-            FROM usuario
-            WHERE usuario = ?
-        """;
-
-        try (
-                Connection conn
-                = Config.getConexion(); PreparedStatement ps
-                = conn.prepareStatement(sqlUsuario);) {
-
-            ps.setString(
-                    1,
-                    cbUsuario.getValue()
-            );
-
-            ResultSet rs
-                    = ps.executeQuery();
-
-            if (rs.next()) {
-
-                idUsuario
-                        = rs.getInt(
-                                "id_usuario"
-                        );
-            }
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    e.getMessage()
-            );
-        }
-
-        if (idUsuario == 0) {
-
-            mostrarAdvertencia(
-                    "Usuario inválido",
-                    "No se encontró el usuario",
-                    "Seleccione un usuario válido."
-            );
-
-            btnGuardar.setDisable(false);
-
-            return;
-        }
-
+int idUsuario = 1;
         String sql = """
+                     
             INSERT INTO cuota
             (
                 cuota,
@@ -294,8 +232,6 @@ public class ConfiguracionCuotaViewController
 
             txtNuevaCuota.clear();
 
-            cbUsuario.setValue(null);
-
             btnGuardar.setDisable(false);
 
             btnGuardar.requestFocus();
@@ -314,8 +250,6 @@ public class ConfiguracionCuotaViewController
     private void limpiarCampos() {
 
         txtNuevaCuota.clear();
-
-        cbUsuario.setValue(null);
 
         txtNuevaCuota.requestFocus();
     }
@@ -476,50 +410,5 @@ public class ConfiguracionCuotaViewController
         timeline.setCycleCount(1);
 
         timeline.play();
-    }
-
-    private void cargarUsuarios() {
-
-        cbUsuario.getItems().clear();
-
-        String sql = """
-            SELECT usuario
-            FROM usuario
-        """;
-
-        try (
-                Connection conn
-                = Config.getConexion(); PreparedStatement ps
-                = conn.prepareStatement(sql); ResultSet rs
-                = ps.executeQuery();) {
-
-            while (rs.next()) {
-
-                cbUsuario
-                        .getItems()
-                        .add(
-                                rs.getString(
-                                        "usuario"
-                                )
-                        );
-            }
-
-            if (cbUsuario
-                    .getItems()
-                    .isEmpty()) {
-
-                mostrarAdvertencia(
-                        "Sin usuarios",
-                        "No hay usuarios registrados",
-                        "Debe existir al menos un usuario en el sistema."
-                );
-            }
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    e.getMessage()
-            );
-        }
     }
 }

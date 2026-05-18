@@ -32,9 +32,9 @@ import javafx.stage.Stage;
 
 public class HistorialPagosViewController
         implements Initializable {
-    
+
     @FXML
-private Button btnCerrar;
+    private Button btnCerrar;
 
     @FXML
     private TableView<HistorialPago> tblPagos;
@@ -74,18 +74,17 @@ private Button btnCerrar;
 
     private ObservableList<HistorialPago> listaPagos
             = FXCollections.observableArrayList();
-    
+
     @FXML
-private void cerrarVentana() {
+    private void cerrarVentana() {
 
-    Stage stage =
+        Stage stage
+                = (Stage) btnCerrar
+                        .getScene()
+                        .getWindow();
 
-        (Stage) btnCerrar
-            .getScene()
-            .getWindow();
-
-    stage.close();
-}
+        stage.close();
+    }
 
     @Override
     public void initialize(
