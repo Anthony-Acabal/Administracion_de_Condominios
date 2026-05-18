@@ -109,7 +109,6 @@ public class ReporteGeneralDAO {
                 double ultimaCuota = rs.getDouble("UltimaCuota");
                 int meses = rs.getInt("MesesTrascurridos");
                 
-                // El esperado es casas * cuota * meses transcurridos
                 resumen[1] = totalCasas * ultimaCuota * meses;
                 
                 System.out.println("--- Resumen Anual ---");

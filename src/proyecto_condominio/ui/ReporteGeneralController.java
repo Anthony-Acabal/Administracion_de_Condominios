@@ -49,7 +49,6 @@ public class ReporteGeneralController implements Initializable {
     }
 
     private void cargarDatos() {
-        // Datos de la tabla
         List<ReporteGeneral> datos = reporteDAO.obtenerReporteGeneral();
         listaReporte = FXCollections.observableArrayList(datos);
         tbReporteGeneral.setItems(listaReporte);
@@ -61,7 +60,7 @@ public class ReporteGeneralController implements Initializable {
         double pendienteMes = Math.max(0, esperadoMes - recaudadoMes);
 
         lblTotalRecaudadoMes.setText(String.format("Total recaudado del mes: $%.2f / esperado: $%.2f", recaudadoMes, esperadoMes));
-        actualizarGrafica(charGraficaReporteGeneralMes, recaudadoMes, pendienteMes, "Mensual");
+        actualizarGrafica(charGraficaReporteGeneralMes, recaudadoMes, pendienteMes, "#2ecc71", "#9b59b6");
 
         // Resumen Anual
         double[] resumenAno = reporteDAO.obtenerResumenAnual();
@@ -70,10 +69,10 @@ public class ReporteGeneralController implements Initializable {
         double pendienteAno = Math.max(0, esperadoAno - recaudadoAno);
 
         lblTotalRecaudadoAno.setText(String.format("Total recaudado del año: $%.2f / esperado: $%.2f", recaudadoAno, esperadoAno));
-        actualizarGrafica(charGraficaReporteGeneralAno, recaudadoAno, pendienteAno, "Anual");
+        actualizarGrafica(charGraficaReporteGeneralAno, recaudadoAno, pendienteAno, "#3498db", "#e67e22");
     }
 
-    private void actualizarGrafica(PieChart grafica, double recaudado, double pendiente, String tipo) {
+    private void actualizarGrafica(PieChart grafica, double recaudado, double pendiente, String colorRecaudado, String colorPendiente) {
         double total = recaudado + pendiente;
         if (total == 0) return;
 
@@ -100,12 +99,9 @@ public class ReporteGeneralController implements Initializable {
         grafica.setLabelsVisible(true);
         grafica.setLegendVisible(true);
         grafica.setLegendSide(Side.RIGHT);
-        grafica.setTitle("Resumen " + tipo);
+        grafica.setTitle(null); // Quitar encabezado
 
         Platform.runLater(() -> {
-            String colorRecaudado = "#2ecc71"; // Esmeralda
-            String colorPendiente = "#9b59b6"; // Amatista
-
             if (sliceRecaudado.getNode() != null) {
                 sliceRecaudado.getNode().setStyle("-fx-pie-color: " + colorRecaudado + ";");
             }
