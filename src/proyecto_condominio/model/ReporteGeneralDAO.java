@@ -11,20 +11,19 @@ import java.util.List;
 public class ReporteGeneralDAO {
     public List<ReporteGeneral> obtenerReporteGeneral() {
         List<ReporteGeneral> lista = new ArrayList<>();
-        String sql = "SELECT " +
-                     "p.numero_casa, " +
-                     "p.primer_nombre + ' ' + p.primer_apellido AS nombre_propietario, " +
-                     "(SELECT CASE WHEN COUNT(*) > 0 THEN 'Pagado' ELSE 'Pendiente' END " +
-                     " FROM pago_cuota pc " +
-                     " WHERE pc.id_propietario = p.id_propietario " +
-                     " AND MONTH(pc.fecha_pago) = MONTH(GETDATE()) " +
-                     " AND YEAR(pc.fecha_pago) = YEAR(GETDATE())) AS estado_actual, " +
-                     "COALESCE((SELECT SUM(c.cuota) " +
-                     " FROM pago_cuota pc " +
-                     " JOIN cuota c ON pc.id_cuota = c.id_cuota " +
-                     " WHERE pc.id_propietario = p.id_propietario " +
-                     " AND YEAR(pc.fecha_pago) = YEAR(GETDATE())), 0) AS total_pagado " +
-                     "FROM propietario p";
+            String sql = "SELECT " +
+             "  p.numero_casa, " +
+             "  p.primer_nombre + ' ' + p.primer_apellido AS nombre_propietario, " +
+             "  CASE " +
+             "    WHEN COUNT(CASE WHEN MONTH(pc.fecha_pago) = MONTH(GETDATE()) THEN 1 END) > 0 THEN 'Pagado' " +
+             "    ELSE 'Pendiente' " +
+             "  END AS estado_actual, " +
+             "  COALESCE(SUM(c.cuota), 0) AS total_pagado " +
+             "FROM propietario p " +
+             "LEFT JOIN pago_cuota pc ON p.id_propietario = pc.id_propietario AND YEAR(pc.fecha_pago) = YEAR(GETDATE()) " +
+             "LEFT JOIN cuota c ON pc.id_cuota = c.id_cuota " +
+             "GROUP BY p.numero_casa, p.primer_nombre, p.primer_apellido " +
+             "ORDER BY p.numero_casa ASC;";
 
         try (Connection con = Config.getConexion()) {
             try (PreparedStatement psTest = con.prepareStatement("SELECT COUNT(*) FROM propietario");
