@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.chart.PieChart;
+import javafx.geometry.Side;
 import proyecto_condominio.model.ReporteGeneral;
 import proyecto_condominio.model.ReporteGeneralDAO;
 
@@ -69,17 +70,24 @@ public class ReporteGeneralController implements Initializable {
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         
-        PieChart.Data sliceRecaudado = new PieChart.Data(String.format("Recaudado (%.1f%%)", porcRecaudado), recaudado);
+        PieChart.Data sliceRecaudado = new PieChart.Data(
+            String.format("Recaudado: $%.2f (%.1f%%)", recaudado, porcRecaudado), 
+            recaudado
+        );
         pieChartData.add(sliceRecaudado);
 
         if (pendiente > 0) {
-            PieChart.Data slicePendiente = new PieChart.Data(String.format("Pendiente (%.1f%%)", porcPendiente), pendiente);
+            PieChart.Data slicePendiente = new PieChart.Data(
+                String.format("Pendiente: $%.2f (%.1f%%)", pendiente, porcPendiente), 
+                pendiente
+            );
             pieChartData.add(slicePendiente);
         }
 
         charGraficaReporteGeneral.setData(pieChartData);
         charGraficaReporteGeneral.setLabelsVisible(true);
         charGraficaReporteGeneral.setLegendVisible(true);
+        charGraficaReporteGeneral.setLegendSide(Side.RIGHT);
         charGraficaReporteGeneral.setTitle(null);
 
         Platform.runLater(() -> {
