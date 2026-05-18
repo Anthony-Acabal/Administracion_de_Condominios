@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="290.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ConfiguracionCuotaViewController">
+<AnchorPane id="AnchorPane" prefHeight="290.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.src.ConfiguracionCuotaViewController">
    <children>
       <Label layoutX="237.0" layoutY="14.0" text="Configuración de Cuota" />
       <Label layoutX="101.0" layoutY="48.0" text="Cuota mensual de mantenimiento:" />

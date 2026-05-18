@@ -1,4 +1,4 @@
-package proyecto_condominio.ui;
+package proyecto_condominio.src;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -34,7 +34,7 @@ public class HistorialPagosViewController
         implements Initializable {
 
     @FXML
-    private Button btnCerrar;
+    private Button btnRegresar;
 
     @FXML
     private TableView<HistorialPago> tblPagos;
@@ -47,9 +47,6 @@ public class HistorialPagosViewController
 
     @FXML
     private TableColumn<HistorialPago, String> colFecha;
-
-    @FXML
-    private TableColumn<HistorialPago, String> colHora;
 
     @FXML
     private TableColumn<HistorialPago, Double> colMonto;
@@ -67,9 +64,6 @@ public class HistorialPagosViewController
     private ComboBox<String> cbAnio;
 
     @FXML
-    private ComboBox<String> cbVista;
-
-    @FXML
     private Button btnBuscar;
 
     private ObservableList<HistorialPago> listaPagos
@@ -79,7 +73,7 @@ public class HistorialPagosViewController
     private void cerrarVentana() {
 
         Stage stage
-                = (Stage) btnCerrar
+                = (Stage) btnRegresar
                         .getScene()
                         .getWindow();
 
@@ -95,6 +89,17 @@ public class HistorialPagosViewController
         colCasa.setCellValueFactory(
                 new PropertyValueFactory<>("casa")
         );
+        colCasa.setReorderable(false);
+
+        colPropietario.setReorderable(false);
+
+        colFecha.setReorderable(false);
+
+        colMonto.setReorderable(false);
+
+        colComprobante.setSortable(false);
+
+        colComprobante.setReorderable(false);
 
         colPropietario.setCellValueFactory(
                 new PropertyValueFactory<>("propietario")
@@ -102,10 +107,6 @@ public class HistorialPagosViewController
 
         colFecha.setCellValueFactory(
                 new PropertyValueFactory<>("fecha")
-        );
-
-        colHora.setCellValueFactory(
-                new PropertyValueFactory<>("hora")
         );
 
         colMonto.setCellValueFactory(
@@ -218,11 +219,6 @@ public class HistorialPagosViewController
 
     private void cargarCombos() {
 
-        cbVista.setOnAction(event -> {
-
-            buscarPagos();
-        });
-
         cbCasa.getItems().add(
                 "Todas las casas"
         );
@@ -289,16 +285,6 @@ public class HistorialPagosViewController
         );
 
         cargarMeses();
-
-        cbVista.getItems().addAll(
-                "De más reciente a más antiguo",
-                "De más antiguo a más reciente",
-                "De monto más alto a más bajo",
-                "De monto más bajo a más alto"
-        );
-
-        cbVista.getSelectionModel()
-                .selectFirst();
     }
 
     @FXML
@@ -399,36 +385,6 @@ public class HistorialPagosViewController
             sql
                     += " AND YEAR(pc.fecha_pago) = ?";
         }
-
-        String orden
-                = cbVista.getValue();
-
-        if (orden.equals(
-                "De más reciente a más antiguo"
-        )) {
-
-            sql
-                    += " ORDER BY pc.fecha_pago DESC";
-        } else if (orden.equals(
-                "De más antiguo a más reciente"
-        )) {
-
-            sql
-                    += " ORDER BY pc.fecha_pago ASC";
-        } else if (orden.equals(
-                "De monto más alto a más bajo"
-        )) {
-
-            sql
-                    += " ORDER BY c.cuota DESC";
-        } else if (orden.equals(
-                "De monto más bajo a más alto"
-        )) {
-
-            sql
-                    += " ORDER BY c.cuota ASC";
-        }
-
         try (
                 Connection conn
                 = Config.getConexion(); PreparedStatement ps
@@ -484,16 +440,6 @@ public class HistorialPagosViewController
                                         "fecha_pago"
                                 )
                         );
-
-                String hora
-                        = new SimpleDateFormat(
-                                "HH:mm"
-                        ).format(
-                                rs.getTimestamp(
-                                        "fecha_pago"
-                                )
-                        );
-
                 listaPagos.add(
                         new HistorialPago(
                                 rs.getInt(
@@ -503,7 +449,6 @@ public class HistorialPagosViewController
                                         "propietario"
                                 ),
                                 fecha,
-                                hora,
                                 rs.getDouble(
                                         "cuota"
                                 ),
@@ -517,33 +462,18 @@ public class HistorialPagosViewController
             tblPagos.setItems(
                     listaPagos
             );
+            tblPagos.getSortOrder().add(colFecha);
+
+            colFecha.setSortType(
+                    TableColumn.SortType.DESCENDING
+            );
+
+            tblPagos.sort();
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void limpiarFiltros() {
-
-        cbCasa.getSelectionModel()
-                .select(
-                        "Todas las casas"
-                );
-
-        cbMes.setValue(
-                "Todos los meses"
-        );
-
-        cbAnio.setValue(
-                "Todos los años"
-        );
-
-        cbVista.getSelectionModel()
-                .selectFirst();
-
-        buscarPagos();
     }
 
     private void cargarMeses() {
