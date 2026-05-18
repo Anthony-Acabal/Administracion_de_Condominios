@@ -31,10 +31,15 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="lblCPPCantidad" layoutX="12.0" layoutY="310.0" text="Casas pendientes de pago: 10">
+      <Label fx:id="lblCPPCantidad" layoutX="14.0" layoutY="309.0" text="Casas pendientes de pago: 10">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
+      <Button fx:id="btnCPPGenerarReporte" layoutX="451.0" layoutY="309.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="138.0" text="Generar Reporte">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
