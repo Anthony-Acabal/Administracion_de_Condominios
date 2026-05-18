@@ -21,6 +21,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import java.time.format.DateTimeFormatter;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -51,10 +52,10 @@ public class ConfiguracionCuotaViewController
     private Button btnGuardar;
 
     @FXML
-    private Button btnLimpiar;
+    private Button btnRegresar;
 
     @FXML
-    private Button btnCerrar;
+    private Button btnCancelar;
 
     /**
      * Initializes the controller class.
@@ -115,6 +116,17 @@ public class ConfiguracionCuotaViewController
         btnGuardar.requestFocus();
     }
 
+    @FXML
+    private void regresarMenu() {
+
+        Stage stage
+                = (Stage) btnRegresar
+                        .getScene()
+                        .getWindow();
+
+        stage.close();
+    }
+    
     @FXML
     private void guardarConfiguracion() {
 
@@ -244,14 +256,6 @@ int idUsuario = 1;
 
             btnGuardar.setDisable(false);
         }
-    }
-
-    @FXML
-    private void limpiarCampos() {
-
-        txtNuevaCuota.clear();
-
-        txtNuevaCuota.requestFocus();
     }
 
     private void cargarCuotaActual() {
