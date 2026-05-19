@@ -30,6 +30,8 @@ import proyecto_condominio.src.Config;
 
 import javafx.stage.Stage;
 
+import javafx.scene.control.TableView;
+
 public class HistorialPagosViewController
         implements Initializable {
 
@@ -85,7 +87,8 @@ public class HistorialPagosViewController
             URL url,
             ResourceBundle rb
     ) {
-
+        tblPagos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        
         colCasa.setCellValueFactory(
                 new PropertyValueFactory<>("casa")
         );

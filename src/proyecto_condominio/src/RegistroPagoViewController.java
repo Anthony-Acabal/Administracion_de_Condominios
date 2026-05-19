@@ -25,6 +25,9 @@ import javafx.scene.control.ButtonType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
 
 /**
  * FXML Controller class
@@ -56,15 +59,12 @@ public class RegistroPagoViewController implements Initializable {
 
     @FXML
     private Button btnRegistrar;
+    
+    @FXML
+    private Button btnRegresar;
 
     @FXML
-    private Button btnLimpiar;
-
-    @FXML
-    private Button btnCerrar;
-
-    @FXML
-    private void registrarPago() {
+    private void registrarPago(ActionEvent event) {
 
         if (cbCasa.getValue() == null) {
 
@@ -303,29 +303,6 @@ public class RegistroPagoViewController implements Initializable {
         }
     }
 
-    @FXML
-    private void limpiarCampos() {
-
-        cbCasa.setValue(null);
-
-        txtNombre.clear();
-
-        txtApellido.clear();
-
-        txtTelefono.clear();
-
-        txtCuota.clear();
-
-        cbMes.setValue(null);
-
-        cbMes.getItems().clear();
-
-        cbAnio.setValue(
-                String.valueOf(
-                        LocalDate.now().getYear()
-                )
-        );
-    }
 
     /**
      * Initializes the controller class.
@@ -460,7 +437,15 @@ public class RegistroPagoViewController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+    @FXML
+    private void cerrarVentana(ActionEvent event) {
 
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.close();
+    }
     @FXML
     private void seleccionarCasa() {
 
