@@ -326,9 +326,8 @@ int idUsuario = 1;
 
                 double recaudacion
                         = totalCasas
-                        * cuota.getMontoCuota()
-                        * 12;
-
+                        * cuota.getMontoCuota();
+                
                 txtRecaudacionMensual
                         .setText(
                                 "Q"
