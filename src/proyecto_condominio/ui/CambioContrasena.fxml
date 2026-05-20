@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="15.0" prefHeight="300.0" prefWidth="400.0" 
+      style="-fx-background-color: #f3f4f6;" 
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="proyecto_condominio.ui.CambioContrasenaController">
+   <children>
+      <Label text="Primer Ingreso Detectado" textFill="#1e3a8a">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label text="Por seguridad, debe actualizar su contraseña predeterminada." textAlignment="CENTER" wrapText="true" />
+      
+      <VBox maxWidth="250.0" spacing="5.0">
+         <children>
+            <Label text="Nueva Contraseña:" />
+            <PasswordField fx:id="txtNuevaClave" promptText="Ingrese su nueva clave" />
+         </children>
+      </VBox>
+      
+      <VBox maxWidth="250.0" spacing="5.0">
+         <children>
+            <Label text="Confirmar Contraseña:" />
+            <PasswordField fx:id="txtConfirmarClave" promptText="Repita la clave" />
+         </children>
+      </VBox>
+      
+      <Button fx:id="btnActualizar" text="Actualizar y Entrar" onAction="#accionActualizarContrasena" 
+              style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
+              
+      <Label fx:id="lblMensaje" textFill="#dc2626" />
+   </children>
+</VBox>
