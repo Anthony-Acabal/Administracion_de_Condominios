@@ -13,13 +13,13 @@ public class Usuario {
         this.nombre = nombre;
         this.correo = correo;
         this.contrasena = contrasena;
-     this.primerIngreso = primerIngreso;
+        this.primerIngreso = primerIngreso;
         this.rol = rol;
         this.intentosFallidos = intentosFallidos;
         this.bloqueado = bloqueado;
     }
 
-    // Getters básicos
+    // GETTERS Y SETTERS
     public String getNombre() { return nombre; }
     public String getCorreo() { return correo; }
     public String getContrasena() { return contrasena; }
@@ -27,5 +27,7 @@ public class Usuario {
     public String getRol() { return rol; }
     public int getIntentosFallidos() { return intentosFallidos; }
     public boolean isBloqueado() { return bloqueado; }
-}
 
+    public void setIntentosFallidos(int intentosFallidos) { this.intentosFallidos = intentosFallidos; }
+    public void setBloqueado(boolean bloqueado) { this.bloqueado = bloqueado; }
+}
