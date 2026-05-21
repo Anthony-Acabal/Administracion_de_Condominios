@@ -6,12 +6,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import proyecto_condominio.model.ConexionSQL;
 import proyecto_condominio.model.Usuario;
+import java.io.IOException;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 
 public class LoginController extends Application {
 
@@ -46,18 +50,37 @@ public class LoginController extends Application {
         Usuario user = querys.validarLogin(correo, clave);
 
         if (user != null) {
-            // 1. FILTRO DE SEGURIDAD: Validar si la cuenta está bloqueada en la base de datos
-            if (user.isBloqueado()) {
-                lblMensajeError.setText("Esta cuenta está bloqueada por exceso de intentos.");
-                System.out.println("Acceso denegado: El usuario " + correo + " se encuentra bloqueado.");
-            } 
-            // 2. Si no está bloqueado, procede con el direccionamiento normal (ITM-25.1)
-            else {
-                procesarDireccionamiento(user);
+            // Si la cuenta está bloqueada en la BD, se detiene aquí y avisa
+            if (user.isBloqueado()) { 
+                lblMensajeError.setText("Cuenta bloqueada. Use '¿Olvidó su contraseña?'.");
+                return;
             }
+            
+            // Si todo está bien, evalúa si es primer ingreso o va al Home (ITM-25.1)
+            procesarDireccionamiento(user);
         } else {
-            // 3. Si validarLogin devolvió null, significa que la contraseña falló
-            lblMensajeError.setText("Credenciales incorrectas. Intento fallido registrado.");
+            lblMensajeError.setText("Correo o contraseña incorrectos.");
+        }
+    }
+    
+    @FXML
+    private void accionOlvidoContrasena(ActionEvent event) {
+        try {
+            // 1. Cargamos la nueva vista de recuperación que creaste
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto_condominio/ui/OlvidoContrasena.fxml"));
+            Parent root = loader.load();
+            
+            // 2. Obtenemos la ventana actual usando el evento del Hyperlink
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            // 3. Cambiamos la escena por la de olvido de contraseña
+            stage.setScene(new Scene(root));
+            stage.setTitle("Recuperar Contraseña - Sistema de Condominios");
+            stage.show();
+            
+        } catch (IOException e) {
+            System.out.println("Error crítico al abrir la ventana de olvido contraseña: " + e.getMessage());
+            lblMensajeError.setText("No se pudo cargar la vista de recuperación.");
         }
     }
     
