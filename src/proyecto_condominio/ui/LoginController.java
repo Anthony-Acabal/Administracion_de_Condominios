@@ -46,13 +46,21 @@ public class LoginController extends Application {
         Usuario user = querys.validarLogin(correo, clave);
 
         if (user != null) {
-            // Si las credenciales son correctas, evaluamos el flag de primer ingreso (ITM-25.1)
-            procesarDireccionamiento(user);
+            // 1. FILTRO DE SEGURIDAD: Validar si la cuenta está bloqueada en la base de datos
+            if (user.isBloqueado()) {
+                lblMensajeError.setText("Esta cuenta está bloqueada por exceso de intentos.");
+                System.out.println("Acceso denegado: El usuario " + correo + " se encuentra bloqueado.");
+            } 
+            // 2. Si no está bloqueado, procede con el direccionamiento normal (ITM-25.1)
+            else {
+                procesarDireccionamiento(user);
+            }
         } else {
-            lblMensajeError.setText("Credenciales incorrectas.");
+            // 3. Si validarLogin devolvió null, significa que la contraseña falló
+            lblMensajeError.setText("Credenciales incorrectas. Intento fallido registrado.");
         }
     }
-
+    
     private void procesarDireccionamiento(Usuario u) {
         try {
             String fxmlDestino;
