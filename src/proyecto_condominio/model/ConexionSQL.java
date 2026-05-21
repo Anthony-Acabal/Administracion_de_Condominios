@@ -17,7 +17,6 @@ public class ConexionSQL {
         
         try {
             PreparedStatement pst = conexion.prepareStatement(queryBuscar);
-            pst.setString(1, correo);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
