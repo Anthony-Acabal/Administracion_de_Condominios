@@ -1,4 +1,6 @@
-package proyecto_condominio.src;
+package proyecto_condominio.controller;
+
+
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

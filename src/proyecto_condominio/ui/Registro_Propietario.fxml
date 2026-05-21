@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.controller.Registro_PropietarioController">
    <children>
       <GridPane layoutX="-5.0" layoutY="-4.0" prefHeight="519.0" prefWidth="709.0">
         <columnConstraints>
@@ -50,13 +49,13 @@
                   <Insets left="-100.0" />
                </GridPane.margin>
             </Label>
-            <TextField maxWidth="130.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <TextField fx:id="txtPrimerNombre" maxWidth="130.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="-50.0" />
                </GridPane.margin>
             </TextField>
-            <TextField maxWidth="130.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <TextField maxWidth="130.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <TextField fx:id="txtSegundoNombre" maxWidth="130.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField fx:id="txtTercerNombre" maxWidth="130.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="-75.0" />
                </GridPane.margin>
@@ -71,19 +70,19 @@
                   <Insets left="75.0" />
                </GridPane.margin>
             </Label>
-            <TextField maxWidth="130.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <TextField fx:id="txtPrimerApellido" maxWidth="130.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="-50.0" />
                </GridPane.margin>
             </TextField>
-            <TextField maxWidth="130.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <TextField fx:id="txtSegundoApellido" maxWidth="130.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <Label text="DATOS DE CONTACTO Y UBICACION" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
             <Label text="Numero de Casa" GridPane.halignment="LEFT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="30.0" />
                </GridPane.margin>
             </Label>
-            <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <ComboBox fx:id="cmbNumeroCasa" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets left="-120.0" />
                </GridPane.margin>
@@ -93,7 +92,7 @@
                   <Insets left="-88.0" />
                </GridPane.margin>
             </Label>
-            <TextField maxWidth="130.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <TextField fx:id="txtNumeroTelefono" maxWidth="130.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets left="-50.0" />
                </GridPane.margin>
@@ -103,7 +102,7 @@
                   <Insets left="-47.0" />
                </GridPane.margin>
             </Label>
-            <TextField maxWidth="130.0" GridPane.columnIndex="4" GridPane.rowIndex="7">
+            <TextField fx:id="txtCorreoElectronico" maxWidth="130.0" GridPane.columnIndex="4" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets left="-50.0" />
                </GridPane.margin>
@@ -118,16 +117,18 @@
                   <Insets left="50.0" />
                </GridPane.margin>
             </Label>
-            <Button mnemonicParsing="false" text="GUARDAR" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#actionGuardar" text="GUARDAR" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets right="-50.0" />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" text="CANCELAR" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#actionCancelar" text="CANCELAR" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="-80.0" />
                </GridPane.margin>
             </Button>
+            <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#actionLimpiar" text="Limpiar" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+            <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#actionRegresar" text="REGRESAR" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
          </children>
       </GridPane>
    </children>
