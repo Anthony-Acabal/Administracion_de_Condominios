@@ -35,6 +35,10 @@ public class LoginController extends Application {
         stage.show();
     }
 
+    public static void main(String[] args) {
+    launch(args);
+    }
+    
     // Método que se ejecuta al presionar el botón "Ingresar"
     @FXML
     private void accionIngresar() {
@@ -84,36 +88,58 @@ public class LoginController extends Application {
         }
     }
     
-    private void procesarDireccionamiento(Usuario u) {
+    private void procesarDireccionamiento(Usuario user) {
         try {
-            String fxmlDestino;
-            String titulo;
+            String rutaFxml = "";
+            String tituloVentana = "";
 
-            // Intercepción obligatoria del flujo según el requerimiento ITM-25.1
-            if (u.isPrimerIngreso()) {
-                fxmlDestino = "/proyecto_condominio/ui/CambioContrasena.fxml";
-                titulo = "Cambio Obligatorio de Contraseña";
-            } else {
-                fxmlDestino = "/proyecto_condominio/ui/MenuPrincipal.fxml";
-                titulo = "Panel Principal - " + u.getRol();
-            }
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlDestino));
-            Parent root = loader.load();
+        // 1. CONTROL DE PRIMER INGRESO 
+        if (user.isPrimerIngreso()) {
+            rutaFxml = "/proyecto_condominio/ui/CambioContrasena.fxml";
+            tituloVentana = "Actualizar Contraseña Obligatoria";
+        } 
+        // 2. REDIRECCIÓN POR ROLES 
+        else {
+            String rol = user.getRol().toUpperCase().trim(); 
             
-            // Cambia la escena usando el Stage actual del botón
-            Stage stage = (Stage) btnIngresar.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle(titulo);
-            stage.show();
-
-        } catch (Exception e) {
-            System.out.println("Error en redirección: " + e.getMessage());
-            lblMensajeError.setText("Login correcto. (Falta crear el FXML de destino final).");
+            switch (rol) {
+                case "ADMINISTRADOR":
+                case "ADMIN":
+                    rutaFxml = "/proyecto_condominio/ui/MenuAdmin.fxml";
+                    tituloVentana = "Panel de Control - Administrador";
+                    break;
+                    
+                case "RESIDENTE":
+                    rutaFxml = "/proyecto_condominio/ui/MenuResidente.fxml";
+                    tituloVentana = "Portal del Residente - Condominio";
+                    break;
+                    
+                case "GUARDIA":
+                case "SEGURIDAD":
+                    rutaFxml = "/proyecto_condominio/ui/MenuGuardia.fxml";
+                    tituloVentana = "Control de Accesos - Seguridad";
+                    break;
+                    
+                default:
+                    // Ventana genérica por si un usuario no tiene rol asignado o es diferente
+                    rutaFxml = "/proyecto_condominio/ui/MenuPrincipal.fxml";
+                    tituloVentana = "Sistema de Administración de Condominios";
+                    break;
+            }
         }
-    }
 
-    public static void main(String[] args) {
-        launch(args);
+        // 3. CARGAR LA VISTA SELECCIONADA
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
+        Parent root = loader.load();
+        
+        Stage stage = (Stage) txtCorreo.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle(tituloVentana);
+        stage.show();
+
+        } catch (IOException e) {
+        System.out.println("Error crítico al redireccionar por rol: " + e.getMessage());
+        lblMensajeError.setText("Error al cargar el menú correspondiente a su rol.");
+        }
     }
 }
