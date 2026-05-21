@@ -36,7 +36,6 @@ public class InicioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Dejamos un texto por defecto en caso de ejecutar la pantalla de forma aislada
         mostrarBienvenida("Usuario"); 
         cargarFechaActual();
     }    
@@ -55,24 +54,20 @@ public class InicioController implements Initializable {
     }
 
     private void cargarFechaActual() {
-        // [ITM-29] Conexión directa y limpia con tu archivo independiente fecha.java
-        lblFecha.setText(fecha.obtenerFechaActualFormateada());
+       lblFecha.setText(fecha.obtenerFechaActualFormateada());
     }
 
-    // 🛠️ EVENTOS DE LOS BOTONES DEL MENÚ LATERAL (Estructura de Ruteo ITM-31)
+
 
     @FXML
     private void irPropietarios(ActionEvent event) {
         System.out.println("Clic en ir a propietarios");
-        // Cuando existan los FXML de tus compañeros, solo quitas las barras '//' de abajo:
-        // cargarPagina("Propietarios.fxml");
-    }
+       }
 
     @FXML
     private void irPagos(ActionEvent event) {
         System.out.println("Clic en ir a pagos");
-        // cargarPagina("Pagos.fxml");
-    }
+  }
 
     @FXML
     private void irCuota(ActionEvent event) {
@@ -112,8 +107,7 @@ public class InicioController implements Initializable {
     @FXML
     private void irInicio(ActionEvent event) {
         System.out.println("Clic en ir a inicio");
-        // Al regresar al inicio, limpiamos el centro para ver el fondo original
-        vistasContenedor.setCenter(null);
+       vistasContenedor.setCenter(null);
     }
 
     @FXML
@@ -131,12 +125,10 @@ public class InicioController implements Initializable {
      */
     private void cargarPagina(String fxmlArchivo) {
         try {
-            // Carga el nuevo archivo FXML
             javafx.scene.Parent pantalla = FXMLLoader.load(getClass().getResource(fxmlArchivo));
             Node pantacity = null;
             
-            // Reemplaza el contenido del centro por la nueva pantalla
-            vistasContenedor.setCenter(pantacity);
+           vistasContenedor.setCenter(pantacity);
             
         } catch (IOException e) {
             System.out.println("❌ Error al cambiar de pantalla: " + e.getMessage());
