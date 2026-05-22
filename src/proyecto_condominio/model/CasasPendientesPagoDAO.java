@@ -99,22 +99,26 @@ public class CasasPendientesPagoDAO {
             LocalDate.now().getYear(), LocalDate.now().getMonthValue() 
         };
 
-        String sqlMin = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota ORDER BY fecha_pago ASC";
-        String sqlMax = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota ORDER BY fecha_pago DESC";
+        String sqlMin = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota WHERE fecha_pago IS NOT NULL ORDER BY fecha_pago ASC";
+        String sqlMax = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota WHERE fecha_pago IS NOT NULL ORDER BY fecha_pago DESC";
 
         try (Connection con = Config.getConexion()) {
             try (PreparedStatement ps = con.prepareStatement(sqlMin);
                  ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    limites[0] = rs.getInt("anio");
-                    limites[1] = rs.getInt("mes");
+                    int anio = rs.getInt("anio");
+                    int mes = rs.getInt("mes");
+                    if (anio > 0) limites[0] = anio;
+                    if (mes > 0) limites[1] = mes;
                 }
             }
             try (PreparedStatement ps = con.prepareStatement(sqlMax);
                  ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    limites[2] = rs.getInt("anio");
-                    limites[3] = rs.getInt("mes");
+                    int anio = rs.getInt("anio");
+                    int mes = rs.getInt("mes");
+                    if (anio > 0) limites[2] = anio;
+                    if (mes > 0) limites[3] = mes;
                 }
             }
         } catch (SQLException e) {
