@@ -21,7 +21,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import java.time.format.DateTimeFormatter;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
+import javafx.application.Platform;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 
 /**
  * FXML Controller class
@@ -56,6 +60,12 @@ public class ConfiguracionCuotaViewController
 
     @FXML
     private Button btnCancelar;
+
+    @FXML
+    private ScrollPane scrollPane;
+    
+    @FXML
+    private AnchorPane cardCentral;
 
     /**
      * Initializes the controller class.
@@ -108,14 +118,36 @@ public class ConfiguracionCuotaViewController
                 .setFocusTraversable(false);
 
         dpFechaModificacion.setEditable(false);
-        
+
         dpFechaModificacion.setMouseTransparent(true);
 
         lblHora.setEditable(false);
 
         btnGuardar.requestFocus();
+
+        scrollPane.setStyle(
+                "-fx-background: transparent;"
+                + "-fx-background-color: transparent;"
+        );
+        Platform.runLater(() -> {
+
+            scrollPane.setStyle("-fx-background-color: transparent;");
+
+            scrollPane.lookup(".viewport")
+                    .setStyle("-fx-background-color: transparent;");
+        });
+
+        Rectangle clip = new Rectangle();
+        clip.widthProperty().bind(cardCentral.widthProperty());
+        clip.heightProperty().bind(cardCentral.heightProperty());
+
+        clip.setArcWidth(48);
+        clip.setArcHeight(48);
+
+        cardCentral.setClip(clip);
     }
 
+     
     @FXML
     private void regresarMenu() {
 
@@ -126,7 +158,7 @@ public class ConfiguracionCuotaViewController
 
         stage.close();
     }
-    
+
     @FXML
     private void guardarConfiguracion() {
 
@@ -199,7 +231,7 @@ public class ConfiguracionCuotaViewController
             return;
         }
 
-int idUsuario = 1;
+        int idUsuario = 1;
         String sql = """
                      
             INSERT INTO cuota
@@ -327,7 +359,7 @@ int idUsuario = 1;
                 double recaudacion
                         = totalCasas
                         * cuota.getMontoCuota();
-                
+
                 txtRecaudacionMensual
                         .setText(
                                 "Q"
