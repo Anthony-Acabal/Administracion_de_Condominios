@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane prefHeight="450.0" prefWidth="820.0" stylesheets="@../../proyecto_condominio.css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.src.RegistroPagoViewController">
 
@@ -113,9 +115,49 @@
 
                                                     <children>
 
-                                                        <Label prefWidth="190.0" styleClass="label-form" text="Número de Casa:" />
+                                                        <Label prefWidth="190.0"
+                                                               styleClass="label-form"
+                                                               text="Número de Casa:" />
 
-                                                        <ComboBox fx:id="cbCasa" onAction="#seleccionarCasa" prefHeight="40.0" prefWidth="250.0" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="250.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="40.0"
+                                                                                   fitWidth="40.0"
+                                                                                   layoutX="1.0"
+                                                                                   layoutY="5.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Casa.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <ComboBox fx:id="cbCasa"
+                                                                          onAction="#seleccionarCasa"
+                                                                          prefHeight="40.0"
+                                                                          prefWidth="210.0"
+                                                                          styleClass="combobox-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -126,9 +168,49 @@
 
                                                     <children>
 
-                                                        <Label prefWidth="190.0" styleClass="label-form" text="Nombre completo:" />
+                                                        <Label prefWidth="190.0"
+                                                               styleClass="label-form"
+                                                               text="Nombre completo:" />
 
-                                                        <TextField fx:id="txtNombre" editable="false" prefHeight="40.0" prefWidth="250.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="250.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="26.0"
+                                                                                   fitWidth="26.0"
+                                                                                   layoutX="7.0"
+                                                                                   layoutY="7.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Persona.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtNombre"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="210.0"
+                                                                           styleClass="textfield-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -139,22 +221,101 @@
 
                                                     <children>
 
-                                                        <Label prefWidth="190.0" styleClass="label-form" text="Apellidos completos:" />
+                                                        <Label prefWidth="190.0"
+                                                               styleClass="label-form"
+                                                               text="Apellidos completos:" />
 
-                                                        <TextField fx:id="txtApellido" editable="false" prefHeight="40.0" prefWidth="250.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="250.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="26.0"
+                                                                                   fitWidth="26.0"
+                                                                                   layoutX="7.0"
+                                                                                   layoutY="7.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Persona.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtApellido"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="210.0"
+                                                                           styleClass="textfield-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
                                                 </HBox>
-
                                                 <!-- TELEFONO -->
                                                 <HBox alignment="CENTER" spacing="20.0">
 
                                                     <children>
 
-                                                        <Label prefWidth="190.0" styleClass="label-form" text="Número de teléfono:" />
+                                                        <Label prefWidth="190.0"
+                                                               styleClass="label-form"
+                                                               text="Número de teléfono:" />
 
-                                                        <TextField fx:id="txtTelefono" editable="false" prefHeight="40.0" prefWidth="250.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="250.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="24.0"
+                                                                                   fitWidth="24.0"
+                                                                                   layoutX="8.0"
+                                                                                   layoutY="8.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Telefono.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtTelefono"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="210.0"
+                                                                           styleClass="textfield-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -165,14 +326,53 @@
 
                                                     <children>
 
-                                                        <Label prefWidth="190.0" styleClass="label-form" text="Cuota mensual:" />
+                                                        <Label prefWidth="190.0"
+                                                               styleClass="label-form"
+                                                               text="Cuota mensual:" />
 
-                                                        <TextField fx:id="txtCuota" editable="false" prefHeight="40.0" prefWidth="250.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="250.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="20.0"
+                                                                                   fitWidth="20.0"
+                                                                                   layoutX="12.0"
+                                                                                   layoutY="8.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Cuota.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtCuota"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="210.0"
+                                                                           styleClass="textfield-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
                                                 </HBox>
-
                                                 <!-- AÑO Y MES -->
                                                 <HBox alignment="CENTER" spacing="25.0">
 
@@ -205,7 +405,6 @@
                                                     </children>
 
                                                 </HBox>
-
                                                 <!-- BOTON -->
                                                 <HBox alignment="CENTER">
 
