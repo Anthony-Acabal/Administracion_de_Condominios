@@ -12,6 +12,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane prefHeight="450.0" prefWidth="820.0" stylesheets="@../../proyecto_condominio.css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.src.ConfiguracionCuotaViewController">
 
@@ -129,7 +131,46 @@
 
                                                         <Label alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="label-form" text="Cuota mensual de mantenimiento:" />
 
-                                                        <TextField fx:id="txtCuotaMensual" editable="false" maxWidth="350.0" prefWidth="230.0" styleClass="campo-texto" text="Q1,500.00" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="230.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="20.0"
+                                                                                   fitWidth="20.0"
+                                                                                   layoutX="12.0"
+                                                                                   layoutY="8.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Cuota.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtCuotaMensual"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="190.0"
+                                                                           styleClass="textfield-interno"
+                                                                           text="Q1,500.00" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -142,7 +183,44 @@
 
                                                         <Label alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="label-form" text="Nueva cuota:" />
 
-                                                        <TextField fx:id="txtNuevaCuota" maxWidth="350.0" prefWidth="230.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="230.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="20.0"
+                                                                                   fitWidth="20.0"
+                                                                                   layoutX="12.0"
+                                                                                   layoutY="8.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Cuota.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtNuevaCuota"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="190.0"
+                                                                           styleClass="textfield-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -155,7 +233,46 @@
 
                                                         <Label alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="label-form" text="Recaudación mensual esperada:" />
 
-                                                        <TextField fx:id="txtRecaudacionMensual" editable="false" maxWidth="350.0" prefWidth="230.0" styleClass="campo-texto" text="Q45,000.00" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="230.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="20.0"
+                                                                                   fitWidth="20.0"
+                                                                                   layoutX="12.0"
+                                                                                   layoutY="8.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Cuota.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <TextField fx:id="txtRecaudacionMensual"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="190.0"
+                                                                           styleClass="textfield-interno"
+                                                                           text="Q45,000.00" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -168,7 +285,46 @@
 
                                                         <Label alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="label-form" text="Fecha:" />
 
-                                                        <DatePicker fx:id="dpFechaModificacion" maxWidth="350.0" prefWidth="230.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="230.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <!-- ICONO -->
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="22.0"
+                                                                                   fitWidth="22.0"
+                                                                                   layoutX="12.0"
+                                                                                   layoutY="12.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Fecha.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <!-- DATEPICKER -->
+                                                                <DatePicker fx:id="dpFechaModificacion"
+                                                                            prefHeight="40.0"
+                                                                            prefWidth="190.0"
+                                                                            styleClass="datepicker-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 
@@ -179,9 +335,52 @@
 
                                                     <children>
 
-                                                        <Label alignment="CENTER_RIGHT" prefWidth="220.0" styleClass="label-form" text="Hora (24h):" />
+                                                        <Label alignment="CENTER_RIGHT"
+                                                               prefWidth="220.0"
+                                                               styleClass="label-form"
+                                                               text="Hora (24h):" />
 
-                                                        <TextField fx:id="lblHora" editable="false" maxWidth="350.0" prefWidth="230.0" styleClass="campo-texto" />
+                                                        <HBox alignment="CENTER_LEFT"
+                                                              prefWidth="230.0"
+                                                              prefHeight="40.0"
+                                                              styleClass="textfield-icono">
+
+                                                            <children>
+
+                                                                <!-- ICONO -->
+                                                                <Pane prefWidth="40.0"
+                                                                      prefHeight="40.0"
+                                                                      styleClass="icono-container">
+
+                                                                    <children>
+
+                                                                        <ImageView fitHeight="22.0"
+                                                                                   fitWidth="22.0"
+                                                                                   layoutX="12.0"
+                                                                                   layoutY="12.0"
+                                                                                   pickOnBounds="true"
+                                                                                   preserveRatio="true">
+
+                                                                            <image>
+                                                                                <Image url="@/images/Icon Fecha.png"/>
+                                                                            </image>
+
+                                                                        </ImageView>
+
+                                                                    </children>
+
+                                                                </Pane>
+
+                                                                <!-- TEXTFIELD -->
+                                                                <TextField fx:id="lblHora"
+                                                                           editable="false"
+                                                                           prefHeight="40.0"
+                                                                           prefWidth="190.0"
+                                                                           styleClass="textfield-interno" />
+
+                                                            </children>
+
+                                                        </HBox>
 
                                                     </children>
 

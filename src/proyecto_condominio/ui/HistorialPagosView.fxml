@@ -101,19 +101,19 @@
                                                 <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="titulo" text="Historial de Pagos Recientes" />
 
                                                 <!-- FILTROS -->
-                                                <HBox alignment="CENTER" maxWidth="760.0" prefWidth="760.0" spacing="5.0">
+                                                <HBox alignment="CENTER" maxWidth="760.0" prefWidth="150.0" spacing="10.0">
 
                                                     <children>
 
                                                         <!-- CASA -->
-                                                        <Label minWidth="95.0" styleClass="label-form" text="No. de Casa:" />
+                                                        <Label minWidth="70.0" styleClass="label-form" text="No. de Casa:" />
 
-                                                        <ComboBox fx:id="cbCasa" prefWidth="154.0" promptText="Todas las casas" />
+                                                        <ComboBox fx:id="cbCasa" prefWidth="150.0" promptText="Todas las casas" />
 
                                                         <!-- MES -->
                                                         <Label styleClass="label-form" text="Mes:" />
 
-                                                        <ComboBox fx:id="cbMes" prefWidth="161.0" promptText="Todos los meses" />
+                                                        <ComboBox fx:id="cbMes" prefWidth="150.0" promptText="Todos los meses" />
 
                                                         <!-- AÑO -->
                                                         <Label styleClass="label-form" text="Año:" />
@@ -121,7 +121,7 @@
                                                         <ComboBox fx:id="cbAnio" prefWidth="150.0" promptText="Todos los años" />
 
                                                         <!-- BOTON -->
-                                                        <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#buscarPagos" prefWidth="110.0" styleClass="boton-buscar" text="Buscar" />
+                                                        <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#buscarPagos" prefWidth="80.0" styleClass="boton-primario" text="Buscar" />
 
                                                     </children>
 
