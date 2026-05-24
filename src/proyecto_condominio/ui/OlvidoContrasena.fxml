@@ -4,16 +4,20 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.OlvidoContrasenaController">
+<StackPane prefHeight="600.0" prefWidth="800.0" styleClass="fondo-pane" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.OlvidoContrasenaController">
    <children>
-      <TextField fx:id="txtUsuario" layoutX="171.0" layoutY="73.0" prefHeight="25.0" prefWidth="259.0" />
-      <TextField fx:id="txtCorreo" layoutX="171.0" layoutY="175.0" prefHeight="25.0" prefWidth="259.0" />
-      <Label fx:id="lblUsuario" layoutX="171.0" layoutY="46.0" prefHeight="19.0" prefWidth="84.0" text="Usuario" />
-      <Label fx:id="lblCorreo" layoutX="171.0" layoutY="150.0" prefHeight="19.0" prefWidth="84.0" text="Correo" />
-      <Button fx:id="btnGenerarClave" layoutX="99.0" layoutY="314.0" mnemonicParsing="false" onAction="#accionGenerarClave" prefHeight="19.0" prefWidth="144.0" text="Generar Clave" />
-      <Button fx:id="btnRegresarLogin" layoutX="358.0" layoutY="314.0" mnemonicParsing="false" onAction="#accionRegresarLogin" prefHeight="19.0" prefWidth="144.0" text="Regresar Login" />
-      <Label fx:id="lblMensaje" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="253.0" prefHeight="17.0" prefWidth="214.0" />
+      <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="400.0" styleClass="card-central" StackPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="txtUsuario" layoutX="71.0" layoutY="100.0" prefHeight="25.0" prefWidth="259.0" styleClass="text-field" />
+            <TextField fx:id="txtCorreo" layoutX="71.0" layoutY="200.0" prefHeight="25.0" prefWidth="259.0" styleClass="text-field" />
+            <Label fx:id="lblUsuario" layoutX="71.0" layoutY="75.0" prefHeight="19.0" prefWidth="84.0" styleClass="label-form" text="Usuario" />
+            <Label fx:id="lblCorreo" layoutX="71.0" layoutY="175.0" prefHeight="19.0" prefWidth="84.0" styleClass="label-form" text="Correo" />
+            <Button fx:id="btnGenerarClave" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#accionGenerarClave" styleClass="boton-primario" text="Generar Clave" />
+            <Button fx:id="btnRegresarLogin" layoutX="230.0" layoutY="350.0" mnemonicParsing="false" onAction="#accionRegresarLogin" styleClass="boton-primario" text="Regresar Login" />
+            <Label fx:id="lblMensaje" alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="270.0" prefHeight="17.0" prefWidth="214.0" styleClass="label-error" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>
