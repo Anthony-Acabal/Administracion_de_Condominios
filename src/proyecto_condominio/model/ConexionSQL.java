@@ -13,13 +13,14 @@ public class ConexionSQL {
         Connection conexion = dbCon.conectar(); 
         if (conexion == null) return null; 
 
-        String queryBuscar = "SELECT nombre, contrasena, primer_ingreso, rol, intentos_fallidos, bloqueado FROM Usuarios WHERE correo = ?";
+        String queryBuscar = "SELECT id_usuario, nombre, contrasena, primer_ingreso, rol, intentos_fallidos, bloqueado FROM Usuarios WHERE correo = ?";
         
         try {
             PreparedStatement pst = conexion.prepareStatement(queryBuscar);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
+                int id = rs.getInt("id_usuario");
                 boolean estaBloqueado = rs.getBoolean("bloqueado");
                 int intentosActuales = rs.getInt("intentos_fallidos");
                 String claveReal = rs.getString("contrasena");
@@ -29,7 +30,7 @@ public class ConexionSQL {
 
                 if (estaBloqueado) {
                     System.out.println("Intento de acceso a cuenta bloqueada: " + correo);
-                    return new Usuario(nombre, correo, claveReal, primerIngreso, rol, intentosActuales, true); 
+                    return new Usuario(id, nombre, correo, claveReal, primerIngreso, rol, intentosActuales, true);
                 }
 
                 if (claveReal.equals(contrasena)) {
@@ -39,7 +40,9 @@ public class ConexionSQL {
                     pstReset.executeUpdate();
                     
                     System.out.println("Login exitoso para: " + correo + ". Contador limpio.");
-                    return new Usuario(nombre, correo, claveReal, primerIngreso, rol, 0, false);
+                    Usuario usuarioLogueado = new Usuario(id, nombre, correo, claveReal, primerIngreso, rol, 0, false);
+                    Sesion.setUsuarioActual(usuarioLogueado);
+                    return usuarioLogueado;
                     
                 } else {
                     intentosActuales++;
