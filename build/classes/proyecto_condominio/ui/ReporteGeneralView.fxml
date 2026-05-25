@@ -22,24 +22,22 @@
    </padding>
    <children>
       <!-- Cabecera con botón regresar y título -->
-      <HBox alignment="CENTER_LEFT" spacing="20.0">
+      <HBox alignment="CENTER_RIGHT" spacing="20.0">
          <children>
-            <Button fx:id="btnReporteGeneralRegresar" mnemonicParsing="false" styleClass="boton-secundario" text="←">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Button>
-            <Region HBox.hgrow="ALWAYS" />
             <Label styleClass="titulo" text="Reporte General" />
             <Region HBox.hgrow="ALWAYS" />
-            <Region prefWidth="50.0" /> <!-- Espaciador para centrar el título -->
+            <Button fx:id="btnReporteGeneralRegresar" mnemonicParsing="false" styleClass="boton-secundario" text="Regresar">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
          </children>
       </HBox>
 
       <!-- Sección Central: Tabla y Controles -->
       <HBox spacing="20.0" VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="tbReporteGeneral" prefHeight="200.0" HBox.hgrow="ALWAYS" styleClass="table-view">
+            <TableView fx:id="tbReporteGeneral" prefHeight="200.0" styleClass="table-view" HBox.hgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="colNumeroCasa" prefWidth="107.0" text="Número de casa" />
                 <TableColumn fx:id="colNombrePropietario" prefWidth="199.0" text="Nombre del propietario" />
@@ -51,14 +49,14 @@
                </columnResizePolicy>
             </TableView>
 
-            <VBox spacing="15.0" minWidth="220.0" alignment="TOP_CENTER" styleClass="card-central">
+            <VBox alignment="TOP_CENTER" minWidth="220.0" spacing="15.0" styleClass="card-central">
                <children>
                   <VBox spacing="5.0">
-                     <Label text="Mes de:" styleClass="label-form" />
+                     <Label styleClass="label-form" text="Mes de:" />
                      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" prefWidth="180.0" styleClass="combo-box" />
                   </VBox>
                   <VBox spacing="5.0">
-                     <Label text="Año de:" styleClass="label-form" />
+                     <Label styleClass="label-form" text="Año de:" />
                      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroAno" prefWidth="180.0" styleClass="combo-box" />
                   </VBox>
                   <Region VBox.vgrow="ALWAYS" />
@@ -69,14 +67,14 @@
       </HBox>
 
       <!-- Sección de Totales -->
-      <HBox spacing="20.0" alignment="CENTER">
+      <HBox alignment="CENTER" spacing="20.0">
          <children>
-            <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" prefHeight="60.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="card-central" text="Total recaudado del mes">
+            <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" maxWidth="Infinity" prefHeight="60.0" styleClass="card-central" text="Total recaudado del mes" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" prefHeight="60.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="card-central" text="Total recaudado del año">
+            <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" maxWidth="Infinity" prefHeight="60.0" styleClass="card-central" text="Total recaudado del año" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -87,8 +85,9 @@
       <!-- Sección de Gráficos -->
       <HBox spacing="20.0" VBox.vgrow="ALWAYS">
          <children>
-            <PieChart fx:id="charGraficaReporteGeneralMes" HBox.hgrow="ALWAYS" styleClass="card-central" />
-            <PieChart fx:id="charGraficaReporteGeneralAno" HBox.hgrow="ALWAYS" styleClass="card-central" />
+            <!-- PieChart hereda estilos de .chart (blanco, sombra, rounded) -->
+            <PieChart fx:id="charGraficaReporteGeneralMes" HBox.hgrow="ALWAYS" />
+            <PieChart fx:id="charGraficaReporteGeneralAno" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>

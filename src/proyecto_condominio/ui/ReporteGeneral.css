@@ -68,14 +68,12 @@
 
     -fx-text-fill: #000000;
 
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0,0,0,0.08),
-        10,
-        0,
-        0,
-        2
-        );
+    -fx-effect: dropshadow(gaussian,
+            rgba(0, 0, 0, 0.08),
+            10,
+            0,
+            0,
+            2);
 }
 
 .campo-texto:focused {
@@ -193,12 +191,10 @@
 
 .fondo-pane {
 
-    -fx-background-color: linear-gradient(
-        to right,
-        #ffffff 0%,
-        #fcfffe 55%,
-        #f3fffb 100%
-        );
+    -fx-background-color: linear-gradient(to right,
+            #ffffff 0%,
+            #fcfffe 55%,
+            #f3fffb 100%);
 }
 
 
@@ -229,11 +225,9 @@
 
 .circulo-4 {
 
-    -fx-fill: linear-gradient(
-        to bottom left,
-        #8ff5e4,
-        #63dccb
-        );
+    -fx-fill: linear-gradient(to bottom left,
+            #8ff5e4,
+            #63dccb);
 
     -fx-stroke: transparent;
 }
@@ -254,11 +248,9 @@
 
 .circulo-7 {
 
-    -fx-fill: linear-gradient(
-        to top right,
-        #8ff5e4,
-        #63dccb
-        );
+    -fx-fill: linear-gradient(to top right,
+            #8ff5e4,
+            #63dccb);
 
     -fx-stroke: transparent;
 }
@@ -279,11 +271,9 @@
 
 .circulo-side-3 {
 
-    -fx-fill: linear-gradient(
-        to bottom left,
-        #8ff5e4,
-        #63dccb
-        );
+    -fx-fill: linear-gradient(to bottom left,
+            #8ff5e4,
+            #63dccb);
 
     -fx-stroke: transparent;
 }
@@ -303,14 +293,12 @@
 
     -fx-padding: 20px;
 
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0,0,0,0.08),
-        30,
-        0,
-        0,
-        8
-        );
+    -fx-effect: dropshadow(gaussian,
+            rgba(0, 0, 0, 0.08),
+            30,
+            0,
+            0,
+            8);
 }
 
 
@@ -390,14 +378,12 @@
 
     -fx-padding: 2 8 2 8;
 
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0,0,0,0.08),
-        10,
-        0,
-        0,
-        2
-        );
+    -fx-effect: dropshadow(gaussian,
+            rgba(0, 0, 0, 0.08),
+            10,
+            0,
+            0,
+            2);
 }
 
 .combo-box:focused {
@@ -422,14 +408,12 @@
 
     -fx-border-color: transparent;
 
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0,0,0,0.08),
-        12,
-        0,
-        0,
-        3
-        );
+    -fx-effect: dropshadow(gaussian,
+            rgba(0, 0, 0, 0.08),
+            12,
+            0,
+            0,
+            3);
 }
 
 .table-view .column-header-background {
@@ -459,8 +443,8 @@
     -fx-border-radius: 15;
 
     -fx-effect: dropshadow(gaussian,
-        rgba(0,0,0,0.08),
-        10,0,0,2);
+            rgba(0, 0, 0, 0.08),
+            10, 0, 0, 2);
 }
 
 .icono-container {
@@ -497,9 +481,66 @@
     -fx-max-width: 0;
 }
 
-.datepicker-interno .text-field {
+/* =========================
+   PIE CHART
+========================= */
+
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-background-radius: 24px;
+    -fx-border-radius: 24px;
+    -fx-effect: dropshadow(gaussian,
+            rgba(0, 0, 0, 0.08),
+            30,
+            0,
+            0,
+            8);
+}
+
+.chart-content {
+    -fx-padding: 15px;
+}
+
+.chart-title {
+    -fx-text-fill: #0F4C4A;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Fondo de la leyenda */
+.chart-legend {
     -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+    -fx-padding: 10px;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #000000;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 11px;
+}
+
+/* Estilo de los pedazos del pastel (Slices) */
+.default-color0.chart-pie { -fx-pie-color: #0F4C4A; }
+.default-color1.chart-pie { -fx-pie-color: #63dccb; }
+.default-color2.chart-pie { -fx-pie-color: #14615F; }
+.default-color3.chart-pie { -fx-pie-color: #8ff5e4; }
+.default-color4.chart-pie { -fx-pie-color: #000000; }
+
+.chart-pie {
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+.chart-pie-label {
+    -fx-fill: #0F4C4A;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: #0F4C4A;
+    -fx-stroke-width: 1px;
 }
