@@ -16,31 +16,31 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="800.0" prefWidth="1024.0" styleClass="root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ReporteGeneralController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" styleClass="root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.ReporteGeneralController">
    <stylesheets>
       <URL value="@ReporteGeneral.css" />
    </stylesheets>
    <children>
       <!-- Capa de Fondo: Círculos Decorativos -->
-      <AnchorPane mouseTransparent="true" prefHeight="800.0" prefWidth="1024.0">
+      <AnchorPane mouseTransparent="true" prefHeight="720.0" prefWidth="1000.0">
          <children>
             <!-- Círculos de arriba a la izquierda (Ondas) -->
-            <Circle centerX="0.0" centerY="0.0" radius="250.0" styleClass="circulo-1" />
-            <Circle centerX="0.0" centerY="0.0" radius="200.0" styleClass="circulo-2" />
-            <Circle centerX="0.0" centerY="0.0" radius="150.0" styleClass="circulo-3" />
-            <Circle centerX="0.0" centerY="0.0" radius="100.0" styleClass="circulo-7" /> <!-- El sólido pequeño -->
+            <Circle centerX="-20.0" centerY="-20.0" radius="250.0" styleClass="circulo-1" />
+            <Circle centerX="-20.0" centerY="-20.0" radius="200.0" styleClass="circulo-2" />
+            <Circle centerX="-20.0" centerY="-20.0" radius="150.0" styleClass="circulo-3" />
+            <Circle centerX="-20.0" centerY="-20.0" radius="100.0" styleClass="circulo-7" />
 
-            <!-- Círculos de abajo a la derecha (Radar/Media Luna) -->
-            <Circle centerX="1024.0" centerY="800.0" radius="450.0" styleClass="circulo-5" />
-            <Circle centerX="1024.0" centerY="800.0" radius="380.0" styleClass="circulo-6" />
-            <Circle centerX="1024.0" centerY="800.0" radius="300.0" styleClass="circulo-4" /> <!-- El sólido grande -->
+            <!-- Círculos de abajo a la derecha (Radar/Media Luna) - Movidos más hacia afuera -->
+            <Circle centerX="1050.0" centerY="750.0" radius="450.0" styleClass="circulo-5" />
+            <Circle centerX="1050.0" centerY="750.0" radius="380.0" styleClass="circulo-6" />
+            <Circle centerX="1050.0" centerY="750.0" radius="300.0" styleClass="circulo-4" />
          </children>
       </AnchorPane>
 
       <!-- Capa de Contenido Principal -->
-      <VBox alignment="TOP_CENTER" spacing="20.0">
+      <VBox alignment="TOP_CENTER" spacing="15.0">
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
          </padding>
          <children>
             <!-- Cabecera con botón regresar y título -->
@@ -59,7 +59,7 @@
             <!-- Sección Central: Tabla y Controles -->
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tbReporteGeneral" prefHeight="200.0" styleClass="table-view" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tbReporteGeneral" prefHeight="200.0" HBox.hgrow="ALWAYS" styleClass="table-view">
                     <columns>
                       <TableColumn fx:id="colNumeroCasa" prefWidth="107.0" text="Número de casa" />
                       <TableColumn fx:id="colNombrePropietario" prefWidth="199.0" text="Nombre del propietario" />
@@ -91,12 +91,12 @@
             <!-- Sección de Totales -->
             <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" maxWidth="Infinity" prefHeight="60.0" styleClass="card-central" text="Total recaudado del mes" HBox.hgrow="ALWAYS">
+                  <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" prefHeight="55.0" styleClass="card-central" text="Total recaudado del mes" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" maxWidth="Infinity" prefHeight="60.0" styleClass="card-central" text="Total recaudado del año" HBox.hgrow="ALWAYS">
+                  <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" prefHeight="55.0" styleClass="card-central" text="Total recaudado del año" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -107,8 +107,8 @@
             <!-- Sección de Gráficos -->
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <PieChart fx:id="charGraficaReporteGeneralMes" HBox.hgrow="ALWAYS" />
-                  <PieChart fx:id="charGraficaReporteGeneralAno" HBox.hgrow="ALWAYS" />
+                  <PieChart fx:id="charGraficaReporteGeneralMes" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                  <PieChart fx:id="charGraficaReporteGeneralAno" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                </children>
             </HBox>
          </children>
