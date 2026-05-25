@@ -9,7 +9,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
@@ -43,7 +42,7 @@
          </padding>
          <children>
             <!-- Cabecera con botón regresar -->
-            <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <HBox alignment="CENTER_RIGHT" spacing="20.0">
                <children>
                   <Button fx:id="btnCPPRegresar" mnemonicParsing="false" styleClass="boton-secundario" text="Regresar">
                      <font>
@@ -86,7 +85,6 @@
                            <Label styleClass="label-form" text="Del año:" />
                            <ChoiceBox fx:id="choiceBoxCPPFiltroAno" prefWidth="180.0" styleClass="combo-box" />
                         </VBox>
-                        <Region VBox.vgrow="ALWAYS" />
                         <Button fx:id="btnCPPGenerarReporte" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="boton-primario" text="Generar Reporte" />
                      </children>
                   </VBox>

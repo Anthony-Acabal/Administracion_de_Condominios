@@ -94,12 +94,12 @@
             <!-- Sección de Totales -->
             <HBox alignment="CENTER" maxWidth="Infinity" spacing="20.0">
                <children>
-                  <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" maxWidth="Infinity" prefHeight="65.0" prefWidth="500.0" styleClass="card-central" text="Total recaudado del mes" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                  <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" maxWidth="Infinity" prefHeight="55.0" prefWidth="500.0" styleClass="card-central" text="Total recaudado del mes" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" maxWidth="Infinity" prefHeight="65.0" prefWidth="500.0" styleClass="card-central" text="Total recaudado del año" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+                  <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" maxWidth="Infinity" prefHeight="55.0" prefWidth="500.0" styleClass="card-central" text="Total recaudado del año" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -108,7 +108,7 @@
             </HBox>
 
             <!-- Sección de Gráficos -->
-            <HBox maxWidth="Infinity" spacing="20.0" VBox.vgrow="ALWAYS">
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
                   <PieChart fx:id="charGraficaReporteGeneralMes" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
                   <PieChart fx:id="charGraficaReporteGeneralAno" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
