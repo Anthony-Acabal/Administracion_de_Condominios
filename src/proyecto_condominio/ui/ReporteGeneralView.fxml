@@ -46,8 +46,6 @@
             <!-- Cabecera con botón regresar y título -->
             <HBox alignment="CENTER_RIGHT" spacing="20.0">
                <children>
-                  <Label styleClass="titulo" text="Reporte General" />
-                  <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnReporteGeneralRegresar" mnemonicParsing="false" styleClass="boton-secundario" text="Regresar">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -55,11 +53,16 @@
                   </Button>
                </children>
             </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label styleClass="titulo" text="Reporte General" />
+               </children>
+            </HBox>
 
             <!-- Sección Central: Tabla y Controles -->
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView fx:id="tbReporteGeneral" prefHeight="200.0" HBox.hgrow="ALWAYS" styleClass="table-view">
+                  <TableView fx:id="tbReporteGeneral" prefHeight="200.0" styleClass="table-view" HBox.hgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colNumeroCasa" prefWidth="107.0" text="Número de casa" />
                       <TableColumn fx:id="colNombrePropietario" prefWidth="199.0" text="Nombre del propietario" />
@@ -91,12 +94,12 @@
             <!-- Sección de Totales -->
             <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" prefHeight="55.0" styleClass="card-central" text="Total recaudado del mes" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                  <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" maxWidth="Infinity" prefHeight="55.0" styleClass="card-central" text="Total recaudado del mes" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" prefHeight="55.0" styleClass="card-central" text="Total recaudado del año" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                  <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" maxWidth="Infinity" prefHeight="55.0" styleClass="card-central" text="Total recaudado del año" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -107,8 +110,8 @@
             <!-- Sección de Gráficos -->
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <PieChart fx:id="charGraficaReporteGeneralMes" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                  <PieChart fx:id="charGraficaReporteGeneralAno" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                  <PieChart fx:id="charGraficaReporteGeneralMes" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
+                  <PieChart fx:id="charGraficaReporteGeneralAno" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>
