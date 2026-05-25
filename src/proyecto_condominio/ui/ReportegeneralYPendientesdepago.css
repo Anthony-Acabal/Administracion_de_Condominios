@@ -1,22 +1,22 @@
 @font-face {
-    font-family: "Montserrat";
+    font-family: Montserrat;
     src: url("../fonts/Montserrat-Regular.ttf");
 }
 
 @font-face {
-    font-family: "Montserrat";
+    font-family: Montserrat;
     src: url("../fonts/Montserrat-Bold.ttf");
     font-weight: bold;
 }
 
 .root {
     -fx-background-color: #EAF7F4;
-    -fx-font-family: "Montserrat";
+    -fx-font-family: Montserrat;
 }
 
 .titulo {
     -fx-font-size: 30px;
-    -fx-font-family: "Montserrat";
+    -fx-font-family: Montserrat;
     -fx-font-weight: bold;
     -fx-text-fill: #000000;
 }
