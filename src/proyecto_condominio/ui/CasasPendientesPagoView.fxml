@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
@@ -16,33 +17,28 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" styleClass="root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.CasasPendientesPagoController">
    <stylesheets>
-      <URL value="@ReporteGeneral.css" />
+      <URL value="@ReportegeneralYPendientesdepago.css" />
    </stylesheets>
    <children>
-      <!-- Capa de Fondo: Círculos Decorativos -->
       <AnchorPane mouseTransparent="true" prefHeight="720.0" prefWidth="1000.0">
          <children>
-            <!-- Círculos de arriba a la izquierda -->
             <Circle centerX="-20.0" centerY="-20.0" radius="250.0" styleClass="circulo-1" />
             <Circle centerX="-20.0" centerY="-20.0" radius="200.0" styleClass="circulo-2" />
             <Circle centerX="-20.0" centerY="-20.0" radius="150.0" styleClass="circulo-3" />
             <Circle centerX="-20.0" centerY="-20.0" radius="100.0" styleClass="circulo-7" />
 
-            <!-- Círculos de abajo a la derecha -->
             <Circle centerX="1050.0" centerY="750.0" radius="450.0" styleClass="circulo-5" />
             <Circle centerX="1050.0" centerY="750.0" radius="380.0" styleClass="circulo-6" />
             <Circle centerX="1050.0" centerY="750.0" radius="300.0" styleClass="circulo-4" />
          </children>
       </AnchorPane>
 
-      <!-- Capa de Contenido Principal -->
       <VBox alignment="TOP_CENTER" spacing="15.0">
          <padding>
             <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
          </padding>
          <children>
-            <!-- Cabecera con botón regresar -->
-            <HBox alignment="CENTER_RIGHT" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
                <children>
                   <Button fx:id="btnCPPRegresar" mnemonicParsing="false" styleClass="boton-secundario" text="Regresar">
                      <font>
@@ -52,7 +48,6 @@
                </children>
             </HBox>
 
-            <!-- Título y Subtítulo -->
             <VBox alignment="CENTER" spacing="5.0">
                <children>
                   <Label styleClass="titulo" text="Casas Pendientes de Pago" />
@@ -60,7 +55,6 @@
                </children>
             </VBox>
 
-            <!-- Sección Central: Tabla y Controles -->
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
                   <TableView fx:id="tbCasasPendientesPago" prefHeight="200.0" styleClass="table-view" HBox.hgrow="ALWAYS">
@@ -85,13 +79,13 @@
                            <Label styleClass="label-form" text="Del año:" />
                            <ChoiceBox fx:id="choiceBoxCPPFiltroAno" prefWidth="180.0" styleClass="combo-box" />
                         </VBox>
+                        <Region VBox.vgrow="ALWAYS" />
                         <Button fx:id="btnCPPGenerarReporte" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="boton-primario" text="Generar Reporte" />
                      </children>
                   </VBox>
                </children>
             </HBox>
 
-            <!-- Sección de Resumen -->
             <HBox alignment="CENTER" maxWidth="Infinity">
                <children>
                   <Label fx:id="lblCPPCantidad" alignment="CENTER" maxWidth="Infinity" prefHeight="65.0" styleClass="card-central" text="Casas pendientes de pago: 0" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
