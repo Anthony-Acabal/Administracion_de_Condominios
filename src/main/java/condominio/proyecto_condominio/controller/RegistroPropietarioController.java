@@ -1,13 +1,8 @@
 package condominio.proyecto_condominio.controller;
 
-import condominio.proyecto_condominio.model.Conexion;
 import condominio.proyecto_condominio.model.Propietario;
 import condominio.proyecto_condominio.logic.RegistroPropietarioLogic;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
@@ -43,7 +38,7 @@ public class RegistroPropietarioController {
     private int idPropietarioExistente = -1;
     private String casaActualAlEditar = null; 
 
-    // Instancia de la capa lógica integrada
+    // Instancia única a la capa lógica. La UI ya no conoce al DAO.
     private final RegistroPropietarioLogic logic = new RegistroPropietarioLogic();
 
     public void cargarDatosPropietario(int id, String pNombre, String sNombre, String tNombre, 
@@ -70,71 +65,31 @@ public class RegistroPropietarioController {
     private void cargarCasasFiltroCoordinador() {
         cmbNumeroCasa.getItems().clear();
         
-        String sql = "SELECT numero_casa FROM Propietario WHERE estado = 'Activo'";
-        if (idPropietarioExistente != -1) {
-            sql += " AND id_propietario <> ?";
-        }
-
-        List<String> casasOcupadas = new ArrayList<>();
+        // Pide la lista limpia a la lógica sin procesar algoritmos visuales aquí
+        List<String> casasDisponibles = logic.obtenerCasasDisponibles(idPropietarioExistente, casaActualAlEditar);
         
-        // CORREGIDO: Usando el método getConexion() en español coincidiendo con tu clase Conexion
-        try (Connection con = Conexion.getConexion()) {
-            if (con != null) {
-                try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    if (idPropietarioExistente != -1) {
-                        ps.setInt(1, idPropietarioExistente);
-                    }
-                    try (ResultSet rs = ps.executeQuery()) {
-                        while (rs.next()) {
-                            casasOcupadas.add(rs.getString("numero_casa"));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error al filtrar casas: " + e.getMessage());
-        }
-
-        for (int i = 1; i <= 30; i++) {
-            String casaStr = String.valueOf(i);
-            if (!casasOcupadas.contains(casaStr)) {
-                cmbNumeroCasa.getItems().add(casaStr);
-            }
-        }
-        
-        if (casaActualAlEditar != null && !cmbNumeroCasa.getItems().contains(casaActualAlEditar)) {
-            cmbNumeroCasa.getItems().add(casaActualAlEditar);
-        }
-    }
-
-    private String formatearNombre(String texto) {
-        if (texto == null || texto.trim().isEmpty()) {
-            return "";
-        }
-        texto = texto.trim();
-        return texto.substring(0, 1).toUpperCase() + texto.substring(1).toLowerCase();
+        // El controlador solo dibuja en pantalla
+        cmbNumeroCasa.getItems().addAll(casasDisponibles);
     }
 
     @FXML
     void actionGuardar(ActionEvent event) {
-        // 1. Extraer y formatear datos de la interfaz
-        String primerNombre = formatearNombre(txtPrimerNombre.getText());
-        String segundoNombre = formatearNombre(txtSegundoNombre.getText());
-        String tercerNombre = formatearNombre(txtTercerNombre.getText());
-        String primerApellido = formatearNombre(txtPrimerApellido.getText());
-        String segundoApellido = formatearNombre(txtSegundoApellido.getText());
+        // Formateo delegado por completo a la capa Logic
+        String primerNombre = logic.formatearNombre(txtPrimerNombre.getText());
+        String segundoNombre = logic.formatearNombre(txtSegundoNombre.getText());
+        String tercerNombre = logic.formatearNombre(txtTercerNombre.getText());
+        String primerApellido = logic.formatearNombre(txtPrimerApellido.getText());
+        String segundoApellido = logic.formatearNombre(txtSegundoApellido.getText());
         
         String telefonoClean = txtNumeroTelefono.getText().trim().replace("-", ""); 
         String correo = txtCorreoElectronico.getText().trim();
         Object casaSeleccionada = cmbNumeroCasa.getValue();
         
-        // CORREGIDO: Cambiado a String para coincidir con el tipo esperado en el modelo Propietario
         String numeroCasa = "0";
         if (casaSeleccionada != null) {
             numeroCasa = casaSeleccionada.toString().replaceAll("[^0-9]", "");
         }
 
-        // 2. Construir el modelo Propietario para la capa lógica
         Propietario propietario = new Propietario();
         if (idPropietarioExistente != -1) {
             propietario.setIdPropietario(idPropietarioExistente);
@@ -148,14 +103,12 @@ public class RegistroPropietarioController {
         propietario.setTelefono(telefonoClean);
         propietario.setCorreoElectronico(correo);
 
-        // 3. Ejecutar validaciones en la capa Logic
         String errorValidacion = logic.validarPropietario(propietario);
         if (errorValidacion != null && !errorValidacion.isEmpty()) {
             mostrarAlerta("Validación de Registro", errorValidacion, AlertType.WARNING);
             return;
         }
 
-        // 4. Guardar mediante la capa Logic
         boolean exitoso = logic.guardarPropietario(propietario);
         if (exitoso) {
             if (idPropietarioExistente == -1) {
@@ -178,23 +131,15 @@ public class RegistroPropietarioController {
 
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            String sql = "UPDATE Propietario SET estado = 'Eliminado' WHERE id_propietario = ?";
             
-            // CORREGIDO: Usando el método getConexion() en español coincidiendo con tu clase Conexion
-            try (Connection con = Conexion.getConexion()) {
-                if (con != null) {
-                    try (PreparedStatement ps = con.prepareStatement(sql)) {
-                        ps.setInt(1, idPropietario);
-                        int afectadas = ps.executeUpdate();
-                        
-                        if (afectadas > 0) {
-                            mostrarAlerta("Baja Procesada", "El propietario ha sido cambiado a estado: Eliminado.", AlertType.INFORMATION);
-                            return true;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                mostrarAlerta("Error de Eliminación", "No se pudo cambiar el estado: " + e.getMessage(), AlertType.ERROR);
+            // Llamada 100% aislada a través de Logic. Cero instancias directas al DAO.
+            boolean eliminado = logic.darBajaLogicaPropietario(idPropietario);
+            
+            if (eliminado) {
+                mostrarAlerta("Baja Procesada", "El propietario ha sido cambiado a estado: Eliminado.", AlertType.INFORMATION);
+                return true;
+            } else {
+                mostrarAlerta("Error de Eliminación", "No se pudo cambiar el estado en la base de datos.", AlertType.ERROR);
             }
         }
         return false;

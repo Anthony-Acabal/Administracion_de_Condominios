@@ -4,6 +4,7 @@ import condominio.proyecto_condominio.model.Fecha;
 import condominio.proyecto_condominio.logic.InicioLogic;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,7 +13,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -32,7 +37,6 @@ public class InicioController implements Initializable {
     @FXML private Button irCasasMorosas;
     @FXML private Button cerrarSesion;
 
-    
     private final InicioLogic logic = new InicioLogic();
 
     @Override
@@ -51,7 +55,9 @@ public class InicioController implements Initializable {
 
     private void mostrarBienvenida(String administrador) {
         if (lblBienvenida != null) {
-            lblBienvenida.setText("BIENVENIDO " + administrador);
+            // Solicitamos el texto procesado a la capa Logic
+            String textoBienvenida = logic.generarMensajeBienvenida(administrador);
+            lblBienvenida.setText(textoBienvenida);
         }
     }
 
@@ -122,12 +128,30 @@ public class InicioController implements Initializable {
     private void cerrarSesion(ActionEvent event) {
         System.out.println("➔ [CLICK] Botón Cerrar Sesión presionado");
         
-        // Delegamos la confirmación a la capa lógica
-        if (logic.confirmarCierreSesion()) {
+        // Las alertas visuales pertenecen de forma estricta al Controlador
+        Alert alerta = new Alert(AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmación de Cierre");
+        alerta.setHeaderText(null);
+        alerta.setContentText("¿Estás seguro de cerrar sesión?");
+
+        ButtonType botonSi = new ButtonType("Sí");
+        ButtonType botonNo = new ButtonType("No");
+        alerta.getButtonTypes().setAll(botonSi, botonNo);
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        
+        if (resultado.isPresent() && resultado.get() == botonSi) {
             System.out.println("➔ [CONFIRMADO] Cerrando sesión...");
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                logic.cambiarPantalla(stage, "/condominio/proyecto_condominio/ui/Login.fxml", "Login");
+                
+                // La navegación de ventanas se ejecuta directamente en el Controller
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condominio/proyecto_condominio/ui/Login.fxml"));
+                Parent root = loader.load();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Login");
+                stage.show();
+                
             } catch (IOException e) {
                 System.out.println("X Error al salir: " + e.getMessage());
             }
