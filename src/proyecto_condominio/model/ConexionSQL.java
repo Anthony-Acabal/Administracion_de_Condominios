@@ -13,54 +13,47 @@ public class ConexionSQL {
         Connection conexion = dbCon.conectar(); 
         if (conexion == null) return null; 
 
-        String queryBuscar = "SELECT id_usuario, nombre, contrasena, primer_ingreso, rol, intentos_fallidos, bloqueado FROM Usuarios WHERE correo = ?";
-        
+        // CONSULTA REAL: Solo los 3 campos existentes en tu BD
+        String queryBuscar = "SELECT id_usuario, contrasena, id_rol FROM usuario WHERE correo = ?";
+
         try {
             PreparedStatement pst = conexion.prepareStatement(queryBuscar);
+            pst.setString(1, correo);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
                 int id = rs.getInt("id_usuario");
-                boolean estaBloqueado = rs.getBoolean("bloqueado");
-                int intentosActuales = rs.getInt("intentos_fallidos");
                 String claveReal = rs.getString("contrasena");
-                String nombre = rs.getString("nombre");
-                boolean primerIngreso = rs.getBoolean("primer_ingreso");
-                String rol = rs.getString("rol");
+                int idRol = rs.getInt("id_rol"); // Leemos el rol como entero puro (vale 1)
 
-                if (estaBloqueado) {
-                    System.out.println("Intento de acceso a cuenta bloqueada: " + correo);
-                    return new Usuario(id, nombre, correo, claveReal, primerIngreso, rol, intentosActuales, true);
-                }
-
+                // Comparación directa de contraseñas
                 if (claveReal.equals(contrasena)) {
-                    String queryReset = "UPDATE Usuarios SET intentos_fallidos = 0 WHERE correo = ?";
-                    PreparedStatement pstReset = conexion.prepareStatement(queryReset);
-                    pstReset.setString(1, correo);
-                    pstReset.executeUpdate();
+                    System.out.println("Login exitoso en BD. id_rol: " + idRol);
                     
-                    System.out.println("Login exitoso para: " + correo + ". Contador limpio.");
-                    Usuario usuarioLogueado = new Usuario(id, nombre, correo, claveReal, primerIngreso, rol, 0, false);
+                    // Datos locales en memoria (ya no se leen de la BD)
+                    String nombrePorDefecto = correo.split("@")[0]; 
+                    boolean primerIngresoLocal = false; 
+                    int intentosLocales = 0;
+                    boolean bloqueadoLocal = false;
+
+                    // NOTA: Si tu constructor de Usuario esperaba un String en el rol, 
+                    // pasamos String.valueOf(idRol) para que reciba el "1" sin romper el objeto.
+                    Usuario usuarioLogueado = new Usuario(
+                        id, 
+                        nombrePorDefecto, 
+                        correo, 
+                        claveReal, 
+                        primerIngresoLocal, 
+                        String.valueOf(idRol), // Pasa el 1 como texto para mantener la firma
+                        intentosLocales, 
+                        bloqueadoLocal
+                    );
+                    
                     Sesion.setUsuarioActual(usuarioLogueado);
                     return usuarioLogueado;
                     
                 } else {
-                    intentosActuales++;
-                    System.out.println("Contraseña incorrecta para: " + correo + ". Intento #" + intentosActuales);
-
-                    String queryUpdateIntentos;
-                    if (intentosActuales >= 3) {
-                        queryUpdateIntentos = "UPDATE Usuarios SET intentos_fallidos = ?, bloqueado = 1 WHERE correo = ?";
-                        System.out.println("¡Cuenta bloqueada automáticamente!: " + correo);
-                    } else {
-                        queryUpdateIntentos = "UPDATE Usuarios SET intentos_fallidos = ? WHERE correo = ?";
-                    }
-                    
-                    PreparedStatement pstUpdate = conexion.prepareStatement(queryUpdateIntentos);
-                    pstUpdate.setInt(1, intentosActuales);
-                    pstUpdate.setString(2, correo);
-                    pstUpdate.executeUpdate();
-                    
+                    System.out.println("Contraseña incorrecta para: " + correo);
                     return null; 
                 }
             } else {
@@ -84,13 +77,12 @@ public class ConexionSQL {
         if (conexion == null) return null; 
 
         String claveTemporal = "CONDO" + (int)(Math.random() * 9000 + 1000); 
-        String query = "UPDATE Usuarios SET contrasena = ?, primer_ingreso = 1, intentos_fallidos = 0, bloqueado = 0 WHERE nombre = ? AND correo = ?"; 
+        String query = "UPDATE usuario SET contrasena = ? WHERE correo = ?"; 
 
         try { 
             PreparedStatement pst = conexion.prepareStatement(query); 
             pst.setString(1, claveTemporal); 
-            pst.setString(2, usuario); 
-            pst.setString(3, correo); 
+            pst.setString(2, correo); 
 
             int filasAfectadas = pst.executeUpdate(); 
             if (filasAfectadas > 0) { 

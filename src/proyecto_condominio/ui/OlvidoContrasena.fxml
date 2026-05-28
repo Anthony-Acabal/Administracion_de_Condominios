@@ -1,22 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <StackPane prefHeight="600.0" prefWidth="800.0" styleClass="fondo-pane" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.OlvidoContrasenaController">
    <children>
-      <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="400.0" styleClass="card-central" StackPane.alignment="CENTER">
+      
+      <AnchorPane mouseTransparent="true" StackPane.alignment="CENTER">
          <children>
-            <TextField fx:id="txtUsuario" layoutX="71.0" layoutY="100.0" prefHeight="25.0" prefWidth="259.0" styleClass="text-field" />
-            <TextField fx:id="txtCorreo" layoutX="71.0" layoutY="200.0" prefHeight="25.0" prefWidth="259.0" styleClass="text-field" />
-            <Label fx:id="lblUsuario" layoutX="71.0" layoutY="75.0" prefHeight="19.0" prefWidth="84.0" styleClass="label-form" text="Usuario" />
-            <Label fx:id="lblCorreo" layoutX="71.0" layoutY="175.0" prefHeight="19.0" prefWidth="84.0" styleClass="label-form" text="Correo" />
-            <Button fx:id="btnGenerarClave" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#accionGenerarClave" styleClass="boton-primario" text="Generar Clave" />
-            <Button fx:id="btnRegresarLogin" layoutX="230.0" layoutY="350.0" mnemonicParsing="false" onAction="#accionRegresarLogin" styleClass="boton-primario" text="Regresar Login" />
-            <Label fx:id="lblMensaje" alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="270.0" prefHeight="17.0" prefWidth="214.0" styleClass="label-error" />
+            <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Circle centerX="-20.0" centerY="-20.0" radius="250.0" styleClass="circulo-1" />
+                  <Circle centerX="-20.0" centerY="-20.0" radius="200.0" styleClass="circulo-2" />
+                  <Circle centerX="-20.0" centerY="-20.0" radius="150.0" styleClass="circulo-3" />
+                  <Circle centerX="-20.0" centerY="-20.0" radius="100.0" styleClass="circulo-7" />
+               </children>
+            </AnchorPane>
+
+            <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Circle centerX="0.0" centerY="0.0" radius="450.0" styleClass="circulo-5" />
+                  <Circle centerX="0.0" centerY="0.0" radius="380.0" styleClass="circulo-6" />
+                  <Circle centerX="0.0" centerY="0.0" radius="300.0" styleClass="circulo-4" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="480.0" prefWidth="444.0" styleClass="card-central" StackPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" layoutY="1.0" prefHeight="567.0" prefWidth="766.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  
+                  <Label alignment="CENTER" prefHeight="39.0" styleClass="titulo" text="Recuperar Clave">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="lblUsuario" styleClass="label-form" text="Usuario" />
+                        <HBox fx:id="boxUsuario" alignment="CENTER_LEFT" prefHeight="35.0" spacing="10.0" style="-fx-border-color: #37767C; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-background-color: white;">
+                           <children>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../images/Icon Persona.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="txtUsuario" focusTraversable="false" prefHeight="35.0" promptText="Ingrese su usuario" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-box-shadow: none;" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="lblCorreo" styleClass="label-form" text="Correo" />
+                        <HBox fx:id="boxCorreo" alignment="CENTER_LEFT" prefHeight="35.0" spacing="10.0" style="-fx-border-color: #37767C; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-background-color: white;">
+                           <children>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../images/Icon Mail.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="txtCorreo" focusTraversable="false" prefHeight="35.0" promptText="Ingrese su correo electrónico" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-box-shadow: none;" HBox.hgrow="ALWAYS">
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <Label fx:id="lblMensaje" alignment="CENTER" prefHeight="17.0" prefWidth="382.0" styleClass="label-error" textFill="#f20b0b" />
+                  
+                  <HBox alignment="CENTER" spacing="20.0">
+                     <children>
+                        <Button fx:id="btnGenerarClave" mnemonicParsing="false" onAction="#accionGenerarClave" prefHeight="30.0" prefWidth="140.0" styleClass="boton-primario" text="Generar Clave" />
+                        <Button fx:id="btnRegresarLogin" mnemonicParsing="false" onAction="#accionRegresarLogin" prefHeight="30.0" prefWidth="140.0" styleClass="boton-primario" text="Regresar Login" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </HBox>
+                  
+               </children>
+               <padding>
+                  <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+               </padding>
+            </VBox>
          </children>
       </AnchorPane>
    </children>

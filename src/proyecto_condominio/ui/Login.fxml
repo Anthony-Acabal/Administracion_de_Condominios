@@ -7,29 +7,104 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="519.0" prefWidth="615.0" styleClass="fondo-pane" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.LoginController">
+<StackPane prefHeight="519.0" prefWidth="615.0" styleClass="fondo-pane" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_condominio.ui.LoginController">
    <children>
+
+      <AnchorPane mouseTransparent="true" StackPane.alignment="CENTER">
+         <children>
+            
+            <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Circle centerX="-20.0" centerY="-20.0" radius="250.0" styleClass="circulo-1" />
+                  <Circle centerX="-20.0" centerY="-20.0" radius="200.0" styleClass="circulo-2" />
+                  <Circle centerX="-20.0" centerY="-20.0" radius="150.0" styleClass="circulo-3" />
+                  <Circle centerX="-20.0" centerY="-20.0" radius="100.0" styleClass="circulo-7" />
+               </children>
+            </AnchorPane>
+
+            <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Circle centerX="0.0" centerY="0.0" radius="450.0" styleClass="circulo-5" />
+                  <Circle centerX="0.0" centerY="0.0" radius="380.0" styleClass="circulo-6" />
+                  <Circle centerX="0.0" centerY="0.0" radius="300.0" styleClass="circulo-4" />
+               </children>
+            </AnchorPane>
+            
+         </children>
+      </AnchorPane>
+
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="456.0" prefWidth="444.0" styleClass="card-central" stylesheets="@../css/styles.css" StackPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" focusTraversable="true" layoutY="1.0" prefHeight="567.0" prefWidth="766.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
+                  
                   <Label alignment="CENTER" prefHeight="39.0" prefWidth="112.0" styleClass="titulo" text="Login">
                      <font>
                         <Font size="31.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtCorreo" focusTraversable="false" prefHeight="27.0" prefWidth="649.0" promptText="Correo electrónico" styleClass="campo-texto">
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                  </TextField>
-                  <PasswordField fx:id="txtContrasena" prefHeight="27.0" prefWidth="240.0" promptText="Contraseña" styleClass="campo-texto" />
-                  <Label fx:id="lblMensajeError" alignment="CENTER" prefHeight="17.0" prefWidth="382.0" styleClass="label-error" />
+
+                  <HBox fx:id="boxCorreo" alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="649.0" spacing="10.0" style="-fx-border-color: #37767C; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-background-color: white;">
+                     <children>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/Icon Mail.png" />
+                           </image>
+                        </ImageView>
+                        <TextField fx:id="txtCorreo" focusTraversable="false" prefHeight="35.0" promptText="Correo electrónico" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-box-shadow: none;" HBox.hgrow="ALWAYS">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </TextField>
+                     </children>
+                  </HBox>       
+
+                  <HBox fx:id="boxContrasena" alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="649.0" spacing="10.0" style="-fx-border-color: #37767C; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-background-color: white;">
+                     <children>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/Icon Contrasena.png" />
+                           </image>
+                        </ImageView>
+                        
+                        <StackPane HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="txtContrasenaVisible" focusTraversable="false" prefHeight="35.0" promptText="Contraseña" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-box-shadow: none;" visible="false" />
+                              <PasswordField fx:id="txtContrasena" focusTraversable="false" prefHeight="35.0" promptText="Contraseña" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-box-shadow: none;" />
+                           </children>
+                        </StackPane>
+                        
+                        <Button fx:id="btnMostrarContrasena" mnemonicParsing="false" onAction="#accionMostrarContrasena" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                           <graphic>
+                              <ImageView fx:id="imgOjito" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Icon Ojo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+
+                  <Label fx:id="lblMensajeError" alignment="CENTER" prefHeight="17.0" prefWidth="382.0" styleClass="label-error" textFill="#f20b0b" />
                   <Hyperlink onAction="#accionOlvidoContrasena" styleClass="label-form" text="¿Olvidó su contraseña?" textFill="#0f4c4a" />
                   <Button fx:id="btnIngresar" mnemonicParsing="false" onAction="#accionIngresar" prefHeight="27.0" prefWidth="100.0" styleClass="boton-primario" text="Ingresar" />
                </children>
