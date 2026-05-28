@@ -26,11 +26,7 @@ import javafx.application.Platform;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import condominio.proyecto_condominio.dao.Conexion;
+import condominio.proyecto_condominio.dao.ConfiguracionCuotaDAO;
 
 import condominio.proyecto_condominio.model.Cuota;
 
@@ -43,6 +39,9 @@ public class ConfiguracionCuotaViewController
         implements Initializable {
 
     private Cuota cuota = new Cuota();
+
+    private ConfiguracionCuotaDAO cuotaDAO
+            = new ConfiguracionCuotaDAO();
 
     @FXML
     private TextField txtCuotaMensual;
@@ -238,33 +237,14 @@ public class ConfiguracionCuotaViewController
         }
 
         int idUsuario = 1;
-        String sql = """
-                     
-            INSERT INTO cuota
-            (
-                cuota,
-                id_estado,
-                id_usuario_creacion,
-                fecha_creacion
-            )
-            VALUES (?, ?, ?, GETDATE())
-        """;
 
-        try (
-                Connection conn
-                = Conexion.getConnection(); PreparedStatement ps
-                = conn.prepareStatement(sql);) {
+        boolean guardado
+                = cuotaDAO.guardarCuota(
+                        cuota,
+                        idUsuario
+                );
 
-            ps.setDouble(
-                    1,
-                    cuota.getMontoCuota()
-            );
-
-            ps.setInt(2, 18);
-
-            ps.setInt(3, idUsuario);
-
-            ps.executeUpdate();
+        if (guardado) {
 
             mostrarExito();
 
@@ -285,106 +265,50 @@ public class ConfiguracionCuotaViewController
 
             txtNuevaCuota.clear();
 
-            btnGuardar.setDisable(false);
+        } else {
 
-            btnGuardar.requestFocus();
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    e.getMessage()
+            mostrarAdvertencia(
+                    "Error",
+                    "No se pudo guardar la cuota",
+                    "Ocurrió un error al actualizar la cuota."
             );
-
-            btnGuardar.setDisable(false);
         }
+
+        btnGuardar.setDisable(false);
+
+        btnGuardar.requestFocus();
     }
 
     private void cargarCuotaActual() {
 
-        String sql = """
-            SELECT TOP 1 cuota
-            FROM cuota
-            ORDER BY id_cuota DESC
-        """;
+        double ultimaCuota
+                = cuotaDAO.obtenerUltimaCuota();
 
-        try (
-                Connection conn
-                = Conexion.getConnection(); PreparedStatement ps
-                = conn.prepareStatement(sql); ResultSet rs
-                = ps.executeQuery();) {
+        cuota.setMontoCuota(ultimaCuota);
 
-            if (rs.next()) {
+        txtCuotaMensual.setText(
+                "Q" + cuota.getMontoCuota()
+        );
 
-                cuota.setMontoCuota(
-                        rs.getDouble(
-                                "cuota"
-                        )
-                );
-
-                txtCuotaMensual.setText(
-                        "Q"
-                        + cuota.getMontoCuota()
-                );
-
-                calcularRecaudacion();
-
-            } else {
-
-                txtCuotaMensual.setText(
-                        "Q0"
-                );
-
-                calcularRecaudacion();
-            }
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    e.getMessage()
-            );
-        }
+        calcularRecaudacion();
     }
 
     private void calcularRecaudacion() {
 
-        String sql = """
-            SELECT COUNT(*) AS total_casas
-            FROM propietario
-        """;
+        int totalCasas
+                = cuotaDAO.obtenerTotalCasas();
 
-        try (
-                Connection conn
-                = Conexion.getConnection(); PreparedStatement ps
-                = conn.prepareStatement(sql); ResultSet rs
-                = ps.executeQuery();) {
+        double recaudacion
+                = totalCasas
+                * cuota.getMontoCuota();
 
-            if (rs.next()) {
-
-                int totalCasas
-                        = rs.getInt(
-                                "total_casas"
-                        );
-
-                double recaudacion
-                        = totalCasas
-                        * cuota.getMontoCuota();
-
-                txtRecaudacionMensual
-                        .setText(
-                                "Q"
-                                + String.format(
-                                        "%,.2f",
-                                        recaudacion
-                                )
-                        );
-            }
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    e.getMessage()
-            );
-        }
+        txtRecaudacionMensual.setText(
+                "Q"
+                + String.format(
+                        "%,.2f",
+                        recaudacion
+                )
+        );
     }
 
     private void mostrarAdvertencia(

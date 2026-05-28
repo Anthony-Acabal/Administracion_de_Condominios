@@ -1,7 +1,6 @@
 package condominio.proyecto_condominio.controller;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -14,22 +13,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Label;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import condominio.proyecto_condominio.model.HistorialPago;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import condominio.proyecto_condominio.dao.Conexion;
-
 import javafx.stage.Stage;
+
+import condominio.proyecto_condominio.logic.HistorialPagoLogic;
+import condominio.proyecto_condominio.model.HistorialPago;
 
 public class HistorialPagosViewController
         implements Initializable {
@@ -70,6 +64,9 @@ public class HistorialPagosViewController
     private ObservableList<HistorialPago> listaPagos
             = FXCollections.observableArrayList();
 
+    private HistorialPagoLogic historialLogic
+            = new HistorialPagoLogic();
+
     @FXML
     private void cerrarVentana() {
 
@@ -86,34 +83,46 @@ public class HistorialPagosViewController
             URL url,
             ResourceBundle rb
     ) {
-        tblPagos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        tblPagos.setColumnResizePolicy(
+                TableView.CONSTRAINED_RESIZE_POLICY
+        );
 
         colCasa.setCellValueFactory(
                 new PropertyValueFactory<>("casa")
         );
+
         colCasa.setReorderable(false);
-
-        colPropietario.setReorderable(false);
-
-        colFecha.setReorderable(false);
-
-        colMonto.setReorderable(false);
-
-        colComprobante.setSortable(false);
-
-        colComprobante.setReorderable(false);
 
         colPropietario.setCellValueFactory(
                 new PropertyValueFactory<>("propietario")
         );
 
+        colPropietario.setReorderable(false);
+
         colFecha.setCellValueFactory(
                 new PropertyValueFactory<>("fecha")
         );
 
+        colFecha.setReorderable(false);
+
+        colMonto.setCellValueFactory(
+                new PropertyValueFactory<>("monto")
+        );
+
+        colMonto.setReorderable(false);
+
+        colComprobante.setCellValueFactory(
+                new PropertyValueFactory<>("comprobante")
+        );
+
+        colComprobante.setSortable(false);
+
+        colComprobante.setReorderable(false);
+
         colFecha.setCellFactory(
                 columna -> new TableCell<
-        HistorialPago, String>() {
+                HistorialPago, String>() {
 
             @Override
             protected void updateItem(
@@ -126,7 +135,8 @@ public class HistorialPagosViewController
                         empty
                 );
 
-                if (empty || fecha == null) {
+                if (empty
+                        || fecha == null) {
 
                     setText(null);
 
@@ -136,68 +146,6 @@ public class HistorialPagosViewController
 
                     setStyle(
                             "-fx-alignment: CENTER-RIGHT;"
-                    );
-                }
-            }
-        }
-        );
-
-        colMonto.setCellValueFactory(
-                new PropertyValueFactory<>("monto")
-        );
-
-        colComprobante.setCellValueFactory(
-                new PropertyValueFactory<>("comprobante")
-        );
-
-        colComprobante.setCellFactory(
-                columna -> new TableCell<
-                HistorialPago, String>() {
-
-            private final Button btnImprimir
-                    = new Button(
-                            "Imprimir"
-                    );
-
-            {
-
-                btnImprimir.setOnAction(
-                        event -> {
-
-                            HistorialPago pago
-                            = getTableView()
-                                    .getItems()
-                                    .get(getIndex());
-
-                            // TODO:
-                            // Agregar aquí la lógica del botón de impresión
-                        }
-                );
-            }
-
-            @Override
-            protected void updateItem(
-                    String item,
-                    boolean empty
-            ) {
-
-                super.updateItem(
-                        item,
-                        empty
-                );
-
-                if (empty) {
-
-                    setGraphic(null);
-
-                } else {
-
-                    setGraphic(
-                            btnImprimir
-                    );
-
-                    setStyle(
-                            "-fx-alignment: CENTER;"
                     );
                 }
             }
@@ -242,6 +190,56 @@ public class HistorialPagosViewController
         }
         );
 
+        colComprobante.setCellFactory(
+                columna -> new TableCell<
+                HistorialPago, String>() {
+
+            private final Button btnImprimir
+                    = new Button("Imprimir");
+
+            {
+
+                btnImprimir.setOnAction(
+                        event -> {
+
+                            HistorialPago pago
+                                    = getTableView()
+                                            .getItems()
+                                            .get(getIndex());
+
+                            // TODO:
+                            // Lógica impresión
+                        }
+                );
+            }
+
+            @Override
+            protected void updateItem(
+                    String item,
+                    boolean empty
+            ) {
+
+                super.updateItem(
+                        item,
+                        empty
+                );
+
+                if (empty) {
+
+                    setGraphic(null);
+
+                } else {
+
+                    setGraphic(btnImprimir);
+
+                    setStyle(
+                            "-fx-alignment: CENTER;"
+                    );
+                }
+            }
+        }
+        );
+
         cargarCombos();
 
         buscarPagos();
@@ -261,10 +259,9 @@ public class HistorialPagosViewController
                 lblPlaceholder
         );
 
-        cbAnio.setOnAction(event -> {
-
-            cargarMeses();
-        });
+        cbAnio.setOnAction(
+                event -> cargarMeses()
+        );
     }
 
     private void cargarCombos() {
@@ -273,38 +270,9 @@ public class HistorialPagosViewController
                 "Todas las casas"
         );
 
-        String sqlCasas = """
-
-            SELECT DISTINCT numero_casa
-
-            FROM propietario
-
-            ORDER BY numero_casa ASC
-        """;
-
-        try (
-                Connection conn
-                = Conexion.getConnection(); PreparedStatement ps
-                = conn.prepareStatement(
-                        sqlCasas
-                ); ResultSet rs
-                = ps.executeQuery()) {
-
-            while (rs.next()) {
-
-                cbCasa.getItems().add(
-                        String.valueOf(
-                                rs.getInt(
-                                        "numero_casa"
-                                )
-                        )
-                );
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
+        cbCasa.getItems().addAll(
+                historialLogic.obtenerCasas()
+        );
 
         cbCasa.getSelectionModel()
                 .selectFirst();
@@ -317,9 +285,11 @@ public class HistorialPagosViewController
                 = LocalDate.now()
                         .getYear();
 
-        for (int i = 2026;
+        for (
+                int i = 2026;
                 i <= anioActual;
-                i++) {
+                i++
+        ) {
 
             cbAnio.getItems().add(
                     String.valueOf(i)
@@ -342,55 +312,16 @@ public class HistorialPagosViewController
 
         listaPagos.clear();
 
-        String sql = """
-            SELECT
+        String casa = cbCasa.getValue();
 
-                p.numero_casa,
+        String mes = cbMes.getValue();
 
-                p.primer_nombre
-                + ' ' +
-                p.segundo_nombre
-                + ' ' +
-                p.primer_apellido
-                + ' ' +
-                p.segundo_apellido
-                AS propietario,
+        String anio = cbAnio.getValue();
 
-                pc.fecha_pago,
-
-                c.cuota,
-
-                pc.imprime_comprobante
-
-            FROM pago_cuota pc
-
-            INNER JOIN propietario p
-                ON pc.id_propietario =
-                   p.id_propietario
-
-            INNER JOIN cuota c
-                ON pc.id_cuota =
-                   c.id_cuota
-
-            WHERE 1=1
-        """;
-
-        String casa
-                = cbCasa.getValue();
-
-        String mes
-                = cbMes.getValue();
-
-        String anio
-                = cbAnio.getValue();
-
-        if (mes != null
-                && !mes.equals(
-                        "Todos los meses"
-                )
-                && anio.equals(
-                        "Todos los años"
-                )) {
+        if (!historialLogic.validarMesAnio(
+                mes,
+                anio
+        )) {
 
             Alert alerta = new Alert(
                     Alert.AlertType.WARNING
@@ -411,119 +342,29 @@ public class HistorialPagosViewController
             return;
         }
 
-        if (casa != null
-                && !casa.equals(
-                        "Todas las casas"
-                )) {
+        listaPagos.addAll(
+                historialLogic.filtrarPagos(
+                        casa,
+                        mes,
+                        anio
+                )
+        );
 
-            sql
-                    += " AND p.numero_casa = ?";
-        }
+        tblPagos.setItems(
+                listaPagos
+        );
 
-        if (!mes.equals(
-                "Todos los meses"
-        )) {
+        tblPagos.getSortOrder().clear();
 
-            sql
-                    += " AND MONTH(pc.fecha_pago) = ?";
-        }
+        tblPagos.getSortOrder().add(
+                colFecha
+        );
 
-        if (!anio.equals(
-                "Todos los años"
-        )) {
+        colFecha.setSortType(
+                TableColumn.SortType.DESCENDING
+        );
 
-            sql
-                    += " AND YEAR(pc.fecha_pago) = ?";
-        }
-        try (
-                Connection conn
-                = Conexion.getConnection(); PreparedStatement ps
-                = conn.prepareStatement(sql)) {
-
-            int index = 1;
-
-            if (casa != null
-                    && !casa.equals(
-                            "Todas las casas"
-                    )) {
-
-                ps.setInt(
-                        index++,
-                        Integer.parseInt(casa)
-                );
-            }
-
-            if (!mes.equals(
-                    "Todos los meses"
-            )) {
-
-                int numeroMes
-                        = cbMes.getSelectionModel()
-                                .getSelectedIndex();
-
-                ps.setInt(
-                        index++,
-                        numeroMes
-                );
-            }
-
-            if (!anio.equals(
-                    "Todos los años"
-            )) {
-
-                ps.setInt(
-                        index++,
-                        Integer.parseInt(anio)
-                );
-            }
-
-            ResultSet rs
-                    = ps.executeQuery();
-
-            while (rs.next()) {
-
-                String fecha
-                        = new SimpleDateFormat(
-                                "dd/MM/yyyy"
-                        ).format(
-                                rs.getTimestamp(
-                                        "fecha_pago"
-                                )
-                        );
-                listaPagos.add(
-                        new HistorialPago(
-                                rs.getInt(
-                                        "numero_casa"
-                                ),
-                                rs.getString(
-                                        "propietario"
-                                ),
-                                fecha,
-                                rs.getDouble(
-                                        "cuota"
-                                ),
-                                rs.getString(
-                                        "imprime_comprobante"
-                                )
-                        )
-                );
-            }
-
-            tblPagos.setItems(
-                    listaPagos
-            );
-            tblPagos.getSortOrder().add(colFecha);
-
-            colFecha.setSortType(
-                    TableColumn.SortType.DESCENDING
-            );
-
-            tblPagos.sort();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
+        tblPagos.sort();
     }
 
     private void cargarMeses() {
@@ -568,21 +409,26 @@ public class HistorialPagosViewController
             limiteMes
                     = LocalDate.now()
                             .getMonthValue();
-        } else if (Integer.parseInt(
-                anioSeleccionado
-        ) == anioActual) {
+
+        } else if (
+                Integer.parseInt(anioSeleccionado)
+                == anioActual
+        ) {
 
             limiteMes
                     = LocalDate.now()
                             .getMonthValue();
+
         } else {
 
             limiteMes = 12;
         }
 
-        for (int i = 0;
+        for (
+                int i = 0;
                 i < limiteMes;
-                i++) {
+                i++
+        ) {
 
             cbMes.getItems().add(
                     meses[i]
@@ -590,10 +436,9 @@ public class HistorialPagosViewController
         }
 
         if (mesSeleccionado != null
-                && cbMes.getItems()
-                        .contains(
-                                mesSeleccionado
-                        )) {
+                && cbMes.getItems().contains(
+                        mesSeleccionado
+                )) {
 
             cbMes.setValue(
                     mesSeleccionado
