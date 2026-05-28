@@ -8,3 +8,5 @@ dist/
 *.class
 *.log
 nbproject/private/
+ConexionSQL.java
+dbConnection.java
