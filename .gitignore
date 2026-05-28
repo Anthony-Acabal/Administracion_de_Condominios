@@ -1,12 +1,52 @@
-/build/
-/dist/
-nbproject/private/
-/src/proyecto_condominio (2)/proyecto_condominio/target/
+# =================================================================
+# ARCHIVOS PRIVADOS, COMPILADOS Y PLANTILLAS BASE (NO SE SUBEN)
+# =================================================================
 target/
+objetivo/
+nbproject/private/
 build/
 dist/
 *.class
-*.log
-nbproject/private/
-ConexionSQL.java
-dbConnection.java
+
+# Bloquear archivos base que genera NetBeans automáticamente
+src/main/java/condominio/proyecto_condominio/App.java
+src/main/java/condominio/proyecto_condominio/App_2.java
+src/main/java/condominio/proyecto_condominio/SystemInfo.java
+src/main/java/condominio/proyecto_condominio/module-info.java
+nb-configuration.xml
+nbactions.xml
+
+# =================================================================
+# MODEL: Bloquea todo, SOLO sube lo tuyo (CONEXIÓN QUEDA BLOQUEADA)
+# =================================================================
+src/main/java/condominio/proyecto_condominio/model/*
+!src/main/java/condominio/proyecto_condominio/model/Inicio.java
+!src/main/java/condominio/proyecto_condominio/model/Propietario.java
+!src/main/java/condominio/proyecto_condominio/model/Fecha.java
+
+# =================================================================
+# DAO: Bloquea todo, SOLO sube lo tuyo
+# =================================================================
+src/main/java/condominio/proyecto_condominio/dao/*
+!src/main/java/condominio/proyecto_condominio/dao/RegistroPropietarioDAO.java
+
+# =================================================================
+# CONTROLLER: Bloquea todo, SOLO sube lo tuyo
+# =================================================================
+src/main/java/condominio/proyecto_condominio/controller/*
+!src/main/java/condominio/proyecto_condominio/controller/InicioController.java
+!src/main/java/condominio/proyecto_condominio/controller/RegistroPropietarioController.java
+
+# =================================================================
+# UI: Bloquea todo, SOLO sube tus pantallas
+# =================================================================
+src/main/java/condominio/proyecto_condominio/ui/*
+!src/main/java/condominio/proyecto_condominio/ui/Inicio.fxml
+!src/main/java/condominio/proyecto_condominio/ui/RegistroPropietario.fxml
+
+# =================================================================
+# LOGIC: Bloquea todo, SOLO sube lo tuyo
+# =================================================================
+src/main/java/condominio/proyecto_condominio/logic/*
+!src/main/java/condominio/proyecto_condominio/logic/InicioLogic.java
+!src/main/java/condominio/proyecto_condominio/logic/RegistroPropietarioLogic.java
