@@ -1,10 +1,8 @@
 # Archivos de configuración y credenciales locales
 Config.java
 Conexion.java
-build.xml
-manifest.mf
-nbactions.xml
-pom.xml
+CasasPendientesPagoLauncher.java
+ReporteGeneralLauncher.java
 
 # Directorios de compilación y empaquetado
 target/
@@ -23,3 +21,4 @@ Recursos/
 App.java
 Pruebas.jrxml
 PrimaryController.java
+db-context.txt
