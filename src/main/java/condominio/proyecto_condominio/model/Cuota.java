@@ -18,6 +18,22 @@ public class Cuota {
 
     }
 
+<<<<<<< HEAD
+=======
+    public Cuota(
+            int idCuota,
+            double montoCuota,
+            double recaudacionMensual,
+            String usuarioModificacion
+    ) {
+
+        this.idCuota = idCuota;
+        this.montoCuota = montoCuota;
+        this.recaudacionMensual = recaudacionMensual;
+        this.usuarioModificacion = usuarioModificacion;
+    }
+
+>>>>>>> origin/main
     public int getIdCuota() {
         return idCuota;
     }
@@ -55,4 +71,18 @@ public class Cuota {
         this.usuarioModificacion
                 = usuarioModificacion;
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public String toString() {
+
+        return "Cuota{"
+                + "idCuota=" + idCuota
+                + ", montoCuota=" + montoCuota
+                + ", recaudacionMensual=" + recaudacionMensual
+                + ", usuarioModificacion=" + usuarioModificacion
+                + '}';
+    }
+>>>>>>> origin/main
 }

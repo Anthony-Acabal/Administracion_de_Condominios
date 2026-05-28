@@ -9,6 +9,14 @@ import java.util.ArrayList;
 public class RegistroPagoCuotaLogic {
 
     private RegistroPagoCuotaDAO pagoDAO = new RegistroPagoCuotaDAO();
+<<<<<<< HEAD
+=======
+    
+    public double obtenerCuotaActual() {
+
+    return pagoDAO.obtenerUltimaCuota();
+}
+>>>>>>> origin/main
 
     private final String[] meses = {
         "Enero",

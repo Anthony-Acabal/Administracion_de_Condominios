@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+=======
+>>>>>>> origin/main
 package condominio.proyecto_condominio.model;
 
 public class Propietario {
@@ -28,6 +31,32 @@ public class Propietario {
 
     }
 
+<<<<<<< HEAD
+=======
+    public Propietario(
+            int idPropietario,
+            int numeroCasa,
+            String primerNombre,
+            String segundoNombre,
+            String tercerNombre,
+            String primerApellido,
+            String segundoApellido,
+            String telefono,
+            String correoElectronico
+    ) {
+
+        this.idPropietario = idPropietario;
+        this.numeroCasa = numeroCasa;
+        this.primerNombre = primerNombre;
+        this.segundoNombre = segundoNombre;
+        this.tercerNombre = tercerNombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.telefono = telefono;
+        this.correoElectronico = correoElectronico;
+    }
+
+>>>>>>> origin/main
     public int getIdPropietario() {
         return idPropietario;
     }
@@ -99,4 +128,8 @@ public class Propietario {
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

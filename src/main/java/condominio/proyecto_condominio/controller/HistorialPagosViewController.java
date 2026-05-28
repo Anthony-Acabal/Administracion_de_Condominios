@@ -1,7 +1,10 @@
 package condominio.proyecto_condominio.controller;
 
 import java.net.URL;
+<<<<<<< HEAD
 import java.text.SimpleDateFormat;
+=======
+>>>>>>> origin/main
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -14,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+<<<<<<< HEAD
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,6 +35,20 @@ import condominio.proyecto_condominio.dao.Conexion;
 
 import javafx.stage.Stage;
 
+=======
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import javafx.stage.Stage;
+
+import condominio.proyecto_condominio.logic.HistorialPagoLogic;
+import condominio.proyecto_condominio.model.HistorialPago;
+
+>>>>>>> origin/main
 public class HistorialPagosViewController
         implements Initializable {
 
@@ -70,6 +88,12 @@ public class HistorialPagosViewController
     private ObservableList<HistorialPago> listaPagos
             = FXCollections.observableArrayList();
 
+<<<<<<< HEAD
+=======
+    private HistorialPagoLogic historialLogic
+            = new HistorialPagoLogic();
+
+>>>>>>> origin/main
     @FXML
     private void cerrarVentana() {
 
@@ -86,11 +110,19 @@ public class HistorialPagosViewController
             URL url,
             ResourceBundle rb
     ) {
+<<<<<<< HEAD
         tblPagos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+=======
+
+        tblPagos.setColumnResizePolicy(
+                TableView.CONSTRAINED_RESIZE_POLICY
+        );
+>>>>>>> origin/main
 
         colCasa.setCellValueFactory(
                 new PropertyValueFactory<>("casa")
         );
+<<<<<<< HEAD
         colCasa.setReorderable(false);
 
         colPropietario.setReorderable(false);
@@ -103,17 +135,49 @@ public class HistorialPagosViewController
 
         colComprobante.setReorderable(false);
 
+=======
+
+        colCasa.setReorderable(false);
+
+>>>>>>> origin/main
         colPropietario.setCellValueFactory(
                 new PropertyValueFactory<>("propietario")
         );
 
+<<<<<<< HEAD
+=======
+        colPropietario.setReorderable(false);
+
+>>>>>>> origin/main
         colFecha.setCellValueFactory(
                 new PropertyValueFactory<>("fecha")
         );
 
+<<<<<<< HEAD
         colFecha.setCellFactory(
                 columna -> new TableCell<
         HistorialPago, String>() {
+=======
+        colFecha.setReorderable(false);
+
+        colMonto.setCellValueFactory(
+                new PropertyValueFactory<>("monto")
+        );
+
+        colMonto.setReorderable(false);
+
+        colComprobante.setCellValueFactory(
+                new PropertyValueFactory<>("comprobante")
+        );
+
+        colComprobante.setSortable(false);
+
+        colComprobante.setReorderable(false);
+
+        colFecha.setCellFactory(
+                columna -> new TableCell<
+                HistorialPago, String>() {
+>>>>>>> origin/main
 
             @Override
             protected void updateItem(
@@ -126,7 +190,12 @@ public class HistorialPagosViewController
                         empty
                 );
 
+<<<<<<< HEAD
                 if (empty || fecha == null) {
+=======
+                if (empty
+                        || fecha == null) {
+>>>>>>> origin/main
 
                     setText(null);
 
@@ -142,6 +211,7 @@ public class HistorialPagosViewController
         }
         );
 
+<<<<<<< HEAD
         colMonto.setCellValueFactory(
                 new PropertyValueFactory<>("monto")
         );
@@ -204,6 +274,8 @@ public class HistorialPagosViewController
         }
         );
 
+=======
+>>>>>>> origin/main
         colMonto.setCellFactory(
                 columna -> new TableCell<
                 HistorialPago, Double>() {
@@ -242,6 +314,59 @@ public class HistorialPagosViewController
         }
         );
 
+<<<<<<< HEAD
+=======
+        colComprobante.setCellFactory(
+                columna -> new TableCell<
+                HistorialPago, String>() {
+
+            private final Button btnImprimir
+                    = new Button("Imprimir");
+
+            {
+
+                btnImprimir.setOnAction(
+                        event -> {
+
+                            HistorialPago pago
+                                    = getTableView()
+                                            .getItems()
+                                            .get(getIndex());
+
+                            // TODO:
+                            // Lógica impresión
+                        }
+                );
+            }
+
+            @Override
+            protected void updateItem(
+                    String item,
+                    boolean empty
+            ) {
+
+                super.updateItem(
+                        item,
+                        empty
+                );
+
+                if (empty) {
+
+                    setGraphic(null);
+
+                } else {
+
+                    setGraphic(btnImprimir);
+
+                    setStyle(
+                            "-fx-alignment: CENTER;"
+                    );
+                }
+            }
+        }
+        );
+
+>>>>>>> origin/main
         cargarCombos();
 
         buscarPagos();
@@ -261,10 +386,16 @@ public class HistorialPagosViewController
                 lblPlaceholder
         );
 
+<<<<<<< HEAD
         cbAnio.setOnAction(event -> {
 
             cargarMeses();
         });
+=======
+        cbAnio.setOnAction(
+                event -> cargarMeses()
+        );
+>>>>>>> origin/main
     }
 
     private void cargarCombos() {
@@ -273,6 +404,7 @@ public class HistorialPagosViewController
                 "Todas las casas"
         );
 
+<<<<<<< HEAD
         String sqlCasas = """
 
             SELECT DISTINCT numero_casa
@@ -305,6 +437,11 @@ public class HistorialPagosViewController
 
             e.printStackTrace();
         }
+=======
+        cbCasa.getItems().addAll(
+                historialLogic.obtenerCasas()
+        );
+>>>>>>> origin/main
 
         cbCasa.getSelectionModel()
                 .selectFirst();
@@ -317,9 +454,17 @@ public class HistorialPagosViewController
                 = LocalDate.now()
                         .getYear();
 
+<<<<<<< HEAD
         for (int i = 2026;
                 i <= anioActual;
                 i++) {
+=======
+        for (
+                int i = 2026;
+                i <= anioActual;
+                i++
+        ) {
+>>>>>>> origin/main
 
             cbAnio.getItems().add(
                     String.valueOf(i)
@@ -342,6 +487,7 @@ public class HistorialPagosViewController
 
         listaPagos.clear();
 
+<<<<<<< HEAD
         String sql = """
             SELECT
 
@@ -391,6 +537,18 @@ public class HistorialPagosViewController
                 && anio.equals(
                         "Todos los años"
                 )) {
+=======
+        String casa = cbCasa.getValue();
+
+        String mes = cbMes.getValue();
+
+        String anio = cbAnio.getValue();
+
+        if (!historialLogic.validarMesAnio(
+                mes,
+                anio
+        )) {
+>>>>>>> origin/main
 
             Alert alerta = new Alert(
                     Alert.AlertType.WARNING
@@ -411,6 +569,7 @@ public class HistorialPagosViewController
             return;
         }
 
+<<<<<<< HEAD
         if (casa != null
                 && !casa.equals(
                         "Todas las casas"
@@ -524,6 +683,31 @@ public class HistorialPagosViewController
 
             e.printStackTrace();
         }
+=======
+        listaPagos.addAll(
+                historialLogic.filtrarPagos(
+                        casa,
+                        mes,
+                        anio
+                )
+        );
+
+        tblPagos.setItems(
+                listaPagos
+        );
+
+        tblPagos.getSortOrder().clear();
+
+        tblPagos.getSortOrder().add(
+                colFecha
+        );
+
+        colFecha.setSortType(
+                TableColumn.SortType.DESCENDING
+        );
+
+        tblPagos.sort();
+>>>>>>> origin/main
     }
 
     private void cargarMeses() {
@@ -568,21 +752,41 @@ public class HistorialPagosViewController
             limiteMes
                     = LocalDate.now()
                             .getMonthValue();
+<<<<<<< HEAD
         } else if (Integer.parseInt(
                 anioSeleccionado
         ) == anioActual) {
+=======
+
+        } else if (
+                Integer.parseInt(anioSeleccionado)
+                == anioActual
+        ) {
+>>>>>>> origin/main
 
             limiteMes
                     = LocalDate.now()
                             .getMonthValue();
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
         } else {
 
             limiteMes = 12;
         }
 
+<<<<<<< HEAD
         for (int i = 0;
                 i < limiteMes;
                 i++) {
+=======
+        for (
+                int i = 0;
+                i < limiteMes;
+                i++
+        ) {
+>>>>>>> origin/main
 
             cbMes.getItems().add(
                     meses[i]
@@ -590,10 +794,16 @@ public class HistorialPagosViewController
         }
 
         if (mesSeleccionado != null
+<<<<<<< HEAD
                 && cbMes.getItems()
                         .contains(
                                 mesSeleccionado
                         )) {
+=======
+                && cbMes.getItems().contains(
+                        mesSeleccionado
+                )) {
+>>>>>>> origin/main
 
             cbMes.setValue(
                     mesSeleccionado
@@ -606,4 +816,8 @@ public class HistorialPagosViewController
             );
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

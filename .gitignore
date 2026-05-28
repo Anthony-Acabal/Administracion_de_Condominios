@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Config.java
 db-context.txt
 # Recursos
@@ -6,3 +7,11 @@ Conexion.java
 App.java
 Pruebas.jrxml
 PrimaryController.java
+=======
+target/
+build/
+dist/
+*.class
+*.log
+nbproject/private/
+>>>>>>> origin/main

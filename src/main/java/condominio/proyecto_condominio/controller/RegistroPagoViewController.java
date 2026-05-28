@@ -2,6 +2,7 @@
 package condominio.proyecto_condominio.controller;
 
 import java.net.URL;
+<<<<<<< HEAD
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
@@ -12,12 +13,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+=======
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+
+import javafx.scene.Node;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+
+import javafx.stage.Stage;
+
+import javafx.event.ActionEvent;
+>>>>>>> origin/main
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
 import javafx.util.Duration;
 
+<<<<<<< HEAD
 import javafx.stage.Stage;
 
 import javafx.scene.Node;
@@ -42,6 +64,13 @@ import condominio.proyecto_condominio.model.Casa;
  *
  * @author yecut
  */
+=======
+import condominio.proyecto_condominio.logic.RegistroPagoCuotaLogic;
+
+import condominio.proyecto_condominio.model.Propietario;
+import condominio.proyecto_condominio.model.PagoCuota;
+
+>>>>>>> origin/main
 public class RegistroPagoViewController implements Initializable {
 
     @FXML
@@ -71,6 +100,39 @@ public class RegistroPagoViewController implements Initializable {
     @FXML
     private Button btnRegresar;
 
+<<<<<<< HEAD
+=======
+        private RegistroPagoCuotaLogic registroLogic
+                = new RegistroPagoCuotaLogic();
+
+    private final String[] meses = {
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+    };
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        int anioActual = LocalDate.now().getYear();
+
+        cbAnio.setValue(
+                String.valueOf(anioActual)
+        );
+
+        cargarCasas();
+    }
+
+>>>>>>> origin/main
     @FXML
     private void registrarPago(ActionEvent event) {
 
@@ -85,7 +147,12 @@ public class RegistroPagoViewController implements Initializable {
             return;
         }
 
+<<<<<<< HEAD
         if (cbMes.getValue() == null || cbAnio.getValue() == null) {
+=======
+        if (cbMes.getValue() == null
+                || cbAnio.getValue() == null) {
+>>>>>>> origin/main
 
             mostrarAdvertencia(
                     "Validación de Registro",
@@ -96,6 +163,7 @@ public class RegistroPagoViewController implements Initializable {
             return;
         }
 
+<<<<<<< HEAD
         String sqlValidar = """
         SELECT COUNT(*) 
         FROM pago_cuota pc
@@ -105,6 +173,12 @@ public class RegistroPagoViewController implements Initializable {
         AND MONTH(pc.fecha_pago) = ?
         AND YEAR(pc.fecha_pago) = ?
     """;
+=======
+        int numeroCasa
+                = Integer.parseInt(
+                        cbCasa.getValue()
+                );
+>>>>>>> origin/main
 
         int mesSeleccionado
                 = obtenerNumeroMes(
@@ -112,6 +186,7 @@ public class RegistroPagoViewController implements Initializable {
                 );
 
         int anioSeleccionado
+<<<<<<< HEAD
                 = Integer.parseInt(cbAnio.getValue());
 
         try (
@@ -301,6 +376,37 @@ ORDER BY fecha_creacion DESC
             );
 
             psInsertar.executeUpdate();
+=======
+                = Integer.parseInt(
+                        cbAnio.getValue()
+                );
+        String validacion
+        = registroLogic.validarPago(
+                numeroCasa,
+                mesSeleccionado,
+                anioSeleccionado
+        );
+
+if (validacion != null) {
+
+    mostrarAdvertencia(
+            "Validación",
+            "No se pudo registrar el pago",
+            validacion
+    );
+
+    return;
+}
+
+boolean registrado
+        = registroLogic.registrarPago(
+                numeroCasa,
+                mesSeleccionado,
+                anioSeleccionado
+        );
+
+        if (registrado) {
+>>>>>>> origin/main
 
             Alert alerta = new Alert(
                     Alert.AlertType.CONFIRMATION
@@ -330,6 +436,7 @@ ORDER BY fecha_creacion DESC
             );
 
             alerta.showAndWait();
+<<<<<<< HEAD
             cargarMesesPendientes();
 
         } catch (Exception e) {
@@ -402,20 +509,55 @@ ORDER BY fecha_creacion DESC
         "Noviembre",
         "Diciembre"
     };
+=======
+
+            cargarMesesPendientes();
+
+        } else {
+
+            mostrarAdvertencia(
+                    "Error",
+                    "No se pudo registrar el pago",
+                    "Ocurrió un error al guardar el pago."
+            );
+        }
+    }
+
+    private void cargarCasas() {
+
+        cbCasa.getItems().addAll(
+                registroLogic.obtenerCasas()
+        );
+    }
+>>>>>>> origin/main
 
     private void cargarMesesPendientes() {
 
         cbMes.getItems().clear();
 
         if (cbCasa.getValue() == null) {
+<<<<<<< HEAD
             return;
         }
 
         int anioActual
+=======
+
+            return;
+        }
+
+        int numeroCasa
+                = Integer.parseInt(
+                        cbCasa.getValue()
+                );
+
+        int anio
+>>>>>>> origin/main
                 = Integer.parseInt(
                         cbAnio.getValue()
                 );
 
+<<<<<<< HEAD
         LocalDate fechaActual
                 = LocalDate.now();
 
@@ -507,11 +649,54 @@ ORDER BY fecha_creacion DESC
                 .getWindow();
 
         stage.close();
+=======
+        cbMes.getItems().addAll(
+        registroLogic.obtenerMesesPendientes(
+                numeroCasa,
+                anio
+        )
+        );
+
+        if (cbMes.getItems().isEmpty()) {
+
+            Alert alerta = new Alert(
+                    Alert.AlertType.INFORMATION
+            );
+
+            alerta.setTitle(
+                    "Sin cuotas pendientes"
+            );
+
+            alerta.setHeaderText(
+                    "No quedan cuotas pendientes"
+            );
+
+            alerta.setContentText(
+                    "No quedan cuotas pendientes por pagar."
+            );
+
+            alerta.getDialogPane().setPrefWidth(400);
+
+            Timeline timeline = new Timeline(
+                    new KeyFrame(
+                            Duration.seconds(5),
+                            event -> alerta.close()
+                    )
+            );
+
+            timeline.setCycleCount(1);
+
+            timeline.play();
+
+            alerta.showAndWait();
+        }
+>>>>>>> origin/main
     }
 
     @FXML
     private void seleccionarCasa() {
 
+<<<<<<< HEAD
         String sql = """
         SELECT 
             primer_nombre,
@@ -634,6 +819,95 @@ ORDER BY id_cuota DESC
     private int obtenerNumeroMes(
             String mes
     ) {
+=======
+        if (cbCasa.getValue() == null) {
+
+            return;
+        }
+
+        int numeroCasa
+                = Integer.parseInt(
+                        cbCasa.getValue()
+                );
+
+        Propietario propietario
+                = registroLogic.obtenerPropietario(
+                        numeroCasa
+                );
+
+        if (propietario == null) {
+
+            return;
+        }
+
+        String nombre
+                = propietario.getPrimerNombre();
+
+        if (propietario.getSegundoNombre() != null) {
+
+            nombre += " "
+                    + propietario.getSegundoNombre();
+        }
+
+        if (propietario.getTercerNombre() != null) {
+
+            nombre += " "
+                    + propietario.getTercerNombre();
+        }
+
+        String apellido
+                = propietario.getPrimerApellido();
+
+        if (propietario.getSegundoApellido() != null) {
+
+            apellido += " "
+                    + propietario.getSegundoApellido();
+        }
+
+        txtNombre.setText(nombre);
+
+        txtApellido.setText(apellido);
+
+        String telefono
+                = propietario.getTelefono();
+
+        if (telefono != null
+                && telefono.length() == 8) {
+
+            telefono = telefono.substring(0, 4)
+                    + "-"
+                    + telefono.substring(4);
+        }
+
+        txtTelefono.setText(telefono);
+
+        double cuotaActual
+        = registroLogic.obtenerCuotaActual();
+
+txtCuota.setText(
+        "Q"
+        + String.format(
+                "%,.2f",
+                cuotaActual
+        )
+);
+
+        cargarMesesPendientes();
+    }
+
+    @FXML
+    private void cerrarVentana(ActionEvent event) {
+
+        Stage stage
+                = (Stage) ((Node) event.getSource())
+                        .getScene()
+                        .getWindow();
+
+        stage.close();
+    }
+
+    private int obtenerNumeroMes(String mes) {
+>>>>>>> origin/main
 
         for (int i = 0; i < meses.length; i++) {
 
@@ -662,12 +936,17 @@ ORDER BY id_cuota DESC
 
         alerta.setContentText(
                 mensaje
+<<<<<<< HEAD
                 + "\n"
                 + "\n"
+=======
+                + "\n\n"
+>>>>>>> origin/main
                 + "La ventana se cerrará automáticamente en 5 segundos."
                 + "\n"
                 + "También puede presionar OK para continuar."
         );
+<<<<<<< HEAD
         alerta.getDialogPane().setPrefWidth(450);
 
         Timeline timeline
@@ -677,6 +956,17 @@ ORDER BY id_cuota DESC
                                 event -> alerta.close()
                         )
                 );
+=======
+
+        alerta.getDialogPane().setPrefWidth(450);
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(5),
+                        event -> alerta.close()
+                )
+        );
+>>>>>>> origin/main
 
         timeline.setCycleCount(1);
 
@@ -684,4 +974,8 @@ ORDER BY id_cuota DESC
 
         alerta.showAndWait();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

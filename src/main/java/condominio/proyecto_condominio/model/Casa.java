@@ -6,6 +6,20 @@ package condominio.proyecto_condominio.model;
 
 public class Casa {
 
+<<<<<<< HEAD
+=======
+    public Casa(
+            int idCasa,
+            int numeroCasa,
+            String estado
+    ) {
+
+        this.idCasa = idCasa;
+        this.numeroCasa = numeroCasa;
+        this.estado = estado;
+    }
+
+>>>>>>> origin/main
     private int idCasa;
 
     private int numeroCasa;

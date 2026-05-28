@@ -26,11 +26,15 @@ import javafx.application.Platform;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
+<<<<<<< HEAD
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import condominio.proyecto_condominio.dao.Conexion;
+=======
+import condominio.proyecto_condominio.dao.ConfiguracionCuotaDAO;
+>>>>>>> origin/main
 
 import condominio.proyecto_condominio.model.Cuota;
 
@@ -44,6 +48,12 @@ public class ConfiguracionCuotaViewController
 
     private Cuota cuota = new Cuota();
 
+<<<<<<< HEAD
+=======
+    private ConfiguracionCuotaDAO cuotaDAO
+            = new ConfiguracionCuotaDAO();
+
+>>>>>>> origin/main
     @FXML
     private TextField txtCuotaMensual;
 
@@ -238,6 +248,7 @@ public class ConfiguracionCuotaViewController
         }
 
         int idUsuario = 1;
+<<<<<<< HEAD
         String sql = """
                      
             INSERT INTO cuota
@@ -265,6 +276,16 @@ public class ConfiguracionCuotaViewController
             ps.setInt(3, idUsuario);
 
             ps.executeUpdate();
+=======
+
+        boolean guardado
+                = cuotaDAO.guardarCuota(
+                        cuota,
+                        idUsuario
+                );
+
+        if (guardado) {
+>>>>>>> origin/main
 
             mostrarExito();
 
@@ -285,6 +306,7 @@ public class ConfiguracionCuotaViewController
 
             txtNuevaCuota.clear();
 
+<<<<<<< HEAD
             btnGuardar.setDisable(false);
 
             btnGuardar.requestFocus();
@@ -297,10 +319,25 @@ public class ConfiguracionCuotaViewController
 
             btnGuardar.setDisable(false);
         }
+=======
+        } else {
+
+            mostrarAdvertencia(
+                    "Error",
+                    "No se pudo guardar la cuota",
+                    "Ocurrió un error al actualizar la cuota."
+            );
+        }
+
+        btnGuardar.setDisable(false);
+
+        btnGuardar.requestFocus();
+>>>>>>> origin/main
     }
 
     private void cargarCuotaActual() {
 
+<<<<<<< HEAD
         String sql = """
             SELECT TOP 1 cuota
             FROM cuota
@@ -343,10 +380,23 @@ public class ConfiguracionCuotaViewController
                     e.getMessage()
             );
         }
+=======
+        double ultimaCuota
+                = cuotaDAO.obtenerUltimaCuota();
+
+        cuota.setMontoCuota(ultimaCuota);
+
+        txtCuotaMensual.setText(
+                "Q" + cuota.getMontoCuota()
+        );
+
+        calcularRecaudacion();
+>>>>>>> origin/main
     }
 
     private void calcularRecaudacion() {
 
+<<<<<<< HEAD
         String sql = """
             SELECT COUNT(*) AS total_casas
             FROM propietario
@@ -385,6 +435,22 @@ public class ConfiguracionCuotaViewController
                     e.getMessage()
             );
         }
+=======
+        int totalCasas
+                = cuotaDAO.obtenerTotalCasas();
+
+        double recaudacion
+                = totalCasas
+                * cuota.getMontoCuota();
+
+        txtRecaudacionMensual.setText(
+                "Q"
+                + String.format(
+                        "%,.2f",
+                        recaudacion
+                )
+        );
+>>>>>>> origin/main
     }
 
     private void mostrarAdvertencia(
