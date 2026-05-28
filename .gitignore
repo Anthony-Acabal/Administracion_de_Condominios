@@ -17,7 +17,7 @@ nb-configuration.xml
 nbactions.xml
 
 # =================================================================
-# MODEL: Bloquea todo, SOLO sube lo tuyo (CONEXIÓN  QUEDA  BLOQUEADA)
+# MODEL: Bloquea todo, SOLO sube lo tuyo (CONEXIÓN  QUEDA BLOQUEADA  )
 # =================================================================
 src/main/java/condominio/proyecto_condominio/model/*
 !src/main/java/condominio/proyecto_condominio/model/Inicio.java
