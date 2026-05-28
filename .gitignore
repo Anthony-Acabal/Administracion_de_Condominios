@@ -1,0 +1,48 @@
+# =================================================================
+# ARCHIVOS PRIVADOS Y COMPILADOS (NO SE SUBEN)
+# =================================================================
+**/Config.java
+nbproject/private/
+build/
+dist/
+
+# =================================================================
+# CONTROLLER: Bloquea todos, SOLO SUBE Inicio y RegistroPropietario
+# =================================================================
+src/condominio/proyecto_condominio/controller/*
+!src/condominio/proyecto_condominio/controller/InicioController.java
+!src/condominio/proyecto_condominio/controller/RegistroPropietarioController.java
+
+# =================================================================
+# DAO: Bloquea todos, SOLO SUBE RegistroPropietario
+# =================================================================
+src/condominio/proyecto_condominio/dao/*
+!src/condominio/proyecto_condominio/dao/RegistroPropietarioDAO.java
+
+# =================================================================
+# LOGIC: Bloquea todos, SOLO SUBE Inicio y RegistroPropietario
+# =================================================================
+src/condominio/proyecto_condominio/logic/*
+!src/condominio/proyecto_condominio/logic/InicioLogic.java
+!src/condominio/proyecto_condominio/logic/RegistroPropietarioLogic.java
+
+# =================================================================
+# MODEL: Bloquea todos, SOLO SUBE Conexion, Fecha, Inicio y Propietario
+# =================================================================
+src/condominio/proyecto_condominio/model/*
+!src/condominio/proyecto_condominio/model/Conexion.java
+!src/condominio/proyecto_condominio/model/Fecha.java
+!src/condominio/proyecto_condominio/model/Inicio.java
+!src/condominio/proyecto_condominio/model/Propietario.java
+
+# =================================================================
+# UI / FXML: Bloquea todos, SOLO SUBE Inicio y RegistroPropietario
+# =================================================================
+src/condominio/proyecto_condominio/ui/*
+!src/condominio/proyecto_condominio/ui/Inicio.fxml
+!src/condominio/proyecto_condominio/ui/RegistroPropietario.fxml
+
+# =================================================================
+# PAQUETES COMPLETOS (SÍ SE SUBEN)
+# =================================================================
+# Las carpetas de css, fonts e images se suben completas automáticamente.

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane
+    prefHeight="500.0"
+    prefWidth="900.0"
+    xmlns="http://javafx.com/javafx/25"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="condominio.proyecto_condominio.controller.HistorialPagosViewController">
+
+    <children>
+
+        <!-- SCROLL GENERAL -->
+        <ScrollPane
+            fitToWidth="true"
+            fitToHeight="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            pannable="true"
+            style="-fx-background-color: transparent;"
+            AnchorPane.topAnchor="0.0"
+            AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0">
+
+            <content>
+
+                <!-- CONTENEDOR CENTRAL -->
+                <StackPane
+                    alignment="CENTER"
+                    prefWidth="900.0">
+
+                    <children>
+
+                        <VBox
+                            alignment="CENTER"
+                            spacing="20.0"
+                            maxWidth="950.0"
+                            prefWidth="950.0">
+
+                            <padding>
+                                <Insets top="20.0"
+                                        right="20.0"
+                                        bottom="20.0"
+                                        left="20.0"/>
+                            </padding>
+
+                            <children>
+
+                                <!-- BOTON REGRESAR -->
+                                <HBox
+                                    alignment="CENTER_RIGHT"
+                                    prefWidth="900.0">
+
+                                    <children>
+
+                                        <Button
+                                            fx:id="btnRegresar"
+                                            mnemonicParsing="false"
+                                            onAction="#cerrarVentana"
+                                            prefWidth="110.0"
+                                            text="Regresar" />
+
+                                    </children>
+
+                                </HBox>
+
+                                <!-- TITULO -->
+                                <HBox
+                                    alignment="CENTER"
+                                    prefWidth="900.0">
+
+                                    <children>
+
+                                        <Label
+                                            style="-fx-font-size: 24px; -fx-font-weight: bold;"
+                                            text="Historial de Pagos Recientes" />
+
+                                    </children>
+
+                                </HBox>
+
+                                <!-- FILTROS -->
+                                <HBox
+                                    alignment="CENTER"
+                                    spacing="15.0">
+
+                                    <children>
+
+                                        <Label text="No. de Casa:" />
+
+                                        <ComboBox
+                                            fx:id="cbCasa"
+                                            prefWidth="170.0"
+                                            promptText="Seleccionar casa" />
+
+                                        <Label text="Mes:" />
+
+                                        <ComboBox
+                                            fx:id="cbMes"
+                                            prefWidth="140.0" />
+
+                                        <Label text="Año:" />
+
+                                        <ComboBox
+                                            fx:id="cbAnio"
+                                            prefWidth="140.0" />
+
+                                        <Button
+                                            fx:id="btnBuscar"
+                                            mnemonicParsing="false"
+                                            onAction="#buscarPagos"
+                                            prefWidth="100.0"
+                                            text="Buscar" />
+
+                                    </children>
+
+                                </HBox>
+
+                                <!-- TABLA -->
+                                <TableView
+                                    fx:id="tblPagos"
+                                    prefHeight="340.0"
+                                    maxHeight="340.0"
+                                    prefWidth="900.0">
+
+                                    <columns>
+
+                                        <TableColumn
+                                            fx:id="colCasa"
+                                            prefWidth="90.0"
+                                            text="Casa" />
+
+                                        <TableColumn
+                                            fx:id="colPropietario"
+                                            prefWidth="280.0"
+                                            text="Propietario" />
+
+                                        <TableColumn
+                                            fx:id="colFecha"
+                                            prefWidth="150.0"
+                                            text="Fecha" />
+
+                                        <TableColumn
+                                            fx:id="colMonto"
+                                            prefWidth="150.0"
+                                            text="Monto" />
+
+                                        <TableColumn
+                                            fx:id="colComprobante"
+                                            prefWidth="230.0"
+                                            text="Comprobante" />
+
+                                    </columns>
+
+                                </TableView>
+
+                            </children>
+
+                        </VBox>
+
+                    </children>
+
+                </StackPane>
+
+            </content>
+
+        </ScrollPane>
+
+    </children>
+
+</AnchorPane>

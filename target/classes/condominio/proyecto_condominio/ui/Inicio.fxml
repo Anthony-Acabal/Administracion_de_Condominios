@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="vistasContenedor" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.InicioController">
+   <left>
+      <VBox alignment="TOP_CENTER" prefWidth="230.0" spacing="8.0" style="-fx-background-color: #0F4C4A;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../images/CONDOMINIO.png" />
+               </image>
+            </ImageView>
+            
+            <Label fx:id="lblFecha" text="FECHA ACTUAL" textFill="#53d4b3">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+
+            <Button fx:id="irPropietarios" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irPropietarios" prefHeight="45.0" styleClass="boton-primario" stylesheets="@../css/style.css" text="Propietarios">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="field-icon-style">
+                     <image>
+                        <Image url="@../images/RegistroPropietario.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Button>
+
+            <Button fx:id="irPagos" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irPagos" prefHeight="45.0" styleClass="boton-primario" text="Registro Pagos" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="field-icon-style">
+                     <image>
+                        <Image url="@../images/RegistroPago.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Button>
+
+            <Button fx:id="irConfiguracion" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irConfiguracion" prefHeight="45.0" styleClass="boton-primario" text="Configuración de Cuota" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="field-icon-style">
+                     <image>
+                        <Image url="@../images/ConfiguracionCuota.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Button>
+
+            <Button fx:id="irEstadosCuenta" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irEstadosCuenta" prefHeight="45.0" styleClass="boton-primario" text="Estados Cuenta" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="field-icon-style">
+                     <image>
+                        <Image url="@../images/EstadosCuenta.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Button>
+
+            <Button fx:id="irReporteGeneral" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irReporteGeneral" prefHeight="45.0" styleClass="boton-primario" text="Reporte General" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="field-icon-style">
+                     <image>
+                        <Image url="@../images/ReportesGenerales.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Button>
+
+            <Button fx:id="irCasasMorosas" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irCasasMorosas" prefHeight="45.0" styleClass="boton-primario" text="Casas Morosas" wrapText="true">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="field-icon-style">
+                     <image>
+                        <Image url="@../images/CasaMorosa.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+   
+   <center>
+      <StackPane style="-fx-background-color: #EAF7F4;" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane mouseTransparent="true">
+               <children>
+                  <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Circle fill="#53d4b31a" radius="300.0" strokeWidth="0.0" styleClass="circulo-1" />
+                        <Circle fill="#d4f7ee" radius="250.0" strokeWidth="0.0" styleClass="circulo-2" />
+                        <Circle fill="#9bfab0" radius="200.0" strokeWidth="0.0" styleClass="circulo-4" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+
+            <VBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <Label fx:id="lblBienvenida" alignment="CENTER" text="BIENVENIDO ADMINISTRADOR" textFill="#0f4c4a">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Label text="Seleccione una opción del menú para gestionar el condominio" textFill="#607d8b">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            
+                  <AnchorPane pickOnBounds="false">
+               <children>
+                  <Button fx:id="cerrarSesion" focusTraversable="false" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="35.0" prefWidth="125.0" styleClass="boton-cancelar" text="Cerrar Sesión" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+                     <font>
+                        <Font name="Montserrat Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
