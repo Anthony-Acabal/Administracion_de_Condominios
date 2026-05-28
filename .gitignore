@@ -2,3 +2,9 @@
 /dist/
 nbproject/private/
 /src/proyecto_condominio (2)/proyecto_condominio/target/
+target/
+build/
+dist/
+*.class
+*.log
+nbproject/private/
