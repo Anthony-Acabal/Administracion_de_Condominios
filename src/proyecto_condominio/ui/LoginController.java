@@ -1,4 +1,4 @@
-package proyecto_condominio.ui;
+    package proyecto_condominio.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -6,10 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import proyecto_condominio.model.ConexionSQL;
 import proyecto_condominio.model.Usuario;
@@ -19,15 +20,26 @@ import javafx.scene.Node;
 
 public class LoginController extends Application {
 
-    // Componentes que enlazarás en Scene Builder mediante sus fx:id
+    // Componentes visuales mapeados desde el FXML
+    @FXML private HBox boxCorreo;
+    @FXML private HBox boxContrasena;
     @FXML private TextField txtCorreo;
     @FXML private PasswordField txtContrasena;
+    
+    // Nuevos componentes para la funcionalidad de revelar contraseña
+    @FXML private TextField txtContrasenaVisible;
+    @FXML private Button btnMostrarContrasena;
+    @FXML private ImageView imgOjito;
+    
     @FXML private Button btnIngresar;
     @FXML private Label lblMensajeError;
-
+    
+    // Variables de control interno
+    private int intentosFallidos = 0; 
+    private boolean esContrasenaVisible = false;
+    
     @Override
     public void start(Stage stage) throws Exception {
-        // Carga la ventana inicial del Login
         Parent root = FXMLLoader.load(getClass().getResource("/proyecto_condominio/ui/Login.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -36,17 +48,33 @@ public class LoginController extends Application {
     }
 
     public static void main(String[] args) {
-    launch(args);
+        launch(args);
     }
     
-    // Método que se ejecuta al presionar el botón "Ingresar"
     @FXML
     private void accionIngresar() {
-        String correo = txtCorreo.getText().trim();
-        String clave = txtContrasena.getText().trim();
+        // 1. Control de bloqueo preventivo inmediato
+        if (intentosFallidos >= 3) {
+            lblMensajeError.setText("Acceso denegado. Superó el límite de 3 intentos.");
+            btnIngresar.setDisable(true);
+            return;
+        }
 
+        // Limpiar estilos de error y mensajes previos antes de validar
+        boxCorreo.getStyleClass().remove("campo-error");
+        boxContrasena.getStyleClass().remove("campo-error");
+        lblMensajeError.setText("");
+
+        String correo = txtCorreo.getText().trim();
+        
+        // Obtener la clave dinámicamente según qué campo esté activo
+        String clave = esContrasenaVisible ? txtContrasenaVisible.getText().trim() : txtContrasena.getText().trim();
+
+        // Validar campos vacíos
         if (correo.isEmpty() || clave.isEmpty()) {
             lblMensajeError.setText("Por favor, complete los campos.");
+            if (correo.isEmpty()) boxCorreo.getStyleClass().add("campo-error");
+            if (clave.isEmpty()) boxContrasena.getStyleClass().add("campo-error");
             return;
         }
 
@@ -54,30 +82,59 @@ public class LoginController extends Application {
         Usuario user = querys.validarLogin(correo, clave);
 
         if (user != null) {
-            // Si la cuenta está bloqueada en la BD, se detiene aquí y avisa
             if (user.isBloqueado()) { 
                 lblMensajeError.setText("Cuenta bloqueada. Use '¿Olvidó su contraseña?'.");
+                boxCorreo.getStyleClass().add("campo-error");
                 return;
             }
             
-            // Si todo está bien, evalúa si es primer ingreso o va al Home (ITM-25.1)
+            // Si el login es correcto, reiniciamos el contador por seguridad
+            intentosFallidos = 0;
+            
+            // Si la consulta fue exitosa, procesa el cambio de vista directo
             procesarDireccionamiento(user);
         } else {
-            lblMensajeError.setText("Correo o contraseña incorrectos.");
+            // Incrementar contador si las credenciales fallan
+            intentosFallidos++;
+            
+            boxCorreo.getStyleClass().add("campo-error");
+            boxContrasena.getStyleClass().add("campo-error");
+
+            // Control exacto de los 3 intentos solicitados
+            if (intentosFallidos >= 3) {
+                lblMensajeError.setText("Acceso denegado. Superó el límite de 3 intentos.");
+                btnIngresar.setDisable(true);
+            } else {
+                int intentosRestantes = 3 - intentosFallidos;
+                lblMensajeError.setText("Credenciales incorrectas. Le quedan " + intentosRestantes + " intentos.");
+            }
+        }
+    }
+    
+    @FXML
+    private void accionMostrarContrasena() {
+        if (!esContrasenaVisible) {
+            // Copiar el texto oculto al campo plano y alternar visibilidad
+            txtContrasenaVisible.setText(txtContrasena.getText());
+            txtContrasenaVisible.setVisible(true);
+            txtContrasena.setVisible(false);
+            esContrasenaVisible = true;
+        } else {
+            // Copiar el texto plano de vuelta al campo oculto y alternar visibilidad
+            txtContrasena.setText(txtContrasenaVisible.getText());
+            txtContrasena.setVisible(true);
+            txtContrasenaVisible.setVisible(false);
+            esContrasenaVisible = false;
         }
     }
     
     @FXML
     private void accionOlvidoContrasena(ActionEvent event) {
         try {
-            // 1. Cargamos la nueva vista de recuperación que creaste
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto_condominio/ui/OlvidoContrasena.fxml"));
             Parent root = loader.load();
             
-            // 2. Obtenemos la ventana actual usando el evento del Hyperlink
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            
-            // 3. Cambiamos la escena por la de olvido de contraseña
             stage.setScene(new Scene(root));
             stage.setTitle("Recuperar Contraseña - Sistema de Condominios");
             stage.show();
@@ -93,53 +150,43 @@ public class LoginController extends Application {
             String rutaFxml = "";
             String tituloVentana = "";
 
-        // 1. CONTROL DE PRIMER INGRESO 
-        if (user.isPrimerIngreso()) {
-            rutaFxml = "/proyecto_condominio/ui/CambioContrasena.fxml";
-            tituloVentana = "Actualizar Contraseña Obligatoria";
-        } 
-        // 2. REDIRECCIÓN POR ROLES 
-        else {
-            String rol = user.getRol().toUpperCase().trim(); 
+            // Redirección directa por roles
+            String rol = user.getRol().trim(); 
             
             switch (rol) {
-                case "ADMINISTRADOR":
-                case "ADMIN":
+                case "1": // Rol Administrador
                     rutaFxml = "/proyecto_condominio/ui/MenuAdmin.fxml";
                     tituloVentana = "Panel de Control - Administrador";
                     break;
                     
-                case "RESIDENTE":
-                    rutaFxml = "/proyecto_condominio/ui/MenuResidente.fxml";
-                    tituloVentana = "Portal del Residente - Condominio";
-                    break;
-                    
-                case "GUARDIA":
-                case "SEGURIDAD":
-                    rutaFxml = "/proyecto_condominio/ui/MenuGuardia.fxml";
-                    tituloVentana = "Control de Accesos - Seguridad";
-                    break;
-                    
-                default:
-                    // Ventana genérica por si un usuario no tiene rol asignado o es diferente
-                    rutaFxml = "/proyecto_condominio/ui/MenuPrincipal.fxml";
+                default: // Ruta por defecto
+                    rutaFxml = "/proyecto_condominio/ui/MenuAdmin.fxml";
                     tituloVentana = "Sistema de Administración de Condominios";
                     break;
             }
-        }
 
-        // 3. CARGAR LA VISTA SELECCIONADA
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
-        Parent root = loader.load();
-        
-        Stage stage = (Stage) txtCorreo.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle(tituloVentana);
-        stage.show();
+            // SEGURIDAD: Validar que la URL del recurso exista antes de llamar a FXMLLoader
+            java.net.URL urlRecurso = getClass().getResource(rutaFxml);
+            if (urlRecurso == null) {
+                System.err.println("\n[ERROR CRÍTICO]: No se encontró el archivo FXML en la ruta: " + rutaFxml);
+                System.err.println("[SUGERENCIA]: Revisa si el archivo dentro de 'proyecto_condominio.ui' se escribe exactamente así, respetando mayúsculas y minúsculas.");
+                lblMensajeError.setText("Error del sistema: Archivo de vista no encontrado.");
+                return; // Detiene la ejecución limpia evitando que la app estalle en rojo
+            }
+
+            // Cargar la vista del menú de manera segura
+            FXMLLoader loader = new FXMLLoader(urlRecurso);
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) txtCorreo.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(tituloVentana);
+            stage.show();
 
         } catch (IOException e) {
-        System.out.println("Error crítico al redireccionar por rol: " + e.getMessage());
-        lblMensajeError.setText("Error al cargar el menú correspondiente a su rol.");
+            System.out.println("Error crítico al redireccionar por rol: " + e.getMessage());
+            e.printStackTrace(); 
+            lblMensajeError.setText("Error al cargar el menú correspondiente a su rol. Verifique MenuAdmin.fxml");
         }
     }
 }
