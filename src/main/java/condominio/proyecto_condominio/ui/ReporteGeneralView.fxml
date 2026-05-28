@@ -7,16 +7,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.ReporteGeneralController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" styleClass="root" stylesheets="@../css/ReportegeneralYPendientesdepago.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.ReporteGeneralController">
    <children>
-      <Label layoutX="438.0" layoutY="51.0" text="Reporte General" textAlignment="CENTER">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tbReporteGeneral" layoutX="10.0" layoutY="110.0" prefHeight="200.0" prefWidth="697.0">
+      <Label layoutX="438.0" layoutY="51.0" styleClass="titulo" text="Reporte General" textAlignment="CENTER" />
+      <TableView fx:id="tbReporteGeneral" layoutX="10.0" layoutY="110.0" prefHeight="200.0" prefWidth="697.0" styleClass="table-view">
         <columns>
           <TableColumn fx:id="colNumeroCasa" prefWidth="107.0" text="Número de casa" />
           <TableColumn fx:id="colNombrePropietario" prefWidth="199.0" text="Nombre del propietario" />
@@ -27,27 +22,15 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" layoutX="14.0" layoutY="317.0" prefHeight="45.0" prefWidth="480.0" text="Total recaudado del mes" textAlignment="CENTER" wrapText="true">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Button fx:id="btnImprimirReporte" layoutX="755.0" layoutY="251.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="Imprimir Reporte " />
-      <PieChart fx:id="charGraficaReporteGeneralMes" layoutX="10.0" layoutY="364.0" prefHeight="400.0" prefWidth="500.0" />
-      <PieChart fx:id="charGraficaReporteGeneralAno" layoutX="514.0" layoutY="364.0" prefHeight="400.0" prefWidth="500.0" />
-      <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" layoutX="524.0" layoutY="317.0" prefHeight="45.0" prefWidth="480.0" text="Total recaudado del año" textAlignment="CENTER" wrapText="true">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" layoutX="755.0" layoutY="127.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroAno" layoutX="755.0" layoutY="191.0" prefWidth="150.0" />
-      <Button fx:id="btnReporteGeneralRegresar" layoutX="10.0" layoutY="12.0" mnemonicParsing="false" text="←">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Button>
-      <Label layoutX="755.0" layoutY="110.0" text="Mes de:" />
-      <Label layoutX="755.0" layoutY="174.0" text="Año de:" />
+      <Label fx:id="lblTotalRecaudadoMes" alignment="CENTER" layoutX="14.0" layoutY="317.0" prefHeight="45.0" prefWidth="480.0" styleClass="label-form" text="Total recaudado del mes" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="btnImprimirReporte" layoutX="755.0" layoutY="251.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" styleClass="boton-primario" text="Imprimir Reporte " />
+      <PieChart fx:id="charGraficaReporteGeneralMes" layoutX="10.0" layoutY="364.0" prefHeight="400.0" prefWidth="500.0" styleClass="chart" />
+      <PieChart fx:id="charGraficaReporteGeneralAno" layoutX="514.0" layoutY="364.0" prefHeight="400.0" prefWidth="500.0" styleClass="chart" />
+      <Label fx:id="lblTotalRecaudadoAno" alignment="CENTER" layoutX="524.0" layoutY="317.0" prefHeight="45.0" prefWidth="480.0" styleClass="label-form" text="Total recaudado del año" textAlignment="CENTER" wrapText="true" />
+      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroMes" layoutX="755.0" layoutY="127.0" prefWidth="150.0" styleClass="combo-box" />
+      <ChoiceBox fx:id="choiceBoxReporteGeneralFiltroAno" layoutX="755.0" layoutY="191.0" prefWidth="150.0" styleClass="combo-box" />
+      <Button fx:id="btnReporteGeneralRegresar" layoutX="10.0" layoutY="12.0" mnemonicParsing="false" styleClass="boton-secundario" text="←" />
+      <Label layoutX="755.0" layoutY="110.0" styleClass="label-form" text="Mes de:" />
+      <Label layoutX="755.0" layoutY="174.0" styleClass="label-form" text="Año de:" />
    </children>
 </AnchorPane>

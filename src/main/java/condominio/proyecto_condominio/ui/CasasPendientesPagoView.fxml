@@ -6,21 +6,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.CasasPendientesPagoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1024.0" styleClass="root" stylesheets="@../css/ReportegeneralYPendientesdepago.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.CasasPendientesPagoController">
    <children>
-      <Label layoutX="294.0" layoutY="53.0" text="Casas pendientes de pago del mes actual">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblCPPFecha" layoutX="443.0" layoutY="98.0" text="Cuota de Mayo del 2026">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tbCasasPendientesPago" layoutX="12.0" layoutY="138.0" prefHeight="282.0" prefWidth="704.0">
+      <Label layoutX="294.0" layoutY="53.0" styleClass="titulo" text="Casas pendientes de pago del mes actual" />
+      <Label fx:id="lblCPPFecha" layoutX="443.0" layoutY="98.0" styleClass="label-form" text="Cuota de Mayo del 2026" />
+      <TableView fx:id="tbCasasPendientesPago" layoutX="12.0" layoutY="138.0" prefHeight="282.0" prefWidth="704.0" styleClass="table-view">
         <columns>
           <TableColumn fx:id="colCPPNumeroCasa" prefWidth="159.0" text="Numero de Casa" />
             <TableColumn fx:id="colCPPNombrePropietario" prefWidth="220.0" text="Nombre del propietario" />
@@ -28,32 +19,12 @@
             <TableColumn fx:id="colCPPFecha" prefWidth="174.0" text="Fecha" />
         </columns>
       </TableView>
-      <Button fx:id="btnCPPRegresar" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" text="←" textAlignment="CENTER">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Label fx:id="lblCPPCantidad" layoutX="14.0" layoutY="456.0" text="Casas pendientes de pago: 10">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Button fx:id="btnCPPGenerarReporte" layoutX="825.0" layoutY="447.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="150.0" text="Generar Reporte">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <ChoiceBox fx:id="choiceBoxCPPFiltroMes" layoutX="825.0" layoutY="138.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="choiceBoxCPPFiltroAno" layoutX="825.0" layoutY="194.0" prefWidth="150.0" />
-      <Label layoutX="731.0" layoutY="140.0" text="Periodo de: ">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="731.0" layoutY="197.0" text="del año: ">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
+      <Button fx:id="btnCPPRegresar" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" styleClass="boton-secundario" text="←" textAlignment="CENTER" />
+      <Label fx:id="lblCPPCantidad" layoutX="14.0" layoutY="456.0" text="Casas pendientes de pago: 10" />
+      <Button fx:id="btnCPPGenerarReporte" layoutX="825.0" layoutY="447.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="150.0" styleClass="boton-primario" text="Generar Reporte" />
+      <ChoiceBox fx:id="choiceBoxCPPFiltroMes" layoutX="825.0" layoutY="138.0" prefWidth="150.0" styleClass="combo-box" />
+      <ChoiceBox fx:id="choiceBoxCPPFiltroAno" layoutX="825.0" layoutY="194.0" prefWidth="150.0" styleClass="combo-box" />
+      <Label layoutX="731.0" layoutY="140.0" styleClass="label-form" text="Periodo de: " />
+      <Label layoutX="731.0" layoutY="197.0" styleClass="label-form" text="del año: " />
    </children>
 </AnchorPane>
