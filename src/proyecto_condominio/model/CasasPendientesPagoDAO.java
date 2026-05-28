@@ -13,17 +13,18 @@ public class CasasPendientesPagoDAO {
 
     public List<CasasPendientesPago> obtenerCasasPendientes(int mes, int anio) {
         List<CasasPendientesPago> lista = new ArrayList<>();
-        String sql = "SELECT p.numero_casa, " +
+        String sql = "SELECT ca.numero_casa, " +
                      "       p.primer_nombre + ' ' + ISNULL(p.segundo_nombre + ' ', '') + p.primer_apellido AS nombre_propietario, " +
                      "       p.telefono " +
                      "FROM propietario p " +
+                     "JOIN casa ca ON p.id_casa = ca.id_casa " +
                      "WHERE NOT EXISTS (" +
                      "    SELECT 1 FROM pago_cuota pc " +
                      "    WHERE pc.id_propietario = p.id_propietario " +
                      "    AND MONTH(pc.fecha_pago) = ? " +
                      "    AND YEAR(pc.fecha_pago) = ?" +
                      ") " +
-                     "ORDER BY p.numero_casa ASC";
+                     "ORDER BY ca.numero_casa ASC";
 
         String fechaFormato = String.format("%02d/%d", mes, anio);
 
@@ -56,11 +57,12 @@ public class CasasPendientesPagoDAO {
                      "    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 " +
                      "    UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12" +
                      ") " +
-                     "SELECT p.numero_casa, " +
+                     "SELECT ca.numero_casa, " +
                      "       p.primer_nombre + ' ' + ISNULL(p.segundo_nombre + ' ', '') + p.primer_apellido AS nombre_propietario, " +
                      "       p.telefono, " +
                      "       m.mes " +
                      "FROM propietario p " +
+                     "JOIN casa ca ON p.id_casa = ca.id_casa " +
                      "CROSS JOIN Meses m " +
                      "WHERE m.mes >= ? AND m.mes <= ? AND NOT EXISTS (" +
                      "    SELECT 1 FROM pago_cuota pc " +
@@ -68,7 +70,7 @@ public class CasasPendientesPagoDAO {
                      "    AND MONTH(pc.fecha_pago) = m.mes " +
                      "    AND YEAR(pc.fecha_pago) = ?" +
                      ") " +
-                     "ORDER BY m.mes ASC, p.numero_casa ASC";
+                     "ORDER BY m.mes ASC, ca.numero_casa ASC";
 
         try (Connection con = Config.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {

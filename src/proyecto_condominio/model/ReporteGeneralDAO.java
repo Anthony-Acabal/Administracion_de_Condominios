@@ -13,7 +13,7 @@ public class ReporteGeneralDAO {
     public List<ReporteGeneral> obtenerReporteGeneral(int mes, int anio) {
         List<ReporteGeneral> lista = new ArrayList<>();
             String sql = "SELECT " +
-             "  p.numero_casa, " +
+             "  ca.numero_casa, " +
              "  p.primer_nombre + ' ' + p.primer_apellido AS nombre_propietario, " +
              "  CASE " +
              "    WHEN COUNT(CASE WHEN MONTH(pc.fecha_pago) = ? AND YEAR(pc.fecha_pago) = ? THEN 1 END) > 0 THEN 'Pagado' " +
@@ -21,10 +21,11 @@ public class ReporteGeneralDAO {
              "  END AS estado_actual, " +
              "  COALESCE(SUM(CASE WHEN YEAR(pc.fecha_pago) = ? THEN c.cuota ELSE 0 END), 0) AS total_pagado " +
              "FROM propietario p " +
+             "JOIN casa ca ON p.id_casa = ca.id_casa " +
              "LEFT JOIN pago_cuota pc ON p.id_propietario = pc.id_propietario " +
              "LEFT JOIN cuota c ON pc.id_cuota = c.id_cuota " +
-             "GROUP BY p.numero_casa, p.primer_nombre, p.primer_apellido " +
-             "ORDER BY p.numero_casa ASC;";
+             "GROUP BY ca.numero_casa, p.primer_nombre, p.primer_apellido " +
+             "ORDER BY ca.numero_casa ASC;";
 
         try (Connection con = Config.getConexion()) {
             try (PreparedStatement ps = con.prepareStatement(sql)) {
