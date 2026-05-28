@@ -1,4 +1,4 @@
-    package proyecto_condominio.ui;
+package proyecto_condominio.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -147,34 +147,26 @@ public class LoginController extends Application {
     
     private void procesarDireccionamiento(Usuario user) {
         try {
-            String rutaFxml = "";
-            String tituloVentana = "";
+            // Apuntar directamente a la vista definitiva compartida
+            String nombreFxml = "Inicio.fxml"; 
+            String rutaFxml = "/proyecto_condominio/ui/" + nombreFxml;
+            String tituloVentana = "Sistema de Administración de Condominios - Inicio";
 
-            // Redirección directa por roles
-            String rol = user.getRol().trim(); 
-            
-            switch (rol) {
-                case "1": // Rol Administrador
-                    rutaFxml = "/proyecto_condominio/ui/MenuAdmin.fxml";
-                    tituloVentana = "Panel de Control - Administrador";
-                    break;
-                    
-                default: // Ruta por defecto
-                    rutaFxml = "/proyecto_condominio/ui/MenuAdmin.fxml";
-                    tituloVentana = "Sistema de Administración de Condominios";
-                    break;
-            }
-
-            // SEGURIDAD: Validar que la URL del recurso exista antes de llamar a FXMLLoader
+            // Validar de forma segura si la pestaña del compañero ya existe localmente
             java.net.URL urlRecurso = getClass().getResource(rutaFxml);
+            
             if (urlRecurso == null) {
-                System.err.println("\n[ERROR CRÍTICO]: No se encontró el archivo FXML en la ruta: " + rutaFxml);
-                System.err.println("[SUGERENCIA]: Revisa si el archivo dentro de 'proyecto_condominio.ui' se escribe exactamente así, respetando mayúsculas y minúsculas.");
-                lblMensajeError.setText("Error del sistema: Archivo de vista no encontrado.");
-                return; // Detiene la ejecución limpia evitando que la app estalle en rojo
+                // Mensaje informativo preventivo para el entorno local
+                System.out.println("\n[AVISO DE CONTROL]: El archivo '" + nombreFxml + "' aún no ha sido integrado en tu rama actual.");
+                System.out.println("[INFO]: La validación en base de datos fue un ÉXITO. El redireccionamiento funcionará al unificar Git.\n");
+                
+                // Muestra un texto en color neutral/positivo en la UI en vez de estallar la app
+                lblMensajeError.setStyle("-fx-text-fill: #37767C;"); 
+                lblMensajeError.setText("¡Login exitoso! (Inicio.fxml se cargará al unificar ramas).");
+                return; 
             }
 
-            // Cargar la vista del menú de manera segura
+            // Cargar la vista de Inicio cuando el archivo ya esté en el proyecto
             FXMLLoader loader = new FXMLLoader(urlRecurso);
             Parent root = loader.load();
             
@@ -184,9 +176,10 @@ public class LoginController extends Application {
             stage.show();
 
         } catch (IOException e) {
-            System.out.println("Error crítico al redireccionar por rol: " + e.getMessage());
+            System.out.println("Error crítico al intentar renderizar la vista de Inicio: " + e.getMessage());
             e.printStackTrace(); 
-            lblMensajeError.setText("Error al cargar el menú correspondiente a su rol. Verifique MenuAdmin.fxml");
+            lblMensajeError.setStyle("-fx-text-fill: #f20b0b;");
+            lblMensajeError.setText("Error crítico al cargar el menú principal.");
         }
     }
 }
