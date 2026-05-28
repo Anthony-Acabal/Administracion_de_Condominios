@@ -8,36 +8,84 @@ import java.sql.ResultSet;
 public class ConfiguracionCuotaDAO {
 
     private static final int ID_ESTADO_ACTIVO = 18;
+    private static final int ID_ESTADO_INACTIVO = 19;
 
     public boolean guardarCuota(Cuota cuota, int idUsuario) {
 
-        String sql = """
-                     
-            INSERT INTO cuota
-            (
-                cuota,
-                id_estado,
-                id_usuario_creacion,
-                fecha_creacion
-            )
-            VALUES (?, ?, ?, GETDATE())
-        """;
+        String sqlDesactivar = """
+        UPDATE cuota
+        SET id_estado = ?
+        WHERE id_estado = ?
+    """;
+
+        String sqlInsertar = """
+        INSERT INTO cuota
+        (
+            cuota,
+            id_estado,
+            id_usuario_creacion,
+            fecha_creacion
+        )
+        VALUES (?, ?, ?, GETDATE())
+    """;
 
         try (
-                Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                Connection conn = Conexion.getConnection()) {
 
-            ps.setDouble(1, cuota.getMontoCuota());
+            conn.setAutoCommit(false);
 
-            ps.setInt(2, ID_ESTADO_ACTIVO);
+            try {
 
-            ps.setInt(3, idUsuario);
+                PreparedStatement psUpdate
+                        = conn.prepareStatement(sqlDesactivar);
 
-            return ps.executeUpdate() > 0;
+                psUpdate.setInt(1, ID_ESTADO_INACTIVO);
+
+                psUpdate.setInt(2, ID_ESTADO_ACTIVO);
+
+                psUpdate.executeUpdate();
+
+                PreparedStatement psInsert
+                        = conn.prepareStatement(sqlInsertar);
+
+                psInsert.setDouble(
+                        1,
+                        cuota.getMontoCuota()
+                );
+
+                psInsert.setInt(
+                        2,
+                        ID_ESTADO_ACTIVO
+                );
+
+                psInsert.setInt(
+                        3,
+                        idUsuario
+                );
+
+                boolean guardado
+                        = psInsert.executeUpdate() > 0;
+
+                conn.commit();
+
+                return guardado;
+
+            } catch (Exception e) {
+
+                conn.rollback();
+
+                throw e;
+            }
 
         } catch (Exception e) {
 
-            System.out.println("Error al guardar cuota:");
-            System.out.println(e.getMessage());
+            System.out.println(
+                    "Error al guardar cuota:"
+            );
+
+            System.out.println(
+                    e.getMessage()
+            );
 
             return false;
         }
