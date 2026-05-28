@@ -6,6 +6,8 @@ ReporteGeneralLauncher.java
 
 # Directorios de compilación y empaquetado
 target/
+objetivo/
+nbproject/private/
 build/
 dist/
 
