@@ -1,12 +1,12 @@
 package condominio.proyecto_condominio.controller;
 
 import condominio.proyecto_condominio.model.Conexion;
+import condominio.proyecto_condominio.model.Propietario;
+import condominio.proyecto_condominio.logic.RegistroPropietarioLogic;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +43,9 @@ public class RegistroPropietarioController {
     private int idPropietarioExistente = -1;
     private String casaActualAlEditar = null; 
 
+    // Instancia de la capa lógica integrada
+    private final RegistroPropietarioLogic logic = new RegistroPropietarioLogic();
+
     public void cargarDatosPropietario(int id, String pNombre, String sNombre, String tNombre, 
                                       String pApellido, String sApellido, String casa, 
                                       String tel, String correo) {
@@ -74,6 +77,7 @@ public class RegistroPropietarioController {
 
         List<String> casasOcupadas = new ArrayList<>();
         
+        // CORREGIDO: Usando el método getConexion() en español coincidiendo con tu clase Conexion
         try (Connection con = Conexion.getConexion()) {
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -103,47 +107,6 @@ public class RegistroPropietarioController {
         }
     }
 
-    private String verificarDuplicados(String nroCasa, String telefonoClean, String correo) {
-        String sql = "SELECT id_propietario, numero_casa, telefono, correo FROM Propietario " +
-                     "WHERE (numero_casa = ? OR telefono = ? OR correo = ?) AND estado = 'Activo'";
-        
-        if (idPropietarioExistente != -1) {
-            sql += " AND id_propietario <> ?";
-        }
-        
-        try (Connection con = Conexion.getConexion()) {
-            if (con == null) {
-                return "Error: No se pudo establecer conexión con el servidor de Base de Datos.";
-            }
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setString(1, nroCasa);
-                ps.setString(2, telefonoClean);
-                ps.setString(3, correo);
-                
-                if (idPropietarioExistente != -1) {
-                    ps.setInt(4, idPropietarioExistente);
-                }
-                
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        if (rs.getString("numero_casa").equalsIgnoreCase(nroCasa)) {
-                            return "El número de casa (" + nroCasa + ") ya se encuentra ocupado por otro propietario activo.";
-                        }
-                        if (rs.getString("telefono").equalsIgnoreCase(telefonoClean)) {
-                            return "El número de teléfono (" + telefonoClean + ") ya está asignado a otro propietario activo.";
-                        }
-                        if (rs.getString("correo").equalsIgnoreCase(correo)) {
-                            return "El correo electrónico (" + correo + ") ya está registrado a otro propietario activo.";
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return "Error al validar datos duplicados en el servidor: " + e.getMessage();
-        }
-        return null;
-    }
-
     private String formatearNombre(String texto) {
         if (texto == null || texto.trim().isEmpty()) {
             return "";
@@ -154,89 +117,56 @@ public class RegistroPropietarioController {
 
     @FXML
     void actionGuardar(ActionEvent event) {
+        // 1. Extraer y formatear datos de la interfaz
         String primerNombre = formatearNombre(txtPrimerNombre.getText());
         String segundoNombre = formatearNombre(txtSegundoNombre.getText());
         String tercerNombre = formatearNombre(txtTercerNombre.getText());
         String primerApellido = formatearNombre(txtPrimerApellido.getText());
         String segundoApellido = formatearNombre(txtSegundoApellido.getText());
         
-        String telefonoConGuion = txtNumeroTelefono.getText().trim();
-        String telefonoClean = telefonoConGuion.replace("-", ""); 
-        
+        String telefonoClean = txtNumeroTelefono.getText().trim().replace("-", ""); 
         String correo = txtCorreoElectronico.getText().trim();
         Object casaSeleccionada = cmbNumeroCasa.getValue();
-
-        if (primerNombre.isEmpty() || primerApellido.isEmpty() || telefonoClean.isEmpty() || correo.isEmpty() || casaSeleccionada == null) {
-            mostrarAlerta("Campos Incompletos", "Por favor, complete todos los campos obligatorios del formulario.", AlertType.WARNING);
-            return;
-        }
         
-        if (telefonoClean.length() < 8) {
-            mostrarAlerta("Teléfono Inválido", "Por favor, ingrese un número de teléfono completo de 8 dígitos.", AlertType.WARNING);
+        // CORREGIDO: Cambiado a String para coincidir con el tipo esperado en el modelo Propietario
+        String numeroCasa = "0";
+        if (casaSeleccionada != null) {
+            numeroCasa = casaSeleccionada.toString().replaceAll("[^0-9]", "");
+        }
+
+        // 2. Construir el modelo Propietario para la capa lógica
+        Propietario propietario = new Propietario();
+        if (idPropietarioExistente != -1) {
+            propietario.setIdPropietario(idPropietarioExistente);
+        }
+        propietario.setPrimerNombre(primerNombre);
+        propietario.setSegundoNombre(segundoNombre);
+        propietario.setTercerNombre(tercerNombre);
+        propietario.setPrimerApellido(primerApellido);
+        propietario.setSegundoApellido(segundoApellido);
+        propietario.setNumeroCasa(numeroCasa);
+        propietario.setTelefono(telefonoClean);
+        propietario.setCorreoElectronico(correo);
+
+        // 3. Ejecutar validaciones en la capa Logic
+        String errorValidacion = logic.validarPropietario(propietario);
+        if (errorValidacion != null && !errorValidacion.isEmpty()) {
+            mostrarAlerta("Validación de Registro", errorValidacion, AlertType.WARNING);
             return;
         }
 
-        String formatoCorreo = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        if (!correo.matches(formatoCorreo)) {
-            mostrarAlerta("Correo Inválido", "Por favor, ingrese un correo electrónico válido (ejemplo: usuario@gmail.com).", AlertType.WARNING);
-            return;
-        }
-
-        String numeroCasaTexto = casaSeleccionada.toString(); 
-        String numeroCasa = numeroCasaTexto.replaceAll("[^0-9]", ""); 
-
-        String mensajeDuplicado = verificarDuplicados(numeroCasa, telefonoClean, correo);
-        if (mensajeDuplicado != null) {
-            mostrarAlerta("Validación de Registro", mensajeDuplicado, AlertType.ERROR);
-            return;
-        }
-
-        String sql;
-        if (idPropietarioExistente == -1) {
-            sql = "INSERT INTO Propietario (primer_nombre, segundo_nombre, tercer_nombre, " +
-                  "primer_apellido, segundo_apellido, numero_casa, telefono, correo, " +
-                  "fecha_creacion, id_usuario_creacion, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Activo')";
+        // 4. Guardar mediante la capa Logic
+        boolean exitoso = logic.guardarPropietario(propietario);
+        if (exitoso) {
+            if (idPropietarioExistente == -1) {
+                mostrarAlerta("Registro Exitoso", "El propietario ha sido registrado correctamente.", AlertType.INFORMATION);
+            } else {
+                mostrarAlerta("Actualización Exitosa", "Los datos del propietario han sido actualizados.", AlertType.INFORMATION);
+            }
+            actionLimpiar(event);
+            actionRegresar(event);
         } else {
-            sql = "UPDATE Propietario SET primer_nombre=?, segundo_nombre=?, tercer_nombre=?, " +
-                  "primer_apellido=?, segundo_apellido=?, numero_casa=?, telefono=?, correo=? " +
-                  "WHERE id_propietario=?";
-        }
-
-        try (Connection con = Conexion.getConexion()) {
-            if (con == null) {
-                mostrarAlerta("Error de Conexión", "No se pudo conectar a la Base de Datos.", AlertType.ERROR);
-                return;
-            }
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setString(1, primerNombre);
-                ps.setString(2, segundoNombre.isEmpty() ? null : segundoNombre);
-                ps.setString(3, tercerNombre.isEmpty() ? null : tercerNombre);
-                ps.setString(4, primerApellido);
-                ps.setString(5, segundoApellido.isEmpty() ? null : segundoApellido);
-                ps.setString(6, numeroCasa);
-                ps.setString(7, telefonoClean); 
-                ps.setString(8, correo);
-
-                if (idPropietarioExistente == -1) {
-                    ps.setDate(9, Date.valueOf(LocalDate.now()));
-                    ps.setInt(10, 1); 
-                } else {
-                    ps.setInt(9, idPropietarioExistente);
-                }
-
-                int filasAfectadas = ps.executeUpdate();
-                if (filasAfectadas > 0) {
-                    if (idPropietarioExistente == -1) {
-                        mostrarAlerta("Registro Exitoso", "El propietario ha sido registrado correctamente.", AlertType.INFORMATION);
-                    } else {
-                        mostrarAlerta("Actualización Exitosa", "Los datos del propietario han sido actualizados.", AlertType.INFORMATION);
-                    }
-                    actionLimpiar(event);
-                    actionRegresar(event);
-                }
-            }
-        } catch (Exception e) {
-            mostrarAlerta("Error de Operación", "No se pudo procesar en la base de datos: " + e.getMessage(), AlertType.ERROR);
+            mostrarAlerta("Error de Operación", "No se pudo procesar la solicitud en la base de datos.", AlertType.ERROR);
         }
     }
 
@@ -250,6 +180,7 @@ public class RegistroPropietarioController {
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             String sql = "UPDATE Propietario SET estado = 'Eliminado' WHERE id_propietario = ?";
             
+            // CORREGIDO: Usando el método getConexion() en español coincidiendo con tu clase Conexion
             try (Connection con = Conexion.getConexion()) {
                 if (con != null) {
                     try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -296,7 +227,6 @@ public class RegistroPropietarioController {
     @FXML
     void actionRegresar(ActionEvent event) {
         try {
-            // CORREGIDO: Ruta absoluta desde la raíz de recursos para entornos Maven
             java.net.URL urlVista = getClass().getResource("/condominio/proyecto_condominio/ui/Inicio.fxml");
             
             if (urlVista == null) {

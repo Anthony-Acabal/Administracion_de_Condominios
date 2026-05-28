@@ -13,10 +13,11 @@ public class RegistroPropietarioDAO {
 
     public String verificarDuplicados(String nroCasa, String telefono, String correo) {
 
+        
         String sql = """
-                     SELECT numero_casa, telefono, correo
+                     SELECT id_casa, telefono, correo
                      FROM Propietario
-                     WHERE numero_casa = ?
+                     WHERE id_casa = ?
                      OR telefono = ?
                      OR correo = ?
                      """;
@@ -31,7 +32,8 @@ public class RegistroPropietarioDAO {
 
                 if (rs.next()) {
 
-                    if (rs.getString("numero_casa").equalsIgnoreCase(nroCasa)) {
+                    // CORREGIDO: Se lee la columna 'id_casa' en lugar de 'numero_casa'
+                    if (rs.getString("id_casa").equalsIgnoreCase(nroCasa)) {
                         return "El número de casa (" + nroCasa + ") ya se encuentra registrado.";
                     }
 
@@ -54,6 +56,7 @@ public class RegistroPropietarioDAO {
 
     public boolean guardarPropietario(Propietario propietario) {
 
+        
         String sql = """
                      INSERT INTO Propietario
                      (
@@ -62,7 +65,7 @@ public class RegistroPropietarioDAO {
                      tercer_nombre,
                      primer_apellido,
                      segundo_apellido,
-                     numero_casa,
+                     id_casa,
                      telefono,
                      correo,
                      fecha_creacion,
@@ -79,7 +82,7 @@ public class RegistroPropietarioDAO {
             ps.setString(3, propietario.getTercerNombre());
             ps.setString(4, propietario.getPrimerApellido());
             ps.setString(5, propietario.getSegundoApellido());
-            ps.setString(6, propietario.getNumeroCasa());
+            ps.setString(6, propietario.getNumeroCasa()); 
             ps.setString(7, propietario.getTelefono());
             ps.setString(8, propietario.getCorreoElectronico());
 

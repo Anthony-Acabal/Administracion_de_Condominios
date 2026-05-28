@@ -1,9 +1,9 @@
 package condominio.proyecto_condominio.controller;
 
 import condominio.proyecto_condominio.model.Fecha;
+import condominio.proyecto_condominio.logic.InicioLogic;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional; 
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,10 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert; 
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType; 
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -23,30 +20,20 @@ import javafx.fxml.Initializable;
 
 public class InicioController implements Initializable {
     
-    @FXML
-    private Label lblBienvenida;
+    @FXML private Label lblBienvenida;
+    @FXML private Label lblFecha;
+    @FXML private BorderPane vistasContenedor;
     
-    @FXML
-    private Label lblFecha;
-    
-    @FXML
-    private BorderPane vistasContenedor;
+    @FXML private Button irPropietarios;
+    @FXML private Button irPagos;
+    @FXML private Button irConfiguracion;
+    @FXML private Button irEstadosCuenta;
+    @FXML private Button irReporteGeneral;
+    @FXML private Button irCasasMorosas;
+    @FXML private Button cerrarSesion;
 
     
-    @FXML
-    private Button irPropietarios;
-    @FXML
-    private Button irPagos;
-    @FXML
-    private Button irConfiguracion;
-    @FXML
-    private Button irEstadosCuenta;
-    @FXML
-    private Button irReporteGeneral;
-    @FXML
-    private Button irCasasMorosas;
-    @FXML
-    private Button cerrarSesion;
+    private final InicioLogic logic = new InicioLogic();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,7 +60,6 @@ public class InicioController implements Initializable {
             lblFecha.setText(Fecha.obtenerFechaActualFormateada());
         }
     }
-
   
     private void limpiarBotonesActivos() {
         irPropietarios.getStyleClass().remove("boton-activo");
@@ -136,41 +122,20 @@ public class InicioController implements Initializable {
     private void cerrarSesion(ActionEvent event) {
         System.out.println("➔ [CLICK] Botón Cerrar Sesión presionado");
         
-        
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Confirmación de Cierre");
-        alerta.setHeaderText(null);
-        alerta.setContentText("¿Estás seguro de cerrar sesión?");
-
-        
-        ButtonType botonSi = new ButtonType("Sí");
-        ButtonType botonNo = new ButtonType("No");
-        alerta.getButtonTypes().setAll(botonSi, botonNo);
-
-        
-        Optional<ButtonType> resultado = alerta.showAndWait();
-
-        
-        if (resultado.isPresent() && resultado.get() == botonSi) {
+        // Delegamos la confirmación a la capa lógica
+        if (logic.confirmarCierreSesion()) {
             System.out.println("➔ [CONFIRMADO] Cerrando sesión...");
             try {
-                // Ruta del login corregida (se cambiaron los puntos por barras)
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condominio/proyecto_condominio/ui/Login.fxml"));
-                Parent root = loader.load();
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Login");
-                stage.show();
+                logic.cambiarPantalla(stage, "/condominio/proyecto_condominio/ui/Login.fxml", "Login");
             } catch (IOException e) {
                 System.out.println("X Error al salir: " + e.getMessage());
             }
         } else {
-            
             System.out.println("➔ [CANCELADO] El usuario canceló el cierre de sesión.");
         }
     }
     
-   
     private void cargarVistaEnCentro(String fxmlArchivo) {
         try {
             System.out.println("Cargando en el centro: " + fxmlArchivo);

@@ -21,8 +21,9 @@ public class HistorialPagoDAO {
             ORDER BY numero_casa ASC
         """;
 
+        
         try (
-                Connection conn = Conexion.getConnection();
+                Connection conn = Conexion.getInstancia().getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()
         ) {
@@ -105,8 +106,9 @@ public class HistorialPagoDAO {
             ORDER BY pc.fecha_pago DESC
         """;
 
+        
         try (
-                Connection conn = Conexion.getConnection();
+                Connection conn = Conexion.getInstancia().getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 

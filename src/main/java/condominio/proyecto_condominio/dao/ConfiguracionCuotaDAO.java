@@ -12,7 +12,6 @@ public class ConfiguracionCuotaDAO {
     public boolean guardarCuota(Cuota cuota, int idUsuario) {
 
         String sql = """
-                     
             INSERT INTO cuota
             (
                 cuota,
@@ -23,8 +22,10 @@ public class ConfiguracionCuotaDAO {
             VALUES (?, ?, ?, GETDATE())
         """;
 
+        // CORREGIDO: Se cambió a Conexion.getInstancia().getConnection()
         try (
-                Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                Connection conn = Conexion.getInstancia().getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setDouble(1, cuota.getMontoCuota());
 
@@ -51,8 +52,11 @@ public class ConfiguracionCuotaDAO {
             ORDER BY id_cuota DESC
         """;
 
+        // CORREGIDO: Se cambió a Conexion.getInstancia().getConnection()
         try (
-                Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                Connection conn = Conexion.getInstancia().getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql); 
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
 
@@ -75,8 +79,11 @@ public class ConfiguracionCuotaDAO {
             FROM propietario
         """;
 
+        // CORREGIDO: Se cambió a Conexion.getInstancia().getConnection()
         try (
-                Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                Connection conn = Conexion.getInstancia().getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql); 
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
 
