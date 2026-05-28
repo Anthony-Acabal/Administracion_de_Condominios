@@ -18,7 +18,16 @@ public class ConfiguracionCuotaLogic {
             return "Debe ingresar una cuota.";
         }
 
-        double monto = Double.parseDouble(nuevaCuota);
+        double monto;
+
+        try {
+
+            monto = Double.parseDouble(nuevaCuota);
+
+        } catch (NumberFormatException e) {
+
+            return "La cuota debe ser numérica.";
+        }
 
         if (monto <= 0) {
 
@@ -58,11 +67,12 @@ public class ConfiguracionCuotaLogic {
         return cuotaDAO.obtenerUltimaCuota();
     }
 
-    public double calcularRecaudacion() {
+    public double calcularRecaudacion(
+            double cuota
+    ) {
 
-        double cuota = cuotaDAO.obtenerUltimaCuota();
-
-        int totalCasas = cuotaDAO.obtenerTotalCasas();
+        int totalCasas
+                = cuotaDAO.obtenerTotalCasas();
 
         return cuota * totalCasas;
     }

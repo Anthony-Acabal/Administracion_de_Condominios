@@ -18,6 +18,19 @@ public class Cuota {
 
     }
 
+    public Cuota(
+            int idCuota,
+            double montoCuota,
+            double recaudacionMensual,
+            String usuarioModificacion
+    ) {
+
+        this.idCuota = idCuota;
+        this.montoCuota = montoCuota;
+        this.recaudacionMensual = recaudacionMensual;
+        this.usuarioModificacion = usuarioModificacion;
+    }
+
     public int getIdCuota() {
         return idCuota;
     }
@@ -54,5 +67,16 @@ public class Cuota {
     ) {
         this.usuarioModificacion
                 = usuarioModificacion;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Cuota{"
+                + "idCuota=" + idCuota
+                + ", montoCuota=" + montoCuota
+                + ", recaudacionMensual=" + recaudacionMensual
+                + ", usuarioModificacion=" + usuarioModificacion
+                + '}';
     }
 }

@@ -8,6 +8,23 @@ import java.time.LocalDate;
 
 public class PagoCuota {
 
+    public PagoCuota(
+            int idPagoCuota,
+            int idPropietario,
+            int idCuota,
+            LocalDate fechaPago,
+            String imprimeComprobante,
+            int idUsuarioCreacion
+    ) {
+
+        this.idPagoCuota = idPagoCuota;
+        this.idPropietario = idPropietario;
+        this.idCuota = idCuota;
+        this.fechaPago = fechaPago;
+        this.imprimeComprobante = imprimeComprobante;
+        this.idUsuarioCreacion = idUsuarioCreacion;
+    }
+
     private int idPagoCuota;
 
     private int idPropietario;

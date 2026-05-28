@@ -1,26 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package condominio.proyecto_condominio.dao;
-
-/**
- *
- * @author Antony
- */
 
 import condominio.proyecto_condominio.model.Cuota;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
 public class ConfiguracionCuotaDAO {
-    
+
+    private static final int ID_ESTADO_ACTIVO = 18;
+
     public boolean guardarCuota(Cuota cuota, int idUsuario) {
 
         String sql = """
-                     
             INSERT INTO cuota
             (
                 cuota,
@@ -31,23 +22,24 @@ public class ConfiguracionCuotaDAO {
             VALUES (?, ?, ?, GETDATE())
         """;
 
-        try {
-
-            Connection conn = Conexion
-                    .getInstancia()
-                    .getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(sql);
+        // CORREGIDO: Se cambió a Conexion.getInstancia().getConnection()
+        try (
+                Connection conn = Conexion.getInstancia().getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setDouble(1, cuota.getMontoCuota());
-            ps.setInt(2, 2);
+
+            ps.setInt(2, ID_ESTADO_ACTIVO);
+
             ps.setInt(3, idUsuario);
 
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
 
+            System.out.println("Error al guardar cuota:");
             System.out.println(e.getMessage());
+
             return false;
         }
     }
@@ -60,15 +52,11 @@ public class ConfiguracionCuotaDAO {
             ORDER BY id_cuota DESC
         """;
 
-        try {
-
-            Connection conn = Conexion
-                    .getInstancia()
-                    .getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
+        // CORREGIDO: Se cambió a Conexion.getInstancia().getConnection()
+        try (
+                Connection conn = Conexion.getInstancia().getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql); 
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
 
@@ -77,6 +65,7 @@ public class ConfiguracionCuotaDAO {
 
         } catch (Exception e) {
 
+            System.out.println("Error al obtener última cuota:");
             System.out.println(e.getMessage());
         }
 
@@ -90,13 +79,11 @@ public class ConfiguracionCuotaDAO {
             FROM propietario
         """;
 
-        try {
-
-            Connection conn = Conexion.getInstancia().getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
+        // CORREGIDO: Se cambió a Conexion.getInstancia().getConnection()
+        try (
+                Connection conn = Conexion.getInstancia().getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql); 
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
 
@@ -105,10 +92,10 @@ public class ConfiguracionCuotaDAO {
 
         } catch (Exception e) {
 
+            System.out.println("Error al obtener total de casas:");
             System.out.println(e.getMessage());
         }
 
         return 0;
     }
-    
 }

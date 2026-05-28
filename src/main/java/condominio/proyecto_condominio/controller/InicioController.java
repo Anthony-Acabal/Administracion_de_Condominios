@@ -1,176 +1,179 @@
 package condominio.proyecto_condominio.controller;
 
-import condominio.proyecto_condominio.logic.InicioLogic;
-
 import condominio.proyecto_condominio.model.Fecha;
-
+import condominio.proyecto_condominio.logic.InicioLogic;
 import java.io.IOException;
-
 import java.net.URL;
-
+import java.util.Optional;
 import java.util.ResourceBundle;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
-import javafx.scene.Node;
-
-import javafx.scene.control.Label;
-
-import javafx.scene.layout.BorderPane;
-
-import javafx.stage.Stage;
-
 public class InicioController implements Initializable {
+    
+    @FXML private Label lblBienvenida;
+    @FXML private Label lblFecha;
+    @FXML private BorderPane vistasContenedor;
+    
+    @FXML private Button irPropietarios;
+    @FXML private Button irPagos;
+    @FXML private Button irConfiguracion;
+    @FXML private Button irEstadosCuenta;
+    @FXML private Button irReporteGeneral;
+    @FXML private Button irCasasMorosas;
+    @FXML private Button cerrarSesion;
 
-    @FXML
-    private Label lblBienvenida;
-
-    @FXML
-    private Label lblFecha;
-
-    @FXML
-    private BorderPane vistasContenedor;
-
-    InicioLogic logic = new InicioLogic();
+    private final InicioLogic logic = new InicioLogic();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        mostrarBienvenida("Usuario");
-
-        cargarFechaActual();
-    }
+        mostrarBienvenida("ADMINISTRADOR"); 
+        try {
+            cargarFechaActual();
+        } catch (Exception e) {
+            System.out.println("⚠️ Error fecha: " + e.getMessage());
+        }
+    }    
 
     public void setUsuarioLogueado(String administrador) {
         mostrarBienvenida(administrador);
     }
 
     private void mostrarBienvenida(String administrador) {
-
-        lblBienvenida.setText(
-                "Bienvenido, " + administrador
-        );
+        if (lblBienvenida != null) {
+            // Solicitamos el texto procesado a la capa Logic
+            String textoBienvenida = logic.generarMensajeBienvenida(administrador);
+            lblBienvenida.setText(textoBienvenida);
+        }
     }
 
     private void cargarFechaActual() {
-
-        lblFecha.setText(
-                Fecha.obtenerFechaActualFormateada()
-        );
+        if (lblFecha != null) {
+            lblFecha.setText(Fecha.obtenerFechaActualFormateada());
+        }
+    }
+  
+    private void limpiarBotonesActivos() {
+        irPropietarios.getStyleClass().remove("boton-activo");
+        irPagos.getStyleClass().remove("boton-activo");
+        irConfiguracion.getStyleClass().remove("boton-activo");
+        irEstadosCuenta.getStyleClass().remove("boton-activo");
+        irReporteGeneral.getStyleClass().remove("boton-activo");
+        irCasasMorosas.getStyleClass().remove("boton-activo");
     }
 
     @FXML
     private void irPropietarios(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/RegistroPropietario.fxml",
-                "Registro de Propietarios");
+        System.out.println("➔ [CLICK] Registro Propietario");
+        limpiarBotonesActivos();
+        irPropietarios.getStyleClass().add("boton-activo");
+        cargarVistaEnCentro("/condominio/proyecto_condominio/ui/RegistroPropietario.fxml");
     }
 
     @FXML
     private void irPagos(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/RegistroPagoView.fxml",
-                "Registro de Pagos");
-    }
-
-    @FXML
-    private void irCuota(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/ConfiguracionCuotaView.fxml",
-                "Configuración de Cuota");
-    }
-
-    @FXML
-    private void irGastos(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Gastos.fxml",
-                "Gastos");
-    }
-
-    @FXML
-    private void irVisitantes(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Visitantes.fxml",
-                "Visitantes");
-    }
-
-    @FXML
-    private void irReportes(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Reportes.fxml",
-                "Reportes");
-    }
-
-    @FXML
-    private void irEstadosCuenta(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Estado_CuentaporCasa.fxml",
-                "Estados de Cuenta");
-    }
-
-    @FXML
-    private void irReporteGeneral(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Reporte_General.fxml",
-                "Reporte General");
-    }
-
-    @FXML
-    private void irCasasMorosas(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Casas_Morosas.fxml",
-                "Casas Morosas");
-    }
-
-    @FXML
-    private void irInicio(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Inicio.fxml",
-                "Panel de Inicio");
-    }
-
-    @FXML
-    private void cerrarSesion(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Login.fxml",
-                "Login");
+        System.out.println("➔ [CLICK] Registro Pagos");
+        limpiarBotonesActivos();
+        irPagos.getStyleClass().add("boton-activo");
+        cargarVistaEnCentro("/condominio/proyecto_condominio/ui/RegistroPagoView.fxml");
     }
 
     @FXML
     private void irConfiguracion(ActionEvent event) {
-        cambiarPantalla(event,
-                "/condominio/proyecto_condominio/ui/Configuracion.fxml",
-                "Configuración");
+        System.out.println("➔ [CLICK] Configuración Cuota");
+        limpiarBotonesActivos();
+        irConfiguracion.getStyleClass().add("boton-activo");
+        cargarVistaEnCentro("/condominio/proyecto_condominio/ui/ConfiguracionCuotaView.fxml");
     }
 
-    private void cambiarPantalla(
-            ActionEvent event,
-            String fxmlArchivo,
-            String titulo
-    ) {
+    @FXML
+    private void irEstadosCuenta(ActionEvent event) {
+        System.out.println("➔ [CLICK] Estados de Cuenta");
+        limpiarBotonesActivos();
+        irEstadosCuenta.getStyleClass().add("boton-activo");
+        cargarVistaEnCentro("/condominio/proyecto_condominio/ui/HistorialPagosView.fxml");
+    }
 
-        try {
+    @FXML
+    private void irReporteGeneral(ActionEvent event) {
+        System.out.println("➔ [CLICK] Reporte General");
+        limpiarBotonesActivos();
+        irReporteGeneral.getStyleClass().add("boton-activo");
+        cargarVistaEnCentro("/condominio/proyecto_condominio/ui/ReporteGeneralView.fxml");
+    }
 
-            Stage stage = (Stage) ((Node) event.getSource())
-                    .getScene()
-                    .getWindow();
+    @FXML
+    private void irCasasMorosas(ActionEvent event) {
+        System.out.println("➔ [CLICK] Casas Morosas");
+        limpiarBotonesActivos();
+        irCasasMorosas.getStyleClass().add("boton-activo");
+        cargarVistaEnCentro("/condominio/proyecto_condominio/ui/CasasPendientesPagoView.fxml");
+    }
 
-            logic.cambiarPantalla(
-                    stage,
-                    fxmlArchivo,
-                    titulo
-            );
+    @FXML
+    private void cerrarSesion(ActionEvent event) {
+        System.out.println("➔ [CLICK] Botón Cerrar Sesión presionado");
+        
+        // Las alertas visuales pertenecen de forma estricta al Controlador
+        Alert alerta = new Alert(AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmación de Cierre");
+        alerta.setHeaderText(null);
+        alerta.setContentText("¿Estás seguro de cerrar sesión?");
 
-        } catch (IOException e) {
+        ButtonType botonSi = new ButtonType("Sí");
+        ButtonType botonNo = new ButtonType("No");
+        alerta.getButtonTypes().setAll(botonSi, botonNo);
 
-            System.out.println(
-                    "Error al cambiar pantalla: "
-                    + e.getMessage()
-            );
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        
+        if (resultado.isPresent() && resultado.get() == botonSi) {
+            System.out.println("➔ [CONFIRMADO] Cerrando sesión...");
+            try {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                // La navegación de ventanas se ejecuta directamente en el Controller
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condominio/proyecto_condominio/ui/Login.fxml"));
+                Parent root = loader.load();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Login");
+                stage.show();
+                
+            } catch (IOException e) {
+                System.out.println("X Error al salir: " + e.getMessage());
+            }
+        } else {
+            System.out.println("➔ [CANCELADO] El usuario canceló el cierre de sesión.");
         }
     }
-
+    
+    private void cargarVistaEnCentro(String fxmlArchivo) {
+        try {
+            System.out.println("Cargando en el centro: " + fxmlArchivo);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlArchivo));
+            Parent root = loader.load();
+            
+            vistasContenedor.setCenter(root);
+            System.out.println("✅ OK Cargado.");
+        } catch (IOException e) {
+            System.out.println("X Error FXML: " + e.getMessage());
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, "Error al cargar archivo FXML", e);
+        } catch (Exception ex) {
+            System.out.println("X Error: " + ex.getMessage());
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, "Error inesperado", ex);
+        }
+    }
 }

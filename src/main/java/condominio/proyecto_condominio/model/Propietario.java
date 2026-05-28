@@ -1,47 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package condominio.proyecto_condominio.model;
 
 public class Propietario {
 
-    private int idPropietario;
-
-    private int numeroCasa;
-
+    
+    private int idPropietario; 
+    
     private String primerNombre;
-
     private String segundoNombre;
-
     private String tercerNombre;
-
     private String primerApellido;
-
     private String segundoApellido;
-
-    private String telefono;
-
+    private String numeroCasa;
+    
+    
+    private String telefono; 
     private String correoElectronico;
 
+   
     public Propietario() {
-
     }
 
+    
+    public Propietario(String primerNombre, String segundoNombre, String tercerNombre, String primerApellido, String segundoApellido, String numeroCasa, String telefono, String correoElectronico) {
+        this.primerNombre = primerNombre;
+        this.segundoNombre = segundoNombre;
+        this.tercerNombre = tercerNombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.numeroCasa = numeroCasa;
+        this.telefono = telefono;
+        this.correoElectronico = correoElectronico;
+    }
+
+    
     public int getIdPropietario() {
         return idPropietario;
     }
 
     public void setIdPropietario(int idPropietario) {
         this.idPropietario = idPropietario;
-    }
-
-    public int getNumeroCasa() {
-        return numeroCasa;
-    }
-
-    public void setNumeroCasa(int numeroCasa) {
-        this.numeroCasa = numeroCasa;
     }
 
     public String getPrimerNombre() {
@@ -84,6 +81,15 @@ public class Propietario {
         this.segundoApellido = segundoApellido;
     }
 
+    public String getNumeroCasa() {
+        return numeroCasa;
+    }
+
+    public void setNumeroCasa(String numeroCasa) {
+        this.numeroCasa = numeroCasa;
+    }
+
+   
     public String getTelefono() {
         return telefono;
     }

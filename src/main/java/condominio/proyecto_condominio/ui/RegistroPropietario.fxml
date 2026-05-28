@@ -5,131 +5,207 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.RegistroPropietarioController">
+<StackPane prefHeight="450.0" prefWidth="1020.0" style="-fx-background-color: #EAF7F4;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.RegistroPropietarioController">
    <children>
-      <GridPane layoutX="-5.0" layoutY="-4.0" prefHeight="519.0" prefWidth="709.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="139.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="155.0" minHeight="0.0" prefHeight="44.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="170.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="221.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="282.0" minHeight="6.0" prefHeight="36.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="196.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="196.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="201.0" minHeight="10.0" prefHeight="195.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <AnchorPane mouseTransparent="true" styleClass="fondo-pane">
          <children>
-            <Label prefHeight="17.0" prefWidth="152.0" text="REGISTRO DE PROPIETARIO" GridPane.columnSpan="3" GridPane.halignment="CENTER" />
-            <Label text="Primer Nombre" textAlignment="RIGHT" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="-100.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Segundo Nombre" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="75.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Tercer Nombre" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="-100.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="txtPrimerNombre" maxWidth="130.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="-50.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="txtSegundoNombre" maxWidth="130.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <TextField fx:id="txtTercerNombre" maxWidth="130.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="-75.0" />
-               </GridPane.margin>
-            </TextField>
-            <Label text="Primer Apellido" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets right="100.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Segundo Apellido" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="75.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="txtPrimerApellido" maxWidth="130.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets left="-50.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="txtSegundoApellido" maxWidth="130.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <Label text="DATOS DE CONTACTO Y UBICACION" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Label text="Numero de Casa" GridPane.halignment="LEFT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets left="30.0" />
-               </GridPane.margin>
-            </Label>
-            <ComboBox fx:id="cmbNumeroCasa" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets left="-120.0" />
-               </GridPane.margin>
-            </ComboBox>
-            <Label text="Numero de Telefono" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets left="-88.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="txtNumeroTelefono" maxWidth="130.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets left="-50.0" />
-               </GridPane.margin>
-            </TextField>
-            <Label text="Correo Electronico" GridPane.columnIndex="4" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets left="-47.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="txtCorreoElectronico" maxWidth="130.0" GridPane.columnIndex="4" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets left="-50.0" />
-               </GridPane.margin>
-            </TextField>
-            <Label text="Ejemplo: Valido y Administrativo" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8">
-               <GridPane.margin>
-                  <Insets left="55.0" />
-               </GridPane.margin>
-            </Label>
-            <Label prefWidth="147.0" text="Formato valido, dominioexistente" wrapText="true" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8">
-               <GridPane.margin>
-                  <Insets left="50.0" />
-               </GridPane.margin>
-            </Label>
-            <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#actionGuardar" text="GUARDAR" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets right="-50.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#actionCancelar" text="CANCELAR" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets left="-80.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#actionLimpiar" text="Limpiar" GridPane.columnIndex="4" GridPane.rowIndex="9" />
-            <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#actionRegresar" text="REGRESAR" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+            <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Circle centerX="0.0" centerY="0.0" radius="260.0" styleClass="circulo-1" />
+                  <Circle centerX="0.0" centerY="0.0" radius="190.0" styleClass="circulo-2" />
+                  <Circle centerX="0.0" centerY="0.0" radius="130.0" styleClass="circulo-4" />
+               </children>
+            </Pane>
+            <Pane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Circle centerX="150.0" centerY="150.0" radius="150.0" styleClass="circulo-1" />
+                  <Circle centerX="150.0" centerY="150.0" radius="80.0" styleClass="circulo-4" />
+               </children>
+            </Pane>
          </children>
-      </GridPane>
+      </AnchorPane>
+
+      <StackPane maxHeight="410.0" maxWidth="920.0" styleClass="card-central">
+         <children>
+            <AnchorPane>
+               <children>
+                  <VBox alignment="TOP_CENTER" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <Label styleClass="titulo" text="Registro de Propietario">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+
+                        <GridPane hgap="25.0" vgap="8.0" VBox.vgrow="ALWAYS">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="33.33" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="33.33" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="33.33" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" /> 
+                              <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" /> 
+                           </rowConstraints>
+                           <children>
+                              
+                              <Label styleClass="label-form" text="Primer Nombre*" GridPane.rowIndex="0" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.rowIndex="1">
+                                 <children>
+                                    <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                       <children>
+                                          <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                             <image>
+                                                <Image url="@../images/Icon Persona.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                    <TextField fx:id="txtPrimerNombre" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              
+                              <Label styleClass="label-form" text="Segundo Nombre" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" styleClass="campo-texto" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <TextField fx:id="txtSegundoNombre" style="-fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 0 0 10;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              
+                              <Label styleClass="label-form" text="Tercer Nombre" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" styleClass="campo-texto" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <children>
+                                    <TextField fx:id="txtTercerNombre" style="-fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 0 0 10;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+
+                              <Label styleClass="label-form" text="Primer Apellido*" GridPane.rowIndex="2" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.rowIndex="3">
+                                 <children>
+                                    <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                       <children>
+                                          <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                             <image>
+                                                <Image url="@../images/Icon Persona.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                    <TextField fx:id="txtPrimerApellido" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              
+                              <Label styleClass="label-form" text="Segundo Apellido" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" styleClass="campo-texto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <children>
+                                    <TextField fx:id="txtSegundoApellido" style="-fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 0 0 10;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+
+                              <Label text="Datos de Contacto y Ubicación" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                                 <style>-fx-text-fill: #0F4C4A; -fx-font-weight: bold; -fx-font-size: 16px;</style>
+                                 <GridPane.margin>
+                                    <Insets top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+
+                              <Label styleClass="label-form" text="Número de Casa*" GridPane.rowIndex="5" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.rowIndex="6">
+                                 <children>
+                                    <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                       <children>
+                                          <ImageView fitHeight="35.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                             <image>
+                                                <Image url="@../images/Icon Casa.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                    <ComboBox fx:id="cmbNumeroCasa" maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+
+                              <Label styleClass="label-form" text="Número de Teléfono*" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <children>
+                                    <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                       <children>
+                                          <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                             <image>
+                                                <Image url="@../images/Icon Telefono.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                    <TextField fx:id="txtNumeroTelefono" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+
+                              <Label styleClass="label-form" text="Correo Electrónico*" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                 <children>
+                                    <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                       <children>
+                                          <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                             <image>
+                                                <Image url="@../images/GEMAILDEFINITIVO.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                    <TextField fx:id="txtCorreoElectronico" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+
+                              <Label style="-fx-font-size: 10px;" text="Ejemplo: Válido y Administrativo" textFill="#7f8c8d" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <Label style="-fx-font-size: 10px;" text="Formato: usuario@gmail.com" textFill="#7f8c8d" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+
+                           </children>
+                        </GridPane>
+
+                        <GridPane alignment="CENTER" hgap="15.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="120.0" prefWidth="130.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="120.0" prefWidth="130.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button fx:id="btnGuardar" maxWidth="1.7976931348623157E308" onAction="#actionGuardar" prefHeight="38.0" styleClass="btn-guardar" text="Guardar" />
+                              <Button fx:id="btnCancelar" maxWidth="1.7976931348623157E308" onAction="#actionCancelar" prefHeight="38.0" styleClass="boton-cancelar" text="Cancelar" GridPane.columnIndex="1" />
+                              <Button fx:id="btnLimpiar" maxWidth="1.7976931348623157E308" onAction="#actionLimpiar" prefHeight="38.0" styleClass="boton-limpiar" text="Limpiar" GridPane.columnIndex="2" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </GridPane>
+
+                     </children>
+                  </VBox>
+                  <Button fx:id="btnRegresar" onAction="#actionRegresar" prefHeight="30.0" prefWidth="100.0" styleClass="boton-secundario" text="Regresar" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
    </children>
-</AnchorPane>
+</StackPane>
