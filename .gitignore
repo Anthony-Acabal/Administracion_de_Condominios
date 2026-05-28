@@ -12,32 +12,33 @@ dist/
 # MODEL: Bloquea todo, SOLO sube lo tuyo (CONEXIÓN QUEDA BLOQUEADA)
 # =================================================================
 src/main/java/condominio/proyecto_condominio/model/*
-!src/main/java/condominio/proyecto_condominio/model/PropietarioBryan.java
-!src/main/java/condominio/proyecto_condominio/model/ReporteGeneral.java
+!src/main/java/condominio/proyecto_condominio/model/Inicio.java
+!src/main/java/condominio/proyecto_condominio/model/Propietario.java
+!src/main/java/condominio/proyecto_condominio/model/Fecha.java
 
 # =================================================================
 # DAO: Bloquea todo, SOLO sube lo tuyo
 # =================================================================
 src/main/java/condominio/proyecto_condominio/dao/*
-!src/main/java/condominio/proyecto_condominio/dao/ReporteGeneralDAO.java
+!src/main/java/condominio/proyecto_condominio/dao/RegistroPropietarioDAO.java
 
 # =================================================================
 # CONTROLLER: Bloquea todo, SOLO sube lo tuyo
 # =================================================================
 src/main/java/condominio/proyecto_condominio/controller/*
-!src/main/java/condominio/proyecto_condominio/controller/ReporteGeneralController.java
-!src/main/java/condominio/proyecto_condominio/controller/ReporteGeneralLauncher.java
+!src/main/java/condominio/proyecto_condominio/controller/InicioController.java
+!src/main/java/condominio/proyecto_condominio/controller/RegistroPropietarioController.java
 
 # =================================================================
-# UI: Bloquea todo, SOLO sube tu pantalla
+# UI: Bloquea todo, SOLO sube tus pantallas
 # =================================================================
 src/main/java/condominio/proyecto_condominio/ui/*
-!src/main/java/condominio/proyecto_condominio/ui/ReporteGeneralView.fxml
+!src/main/java/condominio/proyecto_condominio/ui/Inicio.fxml
+!src/main/java/condominio/proyecto_condominio/ui/RegistroPropietario.fxml
 
 # =================================================================
-# BLOQUEAR OTRAS CARPETAS QUE NO SEAN TUYAS
+# LOGIC: Bloquea todo, SOLO sube lo tuyo
 # =================================================================
-src/main/java/condominio/proyecto_condominio/css/*
-src/main/java/condominio/proyecto_condominio/fonts/*
-src/main/java/condominio/proyecto_condominio/images/*
 src/main/java/condominio/proyecto_condominio/logic/*
+!src/main/java/condominio/proyecto_condominio/logic/InicioLogic.java
+!src/main/java/condominio/proyecto_condominio/logic/RegistroPropietarioLogic.java
