@@ -17,7 +17,7 @@ public class CasasPendientesPagoDAO {
                      "       p.primer_nombre + ' ' + ISNULL(p.segundo_nombre + ' ', '') + p.primer_apellido AS nombre_propietario, " +
                      "       p.telefono " +
                      "FROM propietario p " +
-                     "WHERE NOT EXISTS (" +
+                     "WHERE p.estado = 'Activo' AND NOT EXISTS (" +
                      "    SELECT 1 FROM pago_cuota pc " +
                      "    WHERE pc.id_propietario = p.id_propietario " +
                      "    AND MONTH(pc.fecha_pago) = ? " +
@@ -62,7 +62,7 @@ public class CasasPendientesPagoDAO {
                      "       m.mes " +
                      "FROM propietario p " +
                      "CROSS JOIN Meses m " +
-                     "WHERE m.mes >= ? AND m.mes <= ? AND NOT EXISTS (" +
+                     "WHERE p.estado = 'Activo' AND m.mes >= ? AND m.mes <= ? AND NOT EXISTS (" +
                      "    SELECT 1 FROM pago_cuota pc " +
                      "    WHERE pc.id_propietario = p.id_propietario " +
                      "    AND MONTH(pc.fecha_pago) = m.mes " +

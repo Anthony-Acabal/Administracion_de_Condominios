@@ -24,6 +24,7 @@ public class ReporteGeneralDAO {
                      "FROM propietario p " +
                      "LEFT JOIN pago_cuota pc ON p.id_propietario = pc.id_propietario " +
                      "LEFT JOIN cuota c ON pc.id_cuota = c.id_cuota " +
+                     "WHERE p.estado = 'Activo' " +
                      "GROUP BY p.numero_casa, p.primer_nombre, p.primer_apellido " +
                      "ORDER BY p.numero_casa ASC;";
 
@@ -59,7 +60,7 @@ public class ReporteGeneralDAO {
                      "  JOIN cuota c ON pc.id_cuota = c.id_cuota " +
                      "  WHERE MONTH(pc.fecha_pago) = ? " +
                      "  AND YEAR(pc.fecha_pago) = ?) AS Recaudado, " +
-                     " (SELECT COUNT(*) FROM propietario) AS TotalCasas, " +
+                     " (SELECT COUNT(*) FROM propietario WHERE estado = 'Activo') AS TotalCasas, " +
                      " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
 
         try (Connection con = Conexion.getInstancia().getConnection();
@@ -90,7 +91,7 @@ public class ReporteGeneralDAO {
                      "  JOIN cuota c ON pc.id_cuota = c.id_cuota " +
                      "  WHERE YEAR(pc.fecha_pago) = ? " +
                      "  AND MONTH(pc.fecha_pago) <= ?) AS RecaudadoAnual, " +
-                     " (SELECT COUNT(*) FROM propietario) AS TotalCasas, " +
+                     " (SELECT COUNT(*) FROM propietario WHERE estado = 'Activo') AS TotalCasas, " +
                      " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
 
         try (Connection con = Conexion.getInstancia().getConnection();
