@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 Config.java
 db-context.txt
 # Recursos
 Recursos/
+=======
+Conexion.java
+App.java
+Pruebas.jrxml
+PrimaryController.java
+>>>>>>> 8a65b7e (Primer codigo de fase final del proyecto)
