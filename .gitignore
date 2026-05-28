@@ -1,48 +1,43 @@
 # =================================================================
 # ARCHIVOS PRIVADOS Y COMPILADOS (NO SE SUBEN)
 # =================================================================
-**/Config.java
+target/
+objetivo/
 nbproject/private/
 build/
 dist/
+*.class
 
 # =================================================================
-# CONTROLLER: Bloquea todos, SOLO SUBE Inicio y RegistroPropietario
+# MODEL: Bloquea todo, SOLO sube lo tuyo (CONEXIÓN QUEDA BLOQUEADA)
 # =================================================================
-src/condominio/proyecto_condominio/controller/*
-!src/condominio/proyecto_condominio/controller/InicioController.java
-!src/condominio/proyecto_condominio/controller/RegistroPropietarioController.java
+src/main/java/condominio/proyecto_condominio/model/*
+!src/main/java/condominio/proyecto_condominio/model/PropietarioBryan.java
+!src/main/java/condominio/proyecto_condominio/model/ReporteGeneral.java
 
 # =================================================================
-# DAO: Bloquea todos, SOLO SUBE RegistroPropietario
+# DAO: Bloquea todo, SOLO sube lo tuyo
 # =================================================================
-src/condominio/proyecto_condominio/dao/*
-!src/condominio/proyecto_condominio/dao/RegistroPropietarioDAO.java
+src/main/java/condominio/proyecto_condominio/dao/*
+!src/main/java/condominio/proyecto_condominio/dao/ReporteGeneralDAO.java
 
 # =================================================================
-# LOGIC: Bloquea todos, SOLO SUBE Inicio y RegistroPropietario
+# CONTROLLER: Bloquea todo, SOLO sube lo tuyo
 # =================================================================
-src/condominio/proyecto_condominio/logic/*
-!src/condominio/proyecto_condominio/logic/InicioLogic.java
-!src/condominio/proyecto_condominio/logic/RegistroPropietarioLogic.java
+src/main/java/condominio/proyecto_condominio/controller/*
+!src/main/java/condominio/proyecto_condominio/controller/ReporteGeneralController.java
+!src/main/java/condominio/proyecto_condominio/controller/ReporteGeneralLauncher.java
 
 # =================================================================
-# MODEL: Bloquea todos, SOLO SUBE Conexion, Fecha, Inicio y Propietario
+# UI: Bloquea todo, SOLO sube tu pantalla
 # =================================================================
-src/condominio/proyecto_condominio/model/*
-!src/condominio/proyecto_condominio/model/Conexion.java
-!src/condominio/proyecto_condominio/model/Fecha.java
-!src/condominio/proyecto_condominio/model/Inicio.java
-!src/condominio/proyecto_condominio/model/Propietario.java
+src/main/java/condominio/proyecto_condominio/ui/*
+!src/main/java/condominio/proyecto_condominio/ui/ReporteGeneralView.fxml
 
 # =================================================================
-# UI / FXML: Bloquea todos, SOLO SUBE Inicio y RegistroPropietario
+# BLOQUEAR OTRAS CARPETAS QUE NO SEAN TUYAS
 # =================================================================
-src/condominio/proyecto_condominio/ui/*
-!src/condominio/proyecto_condominio/ui/Inicio.fxml
-!src/condominio/proyecto_condominio/ui/RegistroPropietario.fxml
-
-# =================================================================
-# PAQUETES COMPLETOS (SÍ SE SUBEN)
-# =================================================================
-# Las carpetas de css, fonts e images se suben completas automáticamente.
+src/main/java/condominio/proyecto_condominio/css/*
+src/main/java/condominio/proyecto_condominio/fonts/*
+src/main/java/condominio/proyecto_condominio/images/*
+src/main/java/condominio/proyecto_condominio/logic/*
