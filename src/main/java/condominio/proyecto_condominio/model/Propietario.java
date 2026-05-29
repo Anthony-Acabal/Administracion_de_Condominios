@@ -8,13 +8,13 @@ public class Propietario {
     private String tercerNombre;
     private String primerApellido;
     private String segundoApellido;
-    private int idCasa; // Manejado como entero
+    private int idCasa; 
     private String telefono; 
     private String correoElectronico;
     private String estado;
 
     public Propietario() {
-        this.estado = "Activo"; // Valor por defecto
+        this.estado = "Activo"; 
     }
 
     public int getIdPropietario() { return idPropietario; }
@@ -46,4 +46,38 @@ public class Propietario {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+
+   
+    public String getNombres() {
+        StringBuilder sb = new StringBuilder();
+        
+        if (primerNombre != null && !primerNombre.trim().isEmpty()) {
+            sb.append(primerNombre.trim());
+        }
+        if (segundoNombre != null && !segundoNombre.trim().isEmpty()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(segundoNombre.trim());
+        }
+        if (tercerNombre != null && !tercerNombre.trim().isEmpty()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(tercerNombre.trim());
+        }
+        
+        return sb.toString();
+    }
+
+    
+    public String getApellidos() {
+        StringBuilder sb = new StringBuilder();
+        
+        if (primerApellido != null && !primerApellido.trim().isEmpty()) {
+            sb.append(primerApellido.trim());
+        }
+        if (segundoApellido != null && !segundoApellido.trim().isEmpty()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(segundoApellido.trim());
+        }
+        
+        return sb.toString();
+    }
 }

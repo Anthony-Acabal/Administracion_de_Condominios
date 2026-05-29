@@ -77,15 +77,9 @@ public class RegistroPropietarioController {
             }
         });
 
-        colNombres.setCellValueFactory(cellData -> new SimpleStringProperty(
-            cellData.getValue().getPrimerNombre() + " " + 
-            (cellData.getValue().getSegundoNombre() != null ? cellData.getValue().getSegundoNombre() : "")
-        ));
+        colNombres.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombres()));
         
-        colApellidos.setCellValueFactory(cellData -> new SimpleStringProperty(
-            cellData.getValue().getPrimerApellido() + " " + 
-            (cellData.getValue().getSegundoApellido() != null ? cellData.getValue().getSegundoApellido() : "")
-        ));
+        colApellidos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApellidos()));
         
         colCasa.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getIdCasa())));
         
@@ -277,7 +271,7 @@ public class RegistroPropietarioController {
                 mostrarAlerta("Baja Procesada", "El propietario fue eliminado.", AlertType.INFORMATION);
                 return true;
             } else {
-                mostrarAlerta("Error", "No se pudo cambiar el estado en BD.", AlertType.ERROR);
+                mostrarAlerta("Error", "No se pudo cambio de estado en BD.", AlertType.ERROR);
             }
         }
         return false;
