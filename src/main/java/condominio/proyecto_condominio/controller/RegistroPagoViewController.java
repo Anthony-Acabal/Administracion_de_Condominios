@@ -1,4 +1,3 @@
-
 package condominio.proyecto_condominio.controller;
 
 import java.net.URL;
@@ -31,6 +30,13 @@ import condominio.proyecto_condominio.logic.RegistroPagoCuotaLogic;
 import condominio.proyecto_condominio.model.Propietario;
 import condominio.proyecto_condominio.model.PagoCuota;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 public class RegistroPagoViewController implements Initializable {
 
     @FXML
@@ -60,8 +66,11 @@ public class RegistroPagoViewController implements Initializable {
     @FXML
     private Button btnRegresar;
 
-        private RegistroPagoCuotaLogic registroLogic
-                = new RegistroPagoCuotaLogic();
+    @FXML
+    private Button btnHistorial;
+
+    private RegistroPagoCuotaLogic registroLogic
+            = new RegistroPagoCuotaLogic();
 
     private final String[] meses = {
         "Enero",
@@ -88,6 +97,37 @@ public class RegistroPagoViewController implements Initializable {
         );
 
         cargarCasas();
+    }
+
+    @FXML
+    private void abrirHistorial(
+            ActionEvent event
+    ) {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/condominio/proyecto_condominio/ui/HistorialPagosView.fxml"
+                    )
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnHistorial
+                    .getScene()
+                    .getWindow();
+
+            stage.setScene(
+                    new Scene(root)
+            );
+
+            stage.show();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -131,29 +171,29 @@ public class RegistroPagoViewController implements Initializable {
                         cbAnio.getValue()
                 );
         String validacion
-        = registroLogic.validarPago(
-                numeroCasa,
-                mesSeleccionado,
-                anioSeleccionado
-        );
+                = registroLogic.validarPago(
+                        numeroCasa,
+                        mesSeleccionado,
+                        anioSeleccionado
+                );
 
-if (validacion != null) {
+        if (validacion != null) {
 
-    mostrarAdvertencia(
-            "Validación",
-            "No se pudo registrar el pago",
-            validacion
-    );
+            mostrarAdvertencia(
+                    "Validación",
+                    "No se pudo registrar el pago",
+                    validacion
+            );
 
-    return;
-}
+            return;
+        }
 
-boolean registrado
-        = registroLogic.registrarPago(
-                numeroCasa,
-                mesSeleccionado,
-                anioSeleccionado
-        );
+        boolean registrado
+                = registroLogic.registrarPago(
+                        numeroCasa,
+                        mesSeleccionado,
+                        anioSeleccionado
+                );
 
         if (registrado) {
 
@@ -225,10 +265,10 @@ boolean registrado
                 );
 
         cbMes.getItems().addAll(
-        registroLogic.obtenerMesesPendientes(
-                numeroCasa,
-                anio
-        )
+                registroLogic.obtenerMesesPendientes(
+                        numeroCasa,
+                        anio
+                )
         );
 
         if (cbMes.getItems().isEmpty()) {
@@ -331,15 +371,15 @@ boolean registrado
         txtTelefono.setText(telefono);
 
         double cuotaActual
-        = registroLogic.obtenerCuotaActual();
+                = registroLogic.obtenerCuotaActual();
 
-txtCuota.setText(
-        "Q"
-        + String.format(
-                "%,.2f",
-                cuotaActual
-        )
-);
+        txtCuota.setText(
+                "Q"
+                + String.format(
+                        "%,.2f",
+                        cuotaActual
+                )
+        );
 
         cargarMesesPendientes();
     }

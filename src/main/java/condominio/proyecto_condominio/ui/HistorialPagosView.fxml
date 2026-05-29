@@ -91,7 +91,7 @@
 
                                                     <children>
 
-                                                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#cerrarVentana" styleClass="boton-secundario" text="Regresar" />
+                                                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#regresarRegistroPago" styleClass="boton-secundario" text="Regresar" />
 
                                                     </children>
 
