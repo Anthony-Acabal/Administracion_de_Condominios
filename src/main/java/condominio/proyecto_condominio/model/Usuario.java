@@ -1,4 +1,4 @@
-package proyecto_condominio.model;
+package condominio.proyecto_condominio.model;
 
 public class Usuario {
     private int id;
