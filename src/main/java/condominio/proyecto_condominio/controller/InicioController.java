@@ -25,6 +25,9 @@ import javafx.fxml.Initializable;
 
 public class InicioController implements Initializable {
     
+    // --- NUEVO: Instancia estática para permitir el acceso desde otros controladores ---
+    private static InicioController instancia;
+    
     @FXML private Label lblBienvenida;
     @FXML private Label lblFecha;
     @FXML private BorderPane vistasContenedor;
@@ -39,8 +42,16 @@ public class InicioController implements Initializable {
 
     private final InicioLogic logic = new InicioLogic();
 
+    // --- NUEVO: Método estático público para recuperar este controlador ---
+    public static InicioController getController() {
+        return instancia;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Guardamos la referencia de esta vista activa en la variable estática
+        instancia = this; 
+        
         mostrarBienvenida("ADMINISTRADOR"); 
         try {
             cargarFechaActual();
@@ -55,7 +66,6 @@ public class InicioController implements Initializable {
 
     private void mostrarBienvenida(String administrador) {
         if (lblBienvenida != null) {
-            // Solicitamos el texto procesado a la capa Logic
             String textoBienvenida = logic.generarMensajeBienvenida(administrador);
             lblBienvenida.setText(textoBienvenida);
         }
@@ -68,12 +78,12 @@ public class InicioController implements Initializable {
     }
   
     private void limpiarBotonesActivos() {
-        irPropietarios.getStyleClass().remove("boton-activo");
-        irPagos.getStyleClass().remove("boton-activo");
-        irConfiguracion.getStyleClass().remove("boton-activo");
-        irEstadosCuenta.getStyleClass().remove("boton-activo");
-        irReporteGeneral.getStyleClass().remove("boton-activo");
-        irCasasMorosas.getStyleClass().remove("boton-activo");
+        if (irPropietarios != null) irPropietarios.getStyleClass().remove("boton-activo");
+        if (irPagos != null) irPagos.getStyleClass().remove("boton-activo");
+        if (irConfiguracion != null) irConfiguracion.getStyleClass().remove("boton-activo");
+        if (irEstadosCuenta != null) irEstadosCuenta.getStyleClass().remove("boton-activo");
+        if (irReporteGeneral != null) irReporteGeneral.getStyleClass().remove("boton-activo");
+        if (irCasasMorosas != null) irCasasMorosas.getStyleClass().remove("boton-activo");
     }
 
     @FXML
@@ -128,7 +138,6 @@ public class InicioController implements Initializable {
     private void cerrarSesion(ActionEvent event) {
         System.out.println("➔ [CLICK] Botón Cerrar Sesión presionado");
         
-        // Las alertas visuales pertenecen de forma estricta al Controlador
         Alert alerta = new Alert(AlertType.CONFIRMATION);
         alerta.setTitle("Confirmación de Cierre");
         alerta.setHeaderText(null);
@@ -144,8 +153,6 @@ public class InicioController implements Initializable {
             System.out.println("➔ [CONFIRMADO] Cerrando sesión...");
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                // La navegación de ventanas se ejecuta directamente en el Controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/condominio/proyecto_condominio/ui/Login.fxml"));
                 Parent root = loader.load();
                 stage.setScene(new Scene(root));
@@ -160,7 +167,8 @@ public class InicioController implements Initializable {
         }
     }
     
-    private void cargarVistaEnCentro(String fxmlArchivo) {
+    // --- MODIFICADO: De 'private' a 'public' para que otros controladores la usen al navegar ---
+    public void cargarVistaEnCentro(String fxmlArchivo) {
         try {
             System.out.println("Cargando en el centro: " + fxmlArchivo);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlArchivo));
