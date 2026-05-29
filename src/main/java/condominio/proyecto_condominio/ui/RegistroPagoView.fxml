@@ -325,16 +325,13 @@
                                                     </children>
 
                                                 </HBox>
-                                                <!-- BOTON -->
-                                                <HBox alignment="CENTER">
-
-                                                    <children>
-
-                                                        <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#registrarPago" prefHeight="45.0" prefWidth="150.0" styleClass="boton-primario" text="Registrar Pago" />
-
-                                                    </children>
-
-                                                </HBox>
+                                    <AnchorPane>
+                                       <children>
+      
+                                                                                <Button fx:id="btnRegistrar" layoutX="314.0" mnemonicParsing="false" onAction="#registrarPago" prefHeight="45.0" prefWidth="150.0" styleClass="boton-primario" text="Registrar Pago" />
+                                          <Button fx:id="btnHistorial" layoutX="628.3999938964844" mnemonicParsing="false" onAction="#abrirHistorial" prefHeight="45.0" prefWidth="150.0" styleClass="boton-secundario" text="Ver Historial" />
+                                       </children>
+                                    </AnchorPane>
 
                                             </children>
 

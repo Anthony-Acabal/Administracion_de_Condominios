@@ -25,6 +25,10 @@ import javafx.stage.Stage;
 import condominio.proyecto_condominio.logic.HistorialPagoLogic;
 import condominio.proyecto_condominio.model.HistorialPago;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
 public class HistorialPagosViewController
         implements Initializable {
 
@@ -68,15 +72,33 @@ public class HistorialPagosViewController
             = new HistorialPagoLogic();
 
     @FXML
-    private void cerrarVentana() {
+private void regresarRegistroPago() {
 
-        Stage stage
-                = (Stage) btnRegresar
-                        .getScene()
-                        .getWindow();
+    try {
 
-        stage.close();
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "/condominio/proyecto_condominio/ui/RegistroPagoView.fxml"
+                )
+        );
+
+        Parent root = loader.load();
+
+        Stage stage = (Stage) btnRegresar
+                .getScene()
+                .getWindow();
+
+        stage.setScene(
+                new Scene(root)
+        );
+
+        stage.show();
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
+}
 
     @Override
     public void initialize(
