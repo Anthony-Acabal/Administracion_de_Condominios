@@ -29,15 +29,27 @@ public class RegistroPropietarioLogic {
         String formatoCorreo = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (!propietario.getCorreoElectronico().matches(formatoCorreo)) return "Ingrese un correo válido.";
 
-        return dao.verificarDuplicados(
+      
+        String resultadoDuplicados = dao.verificarDuplicados(
                 propietario.getIdPropietario(),
                 propietario.getIdCasa(),
                 propietario.getTelefono(),
                 propietario.getCorreoElectronico()
         );
+
+       
+        if (resultadoDuplicados != null) {
+            return resultadoDuplicados;
+        }
+
+        return null;
     }
 
     public boolean guardarPropietario(Propietario propietario) {
+        
+        if ("REACTIVAR".equals(propietario.getEstado())) {
+            return dao.reactivarPropietario(propietario);
+        }
         return dao.guardarPropietario(propietario);
     }
 
@@ -61,7 +73,7 @@ public class RegistroPropietarioLogic {
 
         for (int i = 1; i <= 30; i++) {
             if (!casasOcupadas.contains(i)) {
-                casasDisponibles.add(String.valueOf(i)); // Puro número
+                casasDisponibles.add(String.valueOf(i)); 
             }
         }
 

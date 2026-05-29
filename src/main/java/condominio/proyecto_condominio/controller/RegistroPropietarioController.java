@@ -1,4 +1,4 @@
-package condominio.proyecto_condominio.controller;
+    package condominio.proyecto_condominio.controller;
 
 import condominio.proyecto_condominio.model.Propietario;
 import condominio.proyecto_condominio.logic.RegistroPropietarioLogic;
@@ -179,21 +179,48 @@ public class RegistroPropietarioController {
         propietario.setTelefono(telefonoClean);
         propietario.setCorreoElectronico(correo);
 
-        String errorValidacion = logic.validarPropietario(propietario);
-        if (errorValidacion != null && !errorValidacion.isEmpty()) {
-            mostrarAlerta("Validacion de Registro", errorValidacion, AlertType.WARNING);
-            return;
-        }
+        String validacion = logic.validarPropietario(propietario);
+        
+        if (validacion == null) {
+            boolean exitoso = logic.guardarPropietario(propietario);
+            if (exitoso) {
+                mostrarAlerta("Operacion Exitosa", "Propietario guardado correctamente.", AlertType.INFORMATION);
+                actionLimpiar(null);
+                vboxFormulario.setVisible(false);
+                vboxTabla.setVisible(true);
+                cargarTabla(); 
+            } else {
+                mostrarAlerta("Error", "No se pudo procesar en la base de datos.", AlertType.ERROR);
+            }
+        } else if (validacion.startsWith("REACTIVAR:")) {
+            int idViejo = Integer.parseInt(validacion.split(":")[1]);
+            
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Reactivar Registro");
+            alert.setHeaderText("Propietario detectado en el historial");
+            alert.setContentText("Este correo, teléfono o casa pertenece a un propietario eliminado. ¿Desea reactivar el registro original con los nuevos datos?");
 
-        boolean exitoso = logic.guardarPropietario(propietario);
-        if (exitoso) {
-            mostrarAlerta("Operacion Exitosa", "Propietario guardado correctamente.", AlertType.INFORMATION);
-            actionLimpiar(null);
-            vboxFormulario.setVisible(false);
-            vboxTabla.setVisible(true);
-            cargarTabla(); 
+            ButtonType btnSi = new ButtonType("Sí, reactivar");
+            ButtonType btnNo = new ButtonType("No, cancelar");
+            alert.getButtonTypes().setAll(btnSi, btnNo);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == btnSi) {
+                propietario.setIdPropietario(idViejo);
+                propietario.setEstado("REACTIVAR");
+                
+                if (logic.guardarPropietario(propietario)) {
+                    mostrarAlerta("Operacion Exitosa", "El propietario ha sido reactivado y actualizado con éxito.", AlertType.INFORMATION);
+                    actionLimpiar(null);
+                    vboxFormulario.setVisible(false);
+                    vboxTabla.setVisible(true);
+                    cargarTabla();
+                } else {
+                    mostrarAlerta("Error", "No se pudo reactivar en la base de datos.", AlertType.ERROR);
+                }
+            }
         } else {
-            mostrarAlerta("Error", "No se pudo procesar en la base de datos.", AlertType.ERROR);
+            mostrarAlerta("Validacion de Registro", validacion, AlertType.WARNING);
         }
     }
 

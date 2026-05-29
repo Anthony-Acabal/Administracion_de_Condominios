@@ -18,10 +18,9 @@ public class RegistroPropietarioDAO {
 
     public String verificarDuplicados(int idPropietario, int idCasa, String telefono, String correo) {
         String sql = """
-                     SELECT id_casa, telefono, correo
+                     SELECT id_propietario, id_casa, telefono, correo, estado
                      FROM Propietario
                      WHERE (id_casa = ? OR telefono = ? OR correo = ?)
-                     AND estado = 'Activo'
                      """;
         
         if (idPropietario > 0) {
@@ -38,10 +37,25 @@ public class RegistroPropietarioDAO {
             if (idPropietario > 0) ps.setInt(4, idPropietario);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    if (rs.getInt("id_casa") == idCasa) return "La casa número " + idCasa + " ya se encuentra asignada.";
-                    if (rs.getString("telefono") != null && rs.getString("telefono").equalsIgnoreCase(telefono)) return "El teléfono ya existe registrado.";
-                    if (rs.getString("correo") != null && rs.getString("correo").equalsIgnoreCase(correo)) return "El correo ya existe registrado.";
+                while (rs.next()) {
+                    String estado = rs.getString("estado");
+                    int idEncontrado = rs.getInt("id_propietario");
+
+                    if ("Activo".equalsIgnoreCase(estado)) {
+                        if (rs.getInt("id_casa") == idCasa) return "La casa número " + idCasa + " ya se encuentra asignada.";
+                        if (rs.getString("telefono") != null && rs.getString("telefono").equalsIgnoreCase(telefono)) return "El teléfono ya existe registrado.";
+                        if (rs.getString("correo") != null && rs.getString("correo").equalsIgnoreCase(correo)) return "El correo ya existe registrado.";
+                    } else if ("Eliminado".equalsIgnoreCase(estado)) {
+                        // AQUÍ ESTÁ EL FIX: Verificamos qué fue lo que coincidió
+                        boolean coincideTelefono = rs.getString("telefono") != null && rs.getString("telefono").equalsIgnoreCase(telefono);
+                        boolean coincideCorreo = rs.getString("correo") != null && rs.getString("correo").equalsIgnoreCase(correo);
+                        
+                        // Si coincidió el teléfono o correo, pedimos reactivar. 
+                        // Si solo coincidió la casa, no hace nada y deja seguir el guardado.
+                        if (coincideTelefono || coincideCorreo) {
+                            return "REACTIVAR:" + idEncontrado;
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -170,6 +184,35 @@ public class RegistroPropietarioDAO {
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error Baja: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean reactivarPropietario(Propietario propietario) {
+        String sql = """
+                     UPDATE Propietario SET
+                     primer_nombre = ?, segundo_nombre = ?, tercer_nombre = ?,
+                     primer_apellido = ?, segundo_apellido = ?, id_casa = ?,
+                     telefono = ?, correo = ?, estado = 'Activo'
+                     WHERE id_propietario = ?
+                     """;
+
+        Connection con = obtenerConexionSegura();
+        if (con == null) return false;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, propietario.getPrimerNombre());
+            ps.setString(2, propietario.getSegundoNombre());
+            ps.setString(3, propietario.getTercerNombre());
+            ps.setString(4, propietario.getPrimerApellido());
+            ps.setString(5, propietario.getSegundoApellido());
+            ps.setInt(6, propietario.getIdCasa());
+            ps.setString(7, propietario.getTelefono());
+            ps.setString(8, propietario.getCorreoElectronico());
+            ps.setInt(9, propietario.getIdPropietario());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error al reactivar: " + e.getMessage());
         }
         return false;
     }
