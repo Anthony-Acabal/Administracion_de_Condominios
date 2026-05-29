@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane prefHeight="650.0" prefWidth="1020.0" style="-fx-background-color: #EAF7F4;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.RegistroPropietarioController">
+   <children>
+      <AnchorPane styleClass="fondo-pane">
+         <children>
+            <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Circle centerX="0.0" centerY="0.0" radius="260.0" styleClass="circulo-1" />
+                  <Circle centerX="0.0" centerY="0.0" radius="190.0" styleClass="circulo-2" />
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+
+      <StackPane maxHeight="450.0" maxWidth="820.0" styleClass="card-central">
+         <children>
+            <AnchorPane>
+               <children>
+                  <Button fx:id="btnRegresar" onAction="#actionRegresar" prefHeight="30.0" prefWidth="100.0" styleClass="boton-secundario" text="Regresar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+
+                  <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0">
+                     <children>
+                        
+                        <VBox fx:id="vboxTabla" spacing="15.0">
+                           <children>
+                              <Label styleClass="titulo" text="Gestión de Propietarios" />
+                              <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                 <children>
+                                    <Button fx:id="btnAgregar" onAction="#actionMostrarFormularioNuevo" prefHeight="40.0" prefWidth="130.0" styleClass="btn-guardar" text="+ Agregar" />
+                                    <Button fx:id="btnEditar" onAction="#actionEditar" prefHeight="40.0" prefWidth="130.0" styleClass="boton-secundario" text="Editar" />
+                                    <Button fx:id="btnEliminar" onAction="#actionEliminar" prefHeight="40.0" prefWidth="130.0" styleClass="boton-cancelar" text="Eliminar" />
+                                    <Pane HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <TableView fx:id="tablaPropietarios" prefHeight="300.0" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="colNombres" prefWidth="190.0" text="Nombres" />
+                                    <TableColumn fx:id="colApellidos" prefWidth="190.0" text="Apellidos" />
+                                    <TableColumn fx:id="colCasa" prefWidth="80.0" text="Casa" />
+                                    <TableColumn fx:id="colTelefono" prefWidth="100.0" text="Teléfono" />
+                                    <TableColumn fx:id="colCorreo" prefWidth="200.0" text="Correo" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+
+                        <VBox fx:id="vboxFormulario" spacing="10.0" visible="false">
+                           <children>
+                              <Label styleClass="titulo" text="Registro de Propietario" />
+                              <GridPane hgap="25.0" vgap="5.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints percentWidth="33.3" />
+                                    <ColumnConstraints percentWidth="33.3" />
+                                    <ColumnConstraints percentWidth="33.3" />
+                                 </columnConstraints>
+                                 <children>
+                                    
+                                    <Label styleClass="label-form" text="Primer Nombre*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                       <children>
+                                          <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                             <children>
+                                                <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                                   <image>
+                                                      <Image url="@../images/Icon%20Persona.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </children>
+                                          </StackPane>
+                                          <TextField fx:id="txtPrimerNombre" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label styleClass="label-form" text="Segundo Nombre" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" styleClass="campo-texto" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <TextField fx:id="txtSegundoNombre" style="-fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 0 0 10;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label styleClass="label-form" text="Tercer Nombre" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" styleClass="campo-texto" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <children>
+                                          <TextField fx:id="txtTercerNombre" style="-fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 0 0 10;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label styleClass="label-form" text="Primer Apellido*" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                       <children>
+                                          <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                             <children>
+                                                <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                                   <image>
+                                                      <Image url="@../images/Icon%20Persona.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </children>
+                                          </StackPane>
+                                          <TextField fx:id="txtPrimerApellido" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label styleClass="label-form" text="Segundo Apellido" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" styleClass="campo-texto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <children>
+                                          <TextField fx:id="txtSegundoApellido" style="-fx-background-color: transparent; -fx-font-size: 13px; -fx-padding: 0 0 0 10;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label text="Datos de Contacto y Ubicación" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                                       <style>-fx-text-fill: #0F4C4A; -fx-font-weight: bold; -fx-font-size: 16px;</style>
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" top="15.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    
+                                    <Label styleClass="label-form" text="Número de Casa*" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                                       <children>
+                                          <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                             <children>
+                                                <ImageView fitHeight="35.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                                   <image>
+                                                      <Image url="@../images/Icon%20Casa.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </children>
+                                          </StackPane>
+                                          <ComboBox fx:id="cmbNumeroCasa" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label styleClass="label-form" text="Número de Teléfono*" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                       <children>
+                                          <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                             <children>
+                                                <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                                   <image>
+                                                      <Image url="@../images/Icon%20Telefono.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </children>
+                                          </StackPane>
+                                          <TextField fx:id="txtNumeroTelefono" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    <Label style="-fx-font-size: 10px;" text="Ejemplo: Válido y Administrativo" textFill="#7f8c8d" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                                    <Label styleClass="label-form" text="Correo Electrónico*" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" styleClass="campo-texto" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                       <children>
+                                          <StackPane prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: #CDECE6; -fx-background-radius: 13px 0px 0px 13px;">
+                                             <children>
+                                                <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="field-with-icon-style">
+                                                   <image>
+                                                      <Image url="@../images/GEMAILDEFINITIVO.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </children>
+                                          </StackPane>
+                                          <TextField fx:id="txtCorreoElectronico" style="-fx-background-color: transparent; -fx-font-size: 13px;" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                    <Label style="-fx-font-size: 10px;" text="Formato: usuario@gmail.com" textFill="#7f8c8d" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                 </children>
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                 </rowConstraints>
+                              </GridPane>
+
+                              <HBox alignment="CENTER" spacing="20.0">
+                                 <children>
+                                    <Button fx:id="btnGuardar" onAction="#actionGuardar" prefHeight="45.0" prefWidth="180.0" styleClass="btn-guardar" text="Guardar" />
+                                    <Button fx:id="btnCancelar" onAction="#actionCancelar" prefHeight="45.0" prefWidth="180.0" styleClass="boton-cancelar" text="Cancelar" />
+                                    <Button fx:id="btnLimpiar" onAction="#actionLimpiar" prefHeight="45.0" prefWidth="120.0" styleClass="boton-limpiar" text="Limpiar" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="25.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </children>
+</StackPane>

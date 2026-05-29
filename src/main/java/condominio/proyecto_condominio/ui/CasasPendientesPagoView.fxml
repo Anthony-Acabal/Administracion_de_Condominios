@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1024.0" styleClass="root" stylesheets="@../css/ReportegeneralYPendientesdepago.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="condominio.proyecto_condominio.controller.CasasPendientesPagoController">
+   <children>
+      <Label layoutX="294.0" layoutY="53.0" styleClass="titulo" text="Casas pendientes de pago del mes actual" />
+      <Label fx:id="lblCPPFecha" layoutX="443.0" layoutY="98.0" styleClass="label-form" text="Cuota de Mayo del 2026" />
+      <TableView fx:id="tbCasasPendientesPago" layoutX="12.0" layoutY="138.0" prefHeight="282.0" prefWidth="704.0" styleClass="table-view">
+        <columns>
+          <TableColumn fx:id="colCPPNumeroCasa" prefWidth="159.0" text="Numero de Casa" />
+            <TableColumn fx:id="colCPPNombrePropietario" prefWidth="220.0" text="Nombre del propietario" />
+            <TableColumn fx:id="colCPPTelefono" prefWidth="150.0" text="Telefono" />
+            <TableColumn fx:id="colCPPFecha" prefWidth="174.0" text="Fecha" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnCPPRegresar" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" styleClass="boton-secundario" text="←" textAlignment="CENTER" />
+      <Label fx:id="lblCPPCantidad" layoutX="14.0" layoutY="456.0" text="Casas pendientes de pago: 10" />
+      <Button fx:id="btnCPPGenerarReporte" layoutX="825.0" layoutY="447.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="150.0" styleClass="boton-primario" text="Generar Reporte" />
+      <ChoiceBox fx:id="choiceBoxCPPFiltroMes" layoutX="825.0" layoutY="138.0" prefWidth="150.0" styleClass="combo-box" />
+      <ChoiceBox fx:id="choiceBoxCPPFiltroAno" layoutX="825.0" layoutY="194.0" prefWidth="150.0" styleClass="combo-box" />
+      <Label layoutX="731.0" layoutY="140.0" styleClass="label-form" text="Periodo de: " />
+      <Label layoutX="731.0" layoutY="197.0" styleClass="label-form" text="del año: " />
+   </children>
+</AnchorPane>
