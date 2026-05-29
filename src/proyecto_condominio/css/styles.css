@@ -1,13 +1,9 @@
-@font-face {
-    font-family: "Montserrat";
-    src: url("/proyecto_condominio/fonts/Montserrat-Regular.ttf");
-}
 
 .root {
 
     -fx-background-color: #EAF7F4;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 }
 
 
@@ -19,7 +15,7 @@
 
     -fx-font-size: 30px;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-font-weight: bold;
 
@@ -37,7 +33,7 @@
 
     -fx-text-fill: #000000;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-font-weight: bold;
 }
@@ -61,7 +57,7 @@
 
     -fx-font-size: 12px;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-text-fill: #000000;
 
@@ -95,7 +91,7 @@
 
     -fx-font-size: 12px;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-font-weight: bold;
 
@@ -122,7 +118,7 @@
 
     -fx-text-fill: #000000;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-font-weight: bold;
 
@@ -166,7 +162,7 @@
 
     -fx-font-size: 13px;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-text-fill: #000000;
 }
@@ -341,7 +337,7 @@
 
     -fx-text-fill: #D64545;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-font-weight: bold;
 
@@ -381,7 +377,7 @@
 
     -fx-font-size: 11px;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-text-fill: #000000;
 
@@ -445,7 +441,7 @@
 
     -fx-text-fill: white;
 
-    -fx-font-family: "Montserrat";
+    -fx-font-family: "Montserrat Regular";
 
     -fx-font-weight: bold;
 }
@@ -499,4 +495,82 @@
     -fx-border-color: transparent;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+
+.table-view .column-header .arrow {
+    
+    -fx-background-color: white;
+}
+
+.table-view .column-header-background {
+
+    -fx-background-color: #0B5D5B;
+
+    -fx-background-radius: 20 20 0 0;
+
+    -fx-padding: 0;
+}
+
+.table-view .column-header-background {
+
+    -fx-background-color: #0B5D5B;
+
+    -fx-background-radius: 20 20 0 0;
+}
+
+.table-view .filler {
+
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+
+    -fx-background-color: transparent;
+}
+
+.table-view .placeholder .label {
+
+    -fx-text-fill: #666666;
+
+    -fx-font-size: 15px;
+
+    -fx-font-family: "Montserrat Regular";
+
+    -fx-font-weight: bold;
+}
+
+/* =========================
+   MENSAJES
+========================= */
+
+.label-error {
+
+    -fx-font-size: 12px;
+
+    -fx-font-family: "Montserrat Regular";
+
+    -fx-font-weight: bold;
+
+    -fx-alignment: center;
+
+    -fx-wrap-text: true;
+
+    -fx-text-alignment: center;
+}
+
+.label-exito {
+
+    -fx-font-size: 14px;
+
+    -fx-font-family: "Montserrat Regular";
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #10b981;
+
+    -fx-alignment: center;
+
+    -fx-wrap-text: true;
+
+    -fx-text-alignment: center;
 }
