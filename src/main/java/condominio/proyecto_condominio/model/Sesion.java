@@ -1,4 +1,4 @@
-package proyecto_condominio.model;
+package condominio.proyecto_condominio.model;
 
 public class Sesion {
     private static Usuario usuarioActual;
