@@ -23,12 +23,16 @@ src/main/java/condominio/proyecto_condominio/model/*
 !src/main/java/condominio/proyecto_condominio/model/Inicio.java
 !src/main/java/condominio/proyecto_condominio/model/Propietario.java
 !src/main/java/condominio/proyecto_condominio/model/Fecha.java
+!src/main/java/condominio/proyecto_condominio/model/EstadoCuenta.java
+
 
 # =================================================================
 # DAO: Bloquea todo, SOLO sube lo tuyo
 # =================================================================
 src/main/java/condominio/proyecto_condominio/dao/*
 !src/main/java/condominio/proyecto_condominio/dao/RegistroPropietarioDAO.java
+!src/main/java/condominio/proyecto_condominio/dao/EstadoCuentaDAO.java
+
 
 # =================================================================
 # CONTROLLER: Bloquea todo, SOLO sube lo tuyo
@@ -43,6 +47,7 @@ src/main/java/condominio/proyecto_condominio/controller/*
 src/main/java/condominio/proyecto_condominio/ui/*
 !src/main/java/condominio/proyecto_condominio/ui/Inicio.fxml
 !src/main/java/condominio/proyecto_condominio/ui/RegistroPropietario.fxml
+!src/main/java/condominio/proyecto_condominio/ui/EstadoCuentaView.fxml
 
 # =================================================================
 # LOGIC: Bloquea todo, SOLO sube lo tuyo
@@ -50,3 +55,4 @@ src/main/java/condominio/proyecto_condominio/ui/*
 src/main/java/condominio/proyecto_condominio/logic/*
 !src/main/java/condominio/proyecto_condominio/logic/InicioLogic.java
 !src/main/java/condominio/proyecto_condominio/logic/RegistroPropietarioLogic.java
+!src/main/java/condominio/proyecto_condominio/logic/EstadoCuentaLogic.java
