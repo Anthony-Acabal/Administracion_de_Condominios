@@ -1,35 +1,45 @@
-# 🏢 Feature: Reportes General  y Casas pendientes de pago - Administración de Condominios
+# Administracion_de_Condominios
+Sistema creado para la administración de condominios
+## Participación en el Proyecto
 
-## 📝 Descripción
-Este branch incluye la implementación completa de los módulos de **Reporte General (P7)** y **Casas Morosas (P8)** para el sistema de administración. Además de cubrir todos los requerimientos solicitados, se desarrolló una lógica de filtrado dinámico que mejora significativamente la visualización y análisis de los datos históricos.
+### Oliver Otoniel Yecute Yocute
 
-## ✨ Funcionalidades Implementadas
+Responsable del análisis, diseño, desarrollo e implementación de los módulos relacionados con la administración de cuotas y pagos dentro del sistema de gestión de condominios.
 
-### 📊 P7 | Reporte General
-Un panel detallado que proporciona una visión financiera integral:
-* **Tabla de Resumen (JTable):** Despliega el estado de las 30 casas, incluyendo:
-  * Número de casa.
-  * Nombre del propietario.
-  * Estado del mes actual (Pagado / Pendiente).
-  * Total pagado en el año.
-* **Métricas de Recaudación:** Pie de página que contrasta el total recaudado del mes versus el total esperado (ej. Q45,000.00 o según modificaciones de cuota).
-* **Módulo de Impresión:** Integración con **JasperReports** mediante un botón dedicado para imprimir un reporte exacto de la información renderizada en pantalla.
-* **Dashboard Visual:** Gráficas comparativas que ilustran:
-  * Pagado vs. Pendiente.
-  * Recaudado en el año vs. Esperado.
+#### Módulos desarrollados
 
-### ⚠️ P8 | Casas pendientes de pago
-Módulo optimizado para la gestión de cobros:
-* **Filtro Automático:** Lista de casas que presentan saldo pendiente en el mes de consulta.
-* **Gestión Rápida:** Muestra el número de casa, nombre del propietario y número de teléfono para facilitar el contacto directo.
+* Configuración de Cuota
+* Registro de Pagos
+* Historial de Registro de Pagos
 
-### 🚀 Mejoras y Features Adicionales (Logros)
-* **Motor de Filtrado de Tiempo:** Sistema de filtros para navegar entre meses y años (anteriores y futuros).
-* **Límites de Fecha Inteligentes:** El rango de los filtros se ajusta dinámicamente, tomando como límite inferior el registro más antiguo y como límite superior el más reciente en la base de datos.
-* **UI Reactiva:** Sincronización en tiempo real. Todas las gráficas, textos y tablas se actualizan instantáneamente al interactuar con los filtros de fecha.
+#### Actividades realizadas
 
-## 🛠️ Tecnologías Utilizadas
-* **Core:** Java con Maven
-* **Frontend:** JavaFX, Scene Builder, CSS
-* **Base de Datos:** SQL Server 2019 (Consultas estructuradas)
-* **Reportes:** JasperReports
+Durante el desarrollo de estos módulos se llevaron a cabo las siguientes actividades:
+
+* Diseño de la interfaz gráfica de usuario (UI) utilizando JavaFX y Scene Builder.
+* Elaboración y estructuración de archivos FXML para cada una de las pantallas desarrolladas.
+* Implementación de estilos personalizados mediante CSS para mejorar la experiencia visual y mantener una interfaz moderna, consistente y amigable para el usuario.
+* Desarrollo de controladores (Controllers) para la gestión de eventos, validaciones y comunicación entre la interfaz y la lógica del sistema.
+* Implementación de la capa lógica (Logic) encargada de aplicar las reglas de negocio y validaciones correspondientes a cada proceso.
+* Desarrollo de la capa de acceso a datos (DAO) para la interacción con la base de datos mediante consultas, inserciones, actualizaciones y obtención de información.
+* Creación y mantenimiento de las clases modelo necesarias para representar las entidades utilizadas por los módulos desarrollados.
+* Implementación de validaciones para garantizar la integridad y consistencia de los datos ingresados por el usuario.
+* Desarrollo de funcionalidades para el registro, consulta y actualización de información relacionada con cuotas y pagos.
+* Implementación del cálculo automático de recaudación mensual basado en las cuotas configuradas y la cantidad de propietarios registrados.
+* Desarrollo del historial de pagos para facilitar la consulta y seguimiento de transacciones realizadas dentro del sistema.
+* Integración de iconografía, recursos gráficos y tipografías personalizadas para mejorar la presentación visual de las pantallas.
+* Realización de pruebas funcionales para verificar el correcto funcionamiento de los procesos implementados.
+* Corrección de errores y optimización del comportamiento de las interfaces y componentes desarrollados.
+
+#### Tecnologías utilizadas
+
+* Java
+* JavaFX
+* Scene Builder
+* CSS
+* JDBC
+* SQL Server
+* Maven
+* Git y GitHub
+
+La participación incluyó el desarrollo completo de los módulos asignados, desde la fase de diseño de interfaz y modelado de datos hasta la implementación de la lógica de negocio, acceso a datos, pruebas funcionales y mejoras visuales de la aplicación.
