@@ -7,25 +7,23 @@ import java.sql.ResultSet;
 
 public class LoginDAO {
 
-    public Usuario validarLogin(String correo, String contrasena) {
+    public Usuario validarLogin(String usuario, String contrasena) {
 
         String sql = """
-            SELECT id_usuario,
-                   usuario,
-                   correo,
-                   contrasena,
-                   id_rol
-            FROM usuario
-            WHERE correo = ?
-            AND contrasena = ?
-        """;
+    SELECT id_usuario,
+           usuario,
+           correo,
+           contrasena,
+           id_rol
+    FROM usuario
+    WHERE usuario = ?
+    AND contrasena = ?
+""";
 
         try (
-                Connection conn = Conexion.getInstancia().getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Conexion.getInstancia().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, correo);
+            stmt.setString(1, usuario);
             stmt.setString(2, contrasena);
 
             ResultSet rs = stmt.executeQuery();
@@ -39,8 +37,8 @@ public class LoginDAO {
                         rs.getString("contrasena"),
                         false, // primerIngreso (no viene en query)
                         String.valueOf(rs.getInt("id_rol")),
-                        0,     // intentosFallidos
-                        false  // bloqueado
+                        0, // intentosFallidos
+                        false // bloqueado
                 );
 
                 return user;

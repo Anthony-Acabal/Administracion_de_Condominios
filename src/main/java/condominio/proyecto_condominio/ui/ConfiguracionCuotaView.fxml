@@ -32,14 +32,6 @@
 
                     <children>
 
-                        <!-- SUPERIOR IZQUIERDA -->
-
-                        <Circle layoutX="-120" layoutY="-120" radius="520" styleClass="circulo-1" />
-
-                        <Circle layoutX="-120" layoutY="-120" radius="410" styleClass="circulo-2" />
-
-                        <Circle layoutX="-120" layoutY="-120" radius="300" styleClass="circulo-4" />
-
                         <!-- INFERIOR DERECHA -->
 
                         <Circle layoutX="1620" layoutY="910" radius="520" styleClass="circulo-1" />

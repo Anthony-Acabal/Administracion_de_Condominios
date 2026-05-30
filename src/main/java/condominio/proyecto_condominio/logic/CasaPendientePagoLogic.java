@@ -36,37 +36,34 @@ public class CasaPendientePagoLogic {
             int[] limites
     ) {
 
+        int anioActual = LocalDate.now().getYear();
+        int mesActual = LocalDate.now().getMonthValue();
+
         if (mesSeleccionado.equals("Ver todo")) {
 
             int mesInicio = 1;
-
-            int mesFin = 12;
+            int mesFin;
 
             if (anio == limites[0]) {
-
                 mesInicio = limites[1];
             }
 
-            if (anio == LocalDate.now().getYear()) {
-
-                mesFin = LocalDate.now().getMonthValue();
+            if (anio == anioActual) {
+                mesFin = mesActual;
+            } else {
+                mesFin = 12;
             }
 
-            return dao.obtenerCasasPendientesAnual(
-                    anio,
-                    mesInicio,
-                    mesFin
-            );
+            if (mesInicio > mesFin) {
+                return List.of();
+            }
+
+            return dao.obtenerCasasPendientesAnual(anio, mesInicio, mesFin);
         }
 
-        int mes = obtenerNumeroMes(
-                mesSeleccionado
-        );
+        int mes = obtenerNumeroMes(mesSeleccionado);
 
-        return dao.obtenerCasasPendientes(
-                mes,
-                anio
-        );
+        return dao.obtenerCasasPendientes(mes, anio);
     }
 
     public int obtenerNumeroMes(

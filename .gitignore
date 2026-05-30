@@ -8,10 +8,6 @@ build/
 dist/
 *.class
 
-# Bloquear archivos base que genera NetBeans automáticamente
-nb-configuration.xml
-nbactions.xml
-
 # =================================================================
 # MODEL: Bloquea todo, SOLO sube lo tuyo (CONEXIÓN QUEDA BLOQUEADA)
 # =================================================================

@@ -31,16 +31,10 @@ public class CasasPendientesPagoDAO {
                 + "\n"
                 + "SELECT\n"
                 + "    p.id_casa,\n"
-                + "\n"
-                + "    p.primer_nombre\n"
-                + "    + ' '\n"
-                + "    + ISNULL(p.segundo_nombre + ' ', '')\n"
-                + "    + p.primer_apellido AS nombre_propietario,\n"
-                + "\n"
-                + "    p.telefono\n"
-                + "\n"
+                + "    p.primer_nombre + ' ' + ISNULL(p.segundo_nombre + ' ', '') + p.primer_apellido AS nombre_propietario,\n"
+                + "    p.telefono,\n"
+                + "    m.mes\n"
                 + "FROM propietario p\n"
-                + "\n"
                 + "CROSS JOIN Meses m\n"
                 + "\n"
                 + "WHERE\n"
@@ -48,7 +42,17 @@ public class CasasPendientesPagoDAO {
                 + "    ? IS NULL\n"
                 + "    OR m.mes = ?\n"
                 + ")\n"
+                + "\n"
                 + "AND p.id_estado = 2\n"
+                + "\n"
+                + "-- 🔥 REGLA CLAVE: RESPETAR FECHA DE CREACIÓN\n"
+                + "AND (\n"
+                + "    YEAR(p.fecha_creacion) < ?\n"
+                + "    OR (\n"
+                + "        YEAR(p.fecha_creacion) = ?\n"
+                + "        AND m.mes >= MONTH(p.fecha_creacion)\n"
+                + "    )\n"
+                + ")\n"
                 + "\n"
                 + "AND NOT EXISTS\n"
                 + "(\n"
@@ -72,7 +76,12 @@ public class CasasPendientesPagoDAO {
                 ps.setInt(2, mes);
             }
 
+// 🔥 NUEVO: año para fecha_creacion
             ps.setInt(3, anio);
+            ps.setInt(4, anio);
+
+// pago_cuota
+            ps.setInt(5, anio);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -91,35 +100,52 @@ public class CasasPendientesPagoDAO {
     }
 
     public List<CasasPendientesPago> obtenerCasasPendientesAnual(int anio, int mesInicio, int mesFin) {
+
         List<CasasPendientesPago> lista = new ArrayList<>();
 
-        String sql = "WITH Meses AS ("
-                + "    SELECT 1 AS mes UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 "
-                + "    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 "
-                + "    UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12"
-                + ") "
-                + "SELECT p.id_casa, "
-                + "       p.primer_nombre + ' ' + ISNULL(p.segundo_nombre + ' ', '') + p.primer_apellido AS nombre_propietario, "
-                + "       p.telefono, "
-                + "       m.mes "
-                + "FROM propietario p "
-                + "CROSS JOIN Meses m "
-                + "WHERE p.id_estado = 2 AND m.mes >= ? AND m.mes <= ? AND NOT EXISTS ("
-                + "    SELECT 1 FROM pago_cuota pc "
-                + "    WHERE pc.id_propietario = p.id_propietario "
-                + "    AND MONTH(pc.fecha_pago) = m.mes "
-                + "    AND YEAR(pc.fecha_pago) = ?"
-                + ") "
-                + "ORDER BY m.mes ASC, p.id_casa ASC";
+        String sql
+                = "WITH Meses AS (\n"
+                + "    SELECT 1 mes UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4\n"
+                + "    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8\n"
+                + "    UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12\n"
+                + ")\n"
+                + "SELECT p.id_casa,\n"
+                + "       p.primer_nombre + ' ' + ISNULL(p.segundo_nombre + ' ', '') + p.primer_apellido AS nombre_propietario,\n"
+                + "       p.telefono,\n"
+                + "       m.mes\n"
+                + "FROM propietario p\n"
+                + "CROSS JOIN Meses m\n"
+                + "WHERE p.id_estado = 2\n"
+                + "AND m.mes BETWEEN ? AND ?\n"
+                + "\n"
+                + "AND (\n"
+                + "    YEAR(p.fecha_creacion) < ?\n"
+                + "    OR (\n"
+                + "        YEAR(p.fecha_creacion) = ?\n"
+                + "        AND m.mes >= MONTH(p.fecha_creacion)\n"
+                + "    )\n"
+                + ")\n"
+                + "\n"
+                + "AND NOT EXISTS (\n"
+                + "    SELECT 1 FROM pago_cuota pc\n"
+                + "    WHERE pc.id_propietario = p.id_propietario\n"
+                + "      AND MONTH(pc.pago) = m.mes\n"
+                + "      AND YEAR(pc.pago) = ?\n"
+                + ")\n"
+                + "ORDER BY m.mes ASC, p.id_casa ASC;";
 
         try (Connection con = Conexion.getInstancia().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setInt(1, mesInicio);
             ps.setInt(2, mesFin);
             ps.setInt(3, anio);
+            ps.setInt(4, anio);
+            ps.setInt(5, anio);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int mes = rs.getInt("mes");
+
                     lista.add(new CasasPendientesPago(
                             rs.getInt("id_casa"),
                             rs.getString("nombre_propietario"),
@@ -128,9 +154,11 @@ public class CasasPendientesPagoDAO {
                     ));
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return lista;
     }
 
@@ -140,8 +168,8 @@ public class CasasPendientesPagoDAO {
             LocalDate.now().getYear(), LocalDate.now().getMonthValue()
         };
 
-        String sqlMin = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota WHERE fecha_pago IS NOT NULL ORDER BY fecha_pago ASC";
-        String sqlMax = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota WHERE fecha_pago IS NOT NULL ORDER BY fecha_pago DESC";
+        String sqlMin = "SELECT TOP 1 YEAR(pago) as anio, MONTH(pago) as mes FROM pago_cuota WHERE pago IS NOT NULL ORDER BY pago ASC";
+        String sqlMax = "SELECT TOP 1 YEAR(pago) as anio, MONTH(pago) as mes FROM pago_cuota WHERE pago IS NOT NULL ORDER BY pago DESC";
 
         try (Connection con = Conexion.getInstancia().getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(sqlMin); ResultSet rs = ps.executeQuery()) {

@@ -19,7 +19,7 @@
             <TableColumn fx:id="colCPPFecha" prefWidth="174.0" text="Fecha" />
         </columns>
       </TableView>
-      <Button fx:id="btnCPPRegresar" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" styleClass="boton-secundario" text="←" textAlignment="CENTER" />
+      <Button fx:id="btnCPPRegresar" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#regresar" styleClass="boton-secundario" text="←" textAlignment="CENTER" />
       <Label fx:id="lblCPPCantidad" layoutX="14.0" layoutY="456.0" text="Casas pendientes de pago: 10" />
       <Button fx:id="btnCPPGenerarReporte" layoutX="825.0" layoutY="447.0" mnemonicParsing="false" onAction="#generarReporteCPP" prefHeight="39.0" prefWidth="150.0" styleClass="boton-primario" text="Generar Reporte" />
       <ChoiceBox fx:id="choiceBoxCPPFiltroMes" layoutX="825.0" layoutY="138.0" prefWidth="150.0" styleClass="combo-box" />

@@ -3,7 +3,6 @@ package condominio.proyecto_condominio;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.view.JasperViewer;
 
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,8 +18,18 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Login"), 640, 480);
+        scene = new Scene(loadFXML("Login"));
+
         stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.setResizable(false);
+
+        stage.maximizedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) {
+                stage.setMaximized(true);
+            }
+        });
+
         stage.show();
     }
 
@@ -38,6 +47,6 @@ public class App extends Application {
     public static void main(String[] args) {
 
         launch();
-        
+
     }
 }

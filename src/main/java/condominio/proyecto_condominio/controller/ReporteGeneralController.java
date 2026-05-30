@@ -14,11 +14,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import javafx.geometry.Side;
 
 import javafx.scene.Node;
+import javafx.scene.Parent;
 
 import javafx.scene.chart.PieChart;
 
@@ -29,6 +31,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class ReporteGeneralController
         implements Initializable {
@@ -56,6 +59,9 @@ public class ReporteGeneralController
 
     @FXML
     private Button btnImprimirReporte;
+
+    @FXML
+    private Button btnReporteGeneralRegresar;
 
     @FXML
     private PieChart charGraficaReporteGeneralMes;
@@ -105,6 +111,31 @@ public class ReporteGeneralController
         inicializarFiltros();
 
         cargarDatos();
+    }
+
+    @FXML
+    private void regresarInicio() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/condominio/proyecto_condominio/ui/Inicio.fxml"
+                    )
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnReporteGeneralRegresar
+                    .getScene()
+                    .getWindow();
+
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     private void configurarColumnas() {

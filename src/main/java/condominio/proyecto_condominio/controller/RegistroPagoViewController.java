@@ -101,10 +101,11 @@ public class RegistroPagoViewController implements Initializable {
 
             Parent root = loader.load();
 
-            Stage stage = (Stage) btnHistorial.getScene().getWindow();
+            Stage stage = (Stage) btnHistorial
+                    .getScene()
+                    .getWindow();
 
-            stage.setScene(new Scene(root));
-            stage.show();
+            stage.getScene().setRoot(root);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -344,11 +345,26 @@ public class RegistroPagoViewController implements Initializable {
     @FXML
     private void cerrarVentana(ActionEvent event) {
 
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
+        try {
 
-        stage.close();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/condominio/proyecto_condominio/ui/Inicio.fxml"
+                    )
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     private int obtenerNumeroMes(String mes) {

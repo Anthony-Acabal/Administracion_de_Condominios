@@ -41,22 +41,18 @@ public class OlvidoContrasenaController {
         }
 
         // Simulación temporal mientras integran la lógica real
-        String claveTemporal
-                = logic.generarClaveTemporal(
-                        usuario,
-                        correo
-                );
+        String clave = logic.recuperarContrasena(usuario, correo);
 
-        System.out.println("CLAVE GENERADA = " + claveTemporal);
+        System.out.println("CLAVE GENERADA = " + clave);
 
-        if (claveTemporal != null) {
+        if (clave != null) {
 
             lblMensaje.setStyle("-fx-text-fill: #10b981;");
 
             lblMensaje.setText(
                     "¡Clave generada!\n"
-                    + "Su contraseña temporal es:\n"
-                    + claveTemporal
+                    + "Su contraseña es:\n"
+                    + clave
             );
 
             System.out.println(
