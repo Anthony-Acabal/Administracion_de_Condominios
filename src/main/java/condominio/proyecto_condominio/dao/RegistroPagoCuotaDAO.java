@@ -98,8 +98,8 @@ public class RegistroPagoCuotaDAO {
             INNER JOIN propietario p
                 ON pc.id_propietario = p.id_propietario
             WHERE p.id_casa = ?
-            AND MONTH(pc.fecha_pago) = ?
-            AND YEAR(pc.fecha_pago) = ?
+            AND MONTH(pc.pago) = ?
+            AND YEAR(pc.pago) = ?
         """;
 
         try (
@@ -140,7 +140,7 @@ public class RegistroPagoCuotaDAO {
 
             ps.setInt(1, pago.getIdPropietario());
             ps.setInt(2, pago.getIdCuota());
-            ps.setDate(3,java.sql.Date.valueOf(pago.getFechaPago()));
+            ps.setDate(3, java.sql.Date.valueOf(pago.getFechaPago()));
             ps.setString(4, pago.getImprimeComprobante());
             ps.setInt(5, pago.getIdUsuarioCreacion());
 
@@ -166,13 +166,14 @@ public class RegistroPagoCuotaDAO {
 
     public ArrayList<Integer> obtenerMesesPagados(int numeroCasa, int anio) {
         ArrayList<Integer> meses = new ArrayList<>();
+
         String sql = """
-            SELECT MONTH(fecha_pago) mes
+            SELECT MONTH(pc.pago) AS mes
             FROM pago_cuota pc
             INNER JOIN propietario p
                 ON pc.id_propietario = p.id_propietario
             WHERE p.id_casa = ?
-            AND YEAR(fecha_pago) = ?
+            AND YEAR(pc.pago) = ?
         """;
 
         try (
@@ -185,10 +186,12 @@ public class RegistroPagoCuotaDAO {
                     meses.add(rs.getInt("mes"));
                 }
             }
+
         } catch (Exception e) {
             System.out.println("Error al obtener meses pagados:");
             System.out.println(e.getMessage());
         }
+
         return meses;
     }
 }

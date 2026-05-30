@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class RegistroPagoCuotaLogic {
 
     private RegistroPagoCuotaDAO pagoDAO = new RegistroPagoCuotaDAO();
-    
+
     public double obtenerCuotaActual() {
 
-    return pagoDAO.obtenerUltimaCuota();
-}
+        return pagoDAO.obtenerUltimaCuota();
+    }
 
     private final String[] meses = {
         "Enero",
@@ -42,30 +42,23 @@ public class RegistroPagoCuotaLogic {
         return pagoDAO.obtenerPropietario(numeroCasa);
     }
 
-    public ArrayList<String> obtenerMesesPendientes(
-            int numeroCasa,
-            int anio
-    ) {
+    public ArrayList<String> obtenerMesesPendientes(int numeroCasa, int anio) {
 
         ArrayList<String> pendientes = new ArrayList<>();
 
-        ArrayList<Integer> pagados
-                = pagoDAO.obtenerMesesPagados(
-                        numeroCasa,
-                        anio
-                );
+        ArrayList<Integer> pagados = pagoDAO.obtenerMesesPagados(numeroCasa, anio);
 
-        LocalDate fechaActual = LocalDate.now();
+        int mesActual = LocalDate.now().getMonthValue();
+        int anioActual = LocalDate.now().getYear();
 
-        int mesActual = fechaActual.getMonthValue();
+        // si no es el año actual, no limitamos por mes
+        if (anio != anioActual) {
+            mesActual = 12;
+        }
 
         for (int i = 1; i <= mesActual; i++) {
-
             if (!pagados.contains(i)) {
-
-                pendientes.add(
-                        meses[i - 1]
-                );
+                pendientes.add(meses[i - 1]);
             }
         }
 
@@ -163,6 +156,6 @@ public class RegistroPagoCuotaLogic {
 
         int idPagoCuota = pagoDAO.registrarPago(pago);
 
-            return idPagoCuota;
+        return idPagoCuota;
     }
 }
