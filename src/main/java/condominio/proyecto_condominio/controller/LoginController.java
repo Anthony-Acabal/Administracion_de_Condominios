@@ -171,9 +171,11 @@ public class LoginController {
                     .getScene()
                     .getWindow();
 
-            stage.setScene(new Scene(root));
-            stage.setTitle("Recuperar Contraseña - Sistema de Condominios");
-            stage.show();
+            stage.getScene().setRoot(root);
+
+            stage.setTitle(
+                    "Recuperar Contraseña - Sistema de Condominios"
+            );
 
         } catch (IOException e) {
 
@@ -227,11 +229,10 @@ public class LoginController {
 
             Parent root = loader.load();
 
-            Stage stage = (Stage) txtCorreo.getScene().getWindow();
+            Stage stage
+                    = (Stage) txtCorreo.getScene().getWindow();
 
-            Scene scene = stage.getScene();
-            scene.setRoot(root);
-
+            stage.setScene(new Scene(root));
             stage.setTitle(tituloVentana);
 
             stage.show();
