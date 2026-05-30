@@ -29,6 +29,7 @@ import condominio.proyecto_condominio.logic.RegistroPagoCuotaLogic;
 import condominio.proyecto_condominio.model.Propietario;
 
 import condominio.proyecto_condominio.service.CorreoService;
+import condominio.proyecto_condominio.service.GenerarRecibo;
 import condominio.proyecto_condominio.service.ReporteService;
 
 public class RegistroPagoViewController implements Initializable {
@@ -206,7 +207,29 @@ public class RegistroPagoViewController implements Initializable {
 
             alerta.getButtonTypes().setAll(btnSi, btnNo);
 
-            alerta.showAndWait();
+            alerta.showAndWait().ifPresent(response -> {
+
+                if (response == btnSi) {
+                    try {
+
+                        GenerarRecibo service = new GenerarRecibo();
+
+                        service.mostrarRecibo(
+                                idPropietario,
+                                idPagoCuota
+                        );
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                        mostrarAdvertencia(
+                                "Error",
+                                "No se pudo generar el recibo",
+                                e.getMessage()
+                        );
+                    }
+                }
+            });
 
             cargarMesesPendientes();
 
