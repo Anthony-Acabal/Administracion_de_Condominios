@@ -1,8 +1,9 @@
 package condominio.proyecto_condominio.model;
 
 public class Usuario {
+
     private int id;
-    private String nombre;
+    private String usuario; // 🔥 antes era "nombre"
     private String correo;
     private String contrasena;
     private boolean primerIngreso;
@@ -10,9 +11,12 @@ public class Usuario {
     private int intentosFallidos;
     private boolean bloqueado;
 
-    public Usuario(int id, String nombre, String correo, String contrasena, boolean primerIngreso, String rol, int intentosFallidos, boolean bloqueado) {
+    public Usuario(int id, String usuario, String correo, String contrasena,
+                   boolean primerIngreso, String rol,
+                   int intentosFallidos, boolean bloqueado) {
+
         this.id = id;
-        this.nombre = nombre;
+        this.usuario = usuario;
         this.correo = correo;
         this.contrasena = contrasena;
         this.primerIngreso = primerIngreso;
@@ -21,9 +25,8 @@ public class Usuario {
         this.bloqueado = bloqueado;
     }
 
-    // GETTERS Y SETTERS
     public int getId() { return id; }
-    public String getNombre() { return nombre; }
+    public String getUsuario() { return usuario; } // 🔥 FIX
     public String getCorreo() { return correo; }
     public String getContrasena() { return contrasena; }
     public boolean isPrimerIngreso() { return primerIngreso; }
@@ -31,6 +34,11 @@ public class Usuario {
     public int getIntentosFallidos() { return intentosFallidos; }
     public boolean isBloqueado() { return bloqueado; }
 
-    public void setIntentosFallidos(int intentosFallidos) { this.intentosFallidos = intentosFallidos; }
-    public void setBloqueado(boolean bloqueado) { this.bloqueado = bloqueado; }
+    public void setIntentosFallidos(int intentosFallidos) {
+        this.intentosFallidos = intentosFallidos;
+    }
+
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
+    }
 }

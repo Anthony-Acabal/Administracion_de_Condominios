@@ -103,7 +103,7 @@ public class HistorialPagosViewController
 
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource(
-                            "/condominio/proyecto_condominio/ui/RegistroPagoView.fxml"
+                            "/condominio/proyecto_condominio/ui/Inicio.fxml"
                     )
             );
 
@@ -113,11 +113,7 @@ public class HistorialPagosViewController
                     .getScene()
                     .getWindow();
 
-            stage.setScene(
-                    new Scene(root)
-            );
-
-            stage.show();
+            stage.getScene().setRoot(root);
 
         } catch (Exception e) {
 

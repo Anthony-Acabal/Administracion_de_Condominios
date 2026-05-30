@@ -30,13 +30,6 @@
 
                     <children>
 
-                        <!-- SUPERIOR IZQUIERDA -->
-                        <Circle layoutX="-40.0" layoutY="-40.0" radius="260.0" styleClass="circulo-1" />
-
-                        <Circle layoutX="-40.0" layoutY="-40.0" radius="210.0" styleClass="circulo-2" />
-
-                        <Circle layoutX="-40.0" layoutY="-40.0" radius="160.0" styleClass="circulo-4" />
-
                         <!-- INFERIOR DERECHA -->
                         <Circle layoutX="1550.0" layoutY="850.0" radius="260.0" styleClass="circulo-1" />
 

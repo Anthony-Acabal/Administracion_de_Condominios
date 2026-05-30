@@ -29,13 +29,6 @@
 
                     <children>
 
-                        <!-- ARRIBA IZQUIERDA -->
-                        <Circle fill="#D8F1EE" layoutX="-40.0" layoutY="-40.0" radius="260.0" styleClass="circulo-1" />
-
-                        <Circle fill="#BDECE7" layoutX="-40.0" layoutY="-40.0" radius="210.0" styleClass="circulo-2" />
-
-                        <Circle fill="#74DED3" layoutX="-40.0" layoutY="-40.0" radius="160.0" styleClass="circulo-4" />
-
                         <!-- ABAJO DERECHA -->
                         <Circle fill="#D8F1EE" layoutX="1550.0" layoutY="850.0" radius="260.0" />
 

@@ -228,4 +228,62 @@ public class CorreoService {
 
         System.out.println("📨 Correo enviado al administrador correctamente");
     }
+
+    public void enviarCredencialesBD(String destinatario, String usuario, String contrasenaBD) throws Exception {
+
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.mime.charset", "UTF-8");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(correo, password);
+            }
+        });
+
+        Message message = new MimeMessage(session);
+
+        message.setFrom(new InternetAddress(correo, "Sistema de Condominio"));
+
+        message.setRecipients(
+                Message.RecipientType.TO,
+                InternetAddress.parse(destinatario)
+        );
+
+        message.setSubject("Credenciales de Acceso al Sistema");
+
+        String html
+                = "<!DOCTYPE html>"
+                + "<html>"
+                + "<body style='font-family:Arial;background:#eef2f7;padding:20px'>"
+                + "<div style='max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:10px'>"
+                + "<h2 style='color:#1e3a8a'>Acceso al sistema</h2>"
+                + "<p>Se te recuerda tus credenciales de acceso:</p>"
+                + "<hr>"
+                + "<p><b>Usuario:</b> " + usuario + "</p>"
+                + "<p><b>Contraseña:</b> " + contrasenaBD + "</p>"
+                + "<hr>"
+                + "<p style='font-size:12px;color:#666'>Si no solicitaste esta información, ignora este correo.</p>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+
+        MimeBodyPart texto = new MimeBodyPart();
+        texto.setContent(html, "text/html; charset=UTF-8");
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(texto);
+
+        message.setContent(multipart);
+
+        Transport.send(message);
+
+        System.out.println("Credenciales enviadas correctamente");
+    }
 }

@@ -19,7 +19,7 @@ import javafx.scene.Node;
 import condominio.proyecto_condominio.logic.LoginLogic;
 import condominio.proyecto_condominio.model.Sesion;
 
-public class LoginController extends Application {
+public class LoginController {
 
     @FXML
     private HBox boxCorreo;
@@ -54,26 +54,6 @@ public class LoginController extends Application {
 
     private final LoginLogic logic = new LoginLogic();
 
-    @Override
-    public void start(Stage stage) throws Exception {
-
-        Parent root = FXMLLoader.load(
-                getClass().getResource(
-                        "/condominio/proyecto_condominio/ui/Login.fxml"
-                )
-        );
-
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.setTitle("Sistema de Administración de Condominios - Iniciar Sesión");
-        stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @FXML
     private void accionIngresar() {
 
@@ -87,17 +67,17 @@ public class LoginController extends Application {
         boxContrasena.getStyleClass().remove("campo-error");
         lblMensajeError.setText("");
 
-        String correo = txtCorreo.getText().trim();
+        String usuario = txtCorreo.getText().trim();
 
         String clave = esContrasenaVisible
                 ? txtContrasenaVisible.getText().trim()
                 : txtContrasena.getText().trim();
 
-        if (correo.isEmpty() || clave.isEmpty()) {
+        if (usuario.isEmpty() || clave.isEmpty()) {
 
             lblMensajeError.setText("Por favor, complete los campos.");
 
-            if (correo.isEmpty()) {
+            if (usuario.isEmpty()) {
                 boxCorreo.getStyleClass().add("campo-error");
             }
 
@@ -109,15 +89,12 @@ public class LoginController extends Application {
         }
 
         // Temporal mientras integran la lógica real
-        Usuario user = logic.validarLogin(
-                correo,
-                clave
-        );
+        Usuario user = logic.validarLogin(usuario, clave);
 
         if (user != null) {
 
             intentosFallidos = 0;
-            
+
             Sesion.setUsuarioActual(user);
 
             procesarDireccionamiento(user);
@@ -250,11 +227,20 @@ public class LoginController extends Application {
 
             Parent root = loader.load();
 
-            Stage stage
-                    = (Stage) txtCorreo.getScene().getWindow();
+            Stage stage = (Stage) txtCorreo.getScene().getWindow();
 
-            stage.setScene(new Scene(root));
+            Scene scene = stage.getScene();
+            scene.setRoot(root);
+
             stage.setTitle(tituloVentana);
+
+            stage.show();
+
+            javafx.application.Platform.runLater(() -> {
+                stage.setMaximized(true);
+                stage.setResizable(false);
+            });
+
             stage.show();
 
         } catch (IOException e) {

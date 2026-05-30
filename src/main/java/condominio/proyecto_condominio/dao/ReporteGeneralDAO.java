@@ -13,27 +13,47 @@ public class ReporteGeneralDAO {
 
     public List<ReporteGeneral> obtenerReporteGeneral(int mes, int anio) {
         List<ReporteGeneral> lista = new ArrayList<>();
-        String sql = "SELECT " +
-                     "  p.id_casa, " +
-                     "  p.primer_nombre + ' ' + p.primer_apellido AS nombre_propietario, " +
-                     "  CASE " +
-                     "    WHEN COUNT(CASE WHEN MONTH(pc.fecha_pago) = ? AND YEAR(pc.fecha_pago) = ? THEN 1 END) > 0 THEN 'Pagado' " +
-                     "    ELSE 'Pendiente' " +
-                     "  END AS estado_actual, " +
-                     "  COALESCE(SUM(CASE WHEN YEAR(pc.fecha_pago) = ? THEN c.cuota ELSE 0 END), 0) AS total_pagado " +
-                     "FROM propietario p " +
-                     "LEFT JOIN pago_cuota pc ON p.id_propietario = pc.id_propietario " +
-                     "LEFT JOIN cuota c ON pc.id_cuota = c.id_cuota " +
-                     "WHERE p.id_estado = 2 " +
-                     "GROUP BY p.id_casa, p.primer_nombre, p.primer_apellido " +
-                     "ORDER BY p.id_casa ASC;";
+        String sql
+                = "SELECT\n"
+                + "    p.id_casa,\n"
+                + "    p.primer_nombre + ' ' + p.primer_apellido AS nombre_propietario,\n"
+                + "\n"
+                + "    CASE\n"
+                + "        WHEN EXISTS (\n"
+                + "            SELECT 1\n"
+                + "            FROM pago_cuota pc\n"
+                + "            WHERE pc.id_propietario = p.id_propietario\n"
+                + "              AND YEAR(pc.pago) = ?\n"
+                + "              AND MONTH(pc.pago) = ?\n"
+                + "        ) THEN 'Pagado'\n"
+                + "        ELSE 'Pendiente'\n"
+                + "    END AS estado_actual,\n"
+                + "\n"
+                + "    ISNULL((\n"
+                + "        SELECT SUM(c.cuota)\n"
+                + "        FROM pago_cuota pc\n"
+                + "        INNER JOIN cuota c ON pc.id_cuota = c.id_cuota\n"
+                + "        WHERE pc.id_propietario = p.id_propietario\n"
+                + "          AND YEAR(pc.pago) = ?\n"
+                + "          AND MONTH(pc.pago) = ?\n"
+                + "    ), 0) AS total_pagado\n"
+                + "\n"
+                + "FROM propietario p\n"
+                + "WHERE p.id_estado = 2\n"
+                + "  AND p.fecha_creacion <= EOMONTH(DATEFROMPARTS(?, ?, 1))\n"
+                + "ORDER BY p.id_casa ASC;";
 
         try (Connection con = Conexion.getInstancia().getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setInt(1, mes);
-                ps.setInt(2, anio);
+                ps.setInt(1, anio);
+                ps.setInt(2, mes);
+
                 ps.setInt(3, anio);
-                
+                ps.setInt(4, mes);
+
+                ps.setInt(5, anio);
+                ps.setInt(6, mes);
+
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         lista.add(new ReporteGeneral(
@@ -52,22 +72,21 @@ public class ReporteGeneralDAO {
     }
 
     public double[] obtenerResumenMensual(int mes, int anio) {
-        double[] resumen = new double[2]; 
-        
-        String sql = "SELECT " +
-                     " (SELECT ISNULL(SUM(c.cuota), 0) " +
-                     "  FROM pago_cuota pc " +
-                     "  JOIN cuota c ON pc.id_cuota = c.id_cuota " +
-                     "  WHERE MONTH(pc.fecha_pago) = ? " +
-                     "  AND YEAR(pc.fecha_pago) = ?) AS Recaudado, " +
-                     " (SELECT COUNT(*) FROM propietario WHERE id_estado = 2) AS TotalCasas, " +
-                     " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
+        double[] resumen = new double[2];
 
-        try (Connection con = Conexion.getInstancia().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT "
+                + " (SELECT ISNULL(SUM(c.cuota), 0) "
+                + "  FROM pago_cuota pc "
+                + "  JOIN cuota c ON pc.id_cuota = c.id_cuota "
+                + "  WHERE MONTH(pc.pago) = ? "
+                + "  AND YEAR(pc.pago) = ?) AS Recaudado, "
+                + " (SELECT COUNT(*) FROM propietario WHERE id_estado = 2) AS TotalCasas, "
+                + " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
+
+        try (Connection con = Conexion.getInstancia().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, mes);
             ps.setInt(2, anio);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     resumen[0] = rs.getDouble("Recaudado");
@@ -83,22 +102,21 @@ public class ReporteGeneralDAO {
     }
 
     public double[] obtenerResumenAnual(int mesHasta, int anio) {
-        double[] resumen = new double[2]; 
-        
-        String sql = "SELECT " +
-                     " (SELECT ISNULL(SUM(c.cuota), 0) " +
-                     "  FROM pago_cuota pc " +
-                     "  JOIN cuota c ON pc.id_cuota = c.id_cuota " +
-                     "  WHERE YEAR(pc.fecha_pago) = ? " +
-                     "  AND MONTH(pc.fecha_pago) <= ?) AS RecaudadoAnual, " +
-                     " (SELECT COUNT(*) FROM propietario WHERE id_estado = 2) AS TotalCasas, " +
-                     " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
+        double[] resumen = new double[2];
 
-        try (Connection con = Conexion.getInstancia().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT "
+                + " (SELECT ISNULL(SUM(c.cuota), 0) "
+                + "  FROM pago_cuota pc "
+                + "  JOIN cuota c ON pc.id_cuota = c.id_cuota "
+                + "  WHERE YEAR(pc.pago) = ? "
+                + "  AND MONTH(pc.pago) <= ?) AS RecaudadoAnual, "
+                + " (SELECT COUNT(*) FROM propietario WHERE id_estado = 2) AS TotalCasas, "
+                + " (SELECT TOP 1 cuota FROM cuota ORDER BY id_cuota DESC) AS UltimaCuota";
+
+        try (Connection con = Conexion.getInstancia().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, anio);
             ps.setInt(2, mesHasta);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     resumen[0] = rs.getDouble("RecaudadoAnual");
@@ -116,29 +134,35 @@ public class ReporteGeneralDAO {
     public int[] obtenerLimitesFechas() {
         int[] limites = new int[]{
             LocalDate.now().getYear(), LocalDate.now().getMonthValue(),
-            LocalDate.now().getYear(), LocalDate.now().getMonthValue() 
+            LocalDate.now().getYear(), LocalDate.now().getMonthValue()
         };
 
-        String sqlMin = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota WHERE fecha_pago IS NOT NULL ORDER BY fecha_pago ASC";
-        String sqlMax = "SELECT TOP 1 YEAR(fecha_pago) as anio, MONTH(fecha_pago) as mes FROM pago_cuota WHERE fecha_pago IS NOT NULL ORDER BY fecha_pago DESC";
+        String sqlMin = "SELECT TOP 1 YEAR(pago) as anio, MONTH(pago) as mes FROM pago_cuota WHERE pago IS NOT NULL ORDER BY pago ASC";
+        String sqlMax = "SELECT TOP 1 YEAR(pago) as anio, MONTH(pago) as mes FROM pago_cuota WHERE pago IS NOT NULL ORDER BY pago DESC";
 
         try (Connection con = Conexion.getInstancia().getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement(sqlMin);
-                 ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps = con.prepareStatement(sqlMin); ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     int anio = rs.getInt("anio");
                     int mes = rs.getInt("mes");
-                    if (anio > 0) limites[0] = anio;
-                    if (mes > 0) limites[1] = mes;
+                    if (anio > 0) {
+                        limites[0] = anio;
+                    }
+                    if (mes > 0) {
+                        limites[1] = mes;
+                    }
                 }
             }
-            try (PreparedStatement ps = con.prepareStatement(sqlMax);
-                 ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps = con.prepareStatement(sqlMax); ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     int anio = rs.getInt("anio");
                     int mes = rs.getInt("mes");
-                    if (anio > 0) limites[2] = anio;
-                    if (mes > 0) limites[3] = mes;
+                    if (anio > 0) {
+                        limites[2] = anio;
+                    }
+                    if (mes > 0) {
+                        limites[3] = mes;
+                    }
                 }
             }
         } catch (SQLException e) {

@@ -30,6 +30,9 @@ import condominio.proyecto_condominio.dao.ConfiguracionCuotaDAO;
 
 import condominio.proyecto_condominio.model.Cuota;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+
 /**
  * FXML Controller class
  *
@@ -156,12 +159,26 @@ public class ConfiguracionCuotaViewController
     @FXML
     private void regresarMenu() {
 
-        Stage stage
-                = (Stage) btnRegresar
-                        .getScene()
-                        .getWindow();
+        try {
 
-        stage.close();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/condominio/proyecto_condominio/ui/Inicio.fxml"
+                    )
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnRegresar
+                    .getScene()
+                    .getWindow();
+
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     @FXML

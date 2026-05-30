@@ -24,21 +24,31 @@ import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
 public class InicioController implements Initializable {
-    
+
     // --- NUEVO: Instancia estática para permitir el acceso desde otros controladores ---
     private static InicioController instancia;
-    
-    @FXML private Label lblBienvenida;
-    @FXML private Label lblFecha;
-    @FXML private BorderPane vistasContenedor;
-    
-    @FXML private Button irPropietarios;
-    @FXML private Button irPagos;
-    @FXML private Button irConfiguracion;
-    @FXML private Button irEstadosCuenta;
-    @FXML private Button irReporteGeneral;
-    @FXML private Button irCasasMorosas;
-    @FXML private Button cerrarSesion;
+
+    @FXML
+    private Label lblBienvenida;
+    @FXML
+    private Label lblFecha;
+    @FXML
+    private BorderPane vistasContenedor;
+
+    @FXML
+    private Button irPropietarios;
+    @FXML
+    private Button irPagos;
+    @FXML
+    private Button irConfiguracion;
+    @FXML
+    private Button irEstadosCuenta;
+    @FXML
+    private Button irReporteGeneral;
+    @FXML
+    private Button irCasasMorosas;
+    @FXML
+    private Button cerrarSesion;
 
     private final InicioLogic logic = new InicioLogic();
 
@@ -50,15 +60,15 @@ public class InicioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Guardamos la referencia de esta vista activa en la variable estática
-        instancia = this; 
-        
-        mostrarBienvenida("ADMINISTRADOR"); 
+        instancia = this;
+
+        mostrarBienvenida("ADMINISTRADOR");
         try {
             cargarFechaActual();
         } catch (Exception e) {
             System.out.println("⚠️ Error fecha: " + e.getMessage());
         }
-    }    
+    }
 
     public void setUsuarioLogueado(String administrador) {
         mostrarBienvenida(administrador);
@@ -76,14 +86,26 @@ public class InicioController implements Initializable {
             lblFecha.setText(Fecha.obtenerFechaActualFormateada());
         }
     }
-  
+
     private void limpiarBotonesActivos() {
-        if (irPropietarios != null) irPropietarios.getStyleClass().remove("boton-activo");
-        if (irPagos != null) irPagos.getStyleClass().remove("boton-activo");
-        if (irConfiguracion != null) irConfiguracion.getStyleClass().remove("boton-activo");
-        if (irEstadosCuenta != null) irEstadosCuenta.getStyleClass().remove("boton-activo");
-        if (irReporteGeneral != null) irReporteGeneral.getStyleClass().remove("boton-activo");
-        if (irCasasMorosas != null) irCasasMorosas.getStyleClass().remove("boton-activo");
+        if (irPropietarios != null) {
+            irPropietarios.getStyleClass().remove("boton-activo");
+        }
+        if (irPagos != null) {
+            irPagos.getStyleClass().remove("boton-activo");
+        }
+        if (irConfiguracion != null) {
+            irConfiguracion.getStyleClass().remove("boton-activo");
+        }
+        if (irEstadosCuenta != null) {
+            irEstadosCuenta.getStyleClass().remove("boton-activo");
+        }
+        if (irReporteGeneral != null) {
+            irReporteGeneral.getStyleClass().remove("boton-activo");
+        }
+        if (irCasasMorosas != null) {
+            irCasasMorosas.getStyleClass().remove("boton-activo");
+        }
     }
 
     @FXML
@@ -137,7 +159,7 @@ public class InicioController implements Initializable {
     @FXML
     private void cerrarSesion(ActionEvent event) {
         System.out.println("➔ [CLICK] Botón Cerrar Sesión presionado");
-        
+
         Alert alerta = new Alert(AlertType.CONFIRMATION);
         alerta.setTitle("Confirmación de Cierre");
         alerta.setHeaderText(null);
@@ -148,17 +170,26 @@ public class InicioController implements Initializable {
         alerta.getButtonTypes().setAll(botonSi, botonNo);
 
         Optional<ButtonType> resultado = alerta.showAndWait();
-        
+
         if (resultado.isPresent() && resultado.get() == botonSi) {
             System.out.println("➔ [CONFIRMADO] Cerrando sesión...");
             try {
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condominio/proyecto_condominio/ui/Login.fxml"));
+                Stage stage = (Stage) ((Node) event.getSource())
+                        .getScene()
+                        .getWindow();
+
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource(
+                                "/condominio/proyecto_condominio/ui/Login.fxml"
+                        )
+                );
+
                 Parent root = loader.load();
-                stage.setScene(new Scene(root));
+
+                stage.getScene().setRoot(root);
                 stage.setTitle("Login");
                 stage.show();
-                
+
             } catch (IOException e) {
                 System.out.println("X Error al salir: " + e.getMessage());
             }
@@ -166,14 +197,14 @@ public class InicioController implements Initializable {
             System.out.println("➔ [CANCELADO] El usuario canceló el cierre de sesión.");
         }
     }
-    
+
     // --- MODIFICADO: De 'private' a 'public' para que otros controladores la usen al navegar ---
     public void cargarVistaEnCentro(String fxmlArchivo) {
         try {
             System.out.println("Cargando en el centro: " + fxmlArchivo);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlArchivo));
             Parent root = loader.load();
-            
+
             vistasContenedor.setCenter(root);
             System.out.println("✅ OK Cargado.");
         } catch (IOException e) {

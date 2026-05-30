@@ -1,4 +1,4 @@
-    package condominio.proyecto_condominio.controller;
+package condominio.proyecto_condominio.controller;
 
 import condominio.proyecto_condominio.model.Propietario;
 import condominio.proyecto_condominio.logic.RegistroPropietarioLogic;
@@ -27,31 +27,51 @@ import javafx.stage.Stage;
 
 public class RegistroPropietarioController {
 
-    @FXML private VBox vboxTabla;
-    @FXML private VBox vboxFormulario;
+    @FXML
+    private VBox vboxTabla;
+    @FXML
+    private VBox vboxFormulario;
 
-    @FXML private TableView<Propietario> tablaPropietarios;
-    @FXML private TableColumn<Propietario, String> colNombres;
-    @FXML private TableColumn<Propietario, String> colApellidos;
-    @FXML private TableColumn<Propietario, String> colCasa;
-    @FXML private TableColumn<Propietario, String> colTelefono;
-    @FXML private TableColumn<Propietario, String> colCorreo;
+    @FXML
+    private TableView<Propietario> tablaPropietarios;
+    @FXML
+    private TableColumn<Propietario, String> colNombres;
+    @FXML
+    private TableColumn<Propietario, String> colApellidos;
+    @FXML
+    private TableColumn<Propietario, String> colCasa;
+    @FXML
+    private TableColumn<Propietario, String> colTelefono;
+    @FXML
+    private TableColumn<Propietario, String> colCorreo;
 
-    @FXML private TextField txtPrimerNombre;
-    @FXML private TextField txtSegundoNombre;
-    @FXML private TextField txtTercerNombre;
-    @FXML private TextField txtPrimerApellido;
-    @FXML private TextField txtSegundoApellido;
-    @FXML private ComboBox<String> cmbNumeroCasa;
-    @FXML private TextField txtNumeroTelefono;
-    @FXML private TextField txtCorreoElectronico;
-    @FXML private Button btnGuardar;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnLimpiar;
-    @FXML private Button btnRegresar;
-    
+    @FXML
+    private TextField txtPrimerNombre;
+    @FXML
+    private TextField txtSegundoNombre;
+    @FXML
+    private TextField txtTercerNombre;
+    @FXML
+    private TextField txtPrimerApellido;
+    @FXML
+    private TextField txtSegundoApellido;
+    @FXML
+    private ComboBox<String> cmbNumeroCasa;
+    @FXML
+    private TextField txtNumeroTelefono;
+    @FXML
+    private TextField txtCorreoElectronico;
+    @FXML
+    private Button btnGuardar;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnLimpiar;
+    @FXML
+    private Button btnRegresar;
+
     private int idPropietarioExistente = -1;
-    private String casaActualAlEditar = null; 
+    private String casaActualAlEditar = null;
 
     private final RegistroPropietarioLogic logic = new RegistroPropietarioLogic();
 
@@ -66,23 +86,29 @@ public class RegistroPropietarioController {
 
         txtNumeroTelefono.textProperty().addListener((observable, oldValue, newValue) -> {
             String numeros = newValue.replaceAll("[^\\d]", "");
-            if (numeros.length() > 8) numeros = numeros.substring(0, 8);
+            if (numeros.length() > 8) {
+                numeros = numeros.substring(0, 8);
+            }
             String formateado = numeros;
-            if (numeros.length() > 4) formateado = numeros.substring(0, 4) + "-" + numeros.substring(4);
+            if (numeros.length() > 4) {
+                formateado = numeros.substring(0, 4) + "-" + numeros.substring(4);
+            }
             if (!newValue.equals(formateado)) {
                 int pos = txtNumeroTelefono.getCaretPosition();
                 txtNumeroTelefono.setText(formateado);
-                if (formateado.length() > newValue.length()) pos++;
+                if (formateado.length() > newValue.length()) {
+                    pos++;
+                }
                 txtNumeroTelefono.positionCaret(pos);
             }
         });
 
         colNombres.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombres()));
-        
+
         colApellidos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApellidos()));
-        
+
         colCasa.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getIdCasa())));
-        
+
         colTelefono.setCellValueFactory(cellData -> {
             String tel = cellData.getValue().getTelefono();
             if (tel != null && tel.length() >= 8) {
@@ -98,7 +124,7 @@ public class RegistroPropietarioController {
 
     private void cargarTabla() {
         try {
-            List<Propietario> lista = logic.obtenerTodosLosPropietarios(); 
+            List<Propietario> lista = logic.obtenerTodosLosPropietarios();
             ObservableList<Propietario> observableList = FXCollections.observableArrayList(lista);
             tablaPropietarios.setItems(observableList);
         } catch (Exception e) {
@@ -108,26 +134,26 @@ public class RegistroPropietarioController {
 
     @FXML
     void actionMostrarFormularioNuevo(ActionEvent event) {
-        actionLimpiar(null); 
-        vboxTabla.setVisible(false); 
-        vboxFormulario.setVisible(true); 
+        actionLimpiar(null);
+        vboxTabla.setVisible(false);
+        vboxFormulario.setVisible(true);
     }
 
     @FXML
     void actionEditar(ActionEvent event) {
         Propietario seleccionado = tablaPropietarios.getSelectionModel().getSelectedItem();
-        
+
         if (seleccionado != null) {
             cargarDatosPropietario(
-                seleccionado.getIdPropietario(),
-                seleccionado.getPrimerNombre(),
-                seleccionado.getSegundoNombre(),
-                seleccionado.getTercerNombre(),
-                seleccionado.getPrimerApellido(),
-                seleccionado.getSegundoApellido(),
-                String.valueOf(seleccionado.getIdCasa()),
-                seleccionado.getTelefono(),
-                seleccionado.getCorreoElectronico()
+                    seleccionado.getIdPropietario(),
+                    seleccionado.getPrimerNombre(),
+                    seleccionado.getSegundoNombre(),
+                    seleccionado.getTercerNombre(),
+                    seleccionado.getPrimerApellido(),
+                    seleccionado.getSegundoApellido(),
+                    String.valueOf(seleccionado.getIdCasa()),
+                    seleccionado.getTelefono(),
+                    seleccionado.getCorreoElectronico()
             );
             vboxTabla.setVisible(false);
             vboxFormulario.setVisible(true);
@@ -139,12 +165,12 @@ public class RegistroPropietarioController {
     @FXML
     void actionEliminar(ActionEvent event) {
         Propietario seleccionado = tablaPropietarios.getSelectionModel().getSelectedItem();
-        
+
         if (seleccionado != null) {
             String nombreCompleto = seleccionado.getPrimerNombre() + " " + seleccionado.getPrimerApellido();
             boolean eliminado = eliminarPropietarioLogico(seleccionado.getIdPropietario(), nombreCompleto);
             if (eliminado) {
-                cargarTabla(); 
+                cargarTabla();
             }
         } else {
             mostrarAlerta("Seleccion Requerida", "Por favor, selecciona un propietario de la tabla para eliminar.", AlertType.WARNING);
@@ -158,18 +184,20 @@ public class RegistroPropietarioController {
         String tercerNombre = logic.formatearNombre(txtTercerNombre.getText());
         String primerApellido = logic.formatearNombre(txtPrimerApellido.getText());
         String segundoApellido = logic.formatearNombre(txtSegundoApellido.getText());
-        
-        String telefonoClean = txtNumeroTelefono.getText().trim().replace("-", ""); 
+
+        String telefonoClean = txtNumeroTelefono.getText().trim().replace("-", "");
         String correo = txtCorreoElectronico.getText().trim();
         Object casaSeleccionada = cmbNumeroCasa.getValue();
-        
+
         String numeroCasa = "0";
         if (casaSeleccionada != null) {
             numeroCasa = casaSeleccionada.toString().replaceAll("[^0-9]", "");
         }
 
         Propietario propietario = new Propietario();
-        if (idPropietarioExistente != -1) propietario.setIdPropietario(idPropietarioExistente);
+        if (idPropietarioExistente != -1) {
+            propietario.setIdPropietario(idPropietarioExistente);
+        }
         propietario.setPrimerNombre(primerNombre);
         propietario.setSegundoNombre(segundoNombre);
         propietario.setTercerNombre(tercerNombre);
@@ -180,7 +208,7 @@ public class RegistroPropietarioController {
         propietario.setCorreoElectronico(correo);
 
         String validacion = logic.validarPropietario(propietario);
-        
+
         if (validacion == null) {
             boolean exitoso = logic.guardarPropietario(propietario);
             if (exitoso) {
@@ -188,13 +216,13 @@ public class RegistroPropietarioController {
                 actionLimpiar(null);
                 vboxFormulario.setVisible(false);
                 vboxTabla.setVisible(true);
-                cargarTabla(); 
+                cargarTabla();
             } else {
                 mostrarAlerta("Error", "No se pudo procesar en la base de datos.", AlertType.ERROR);
             }
         } else if (validacion.startsWith("REACTIVAR:")) {
             int idViejo = Integer.parseInt(validacion.split(":")[1]);
-            
+
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Reactivar Registro");
             alert.setHeaderText("Propietario detectado en el historial");
@@ -208,7 +236,7 @@ public class RegistroPropietarioController {
             if (result.isPresent() && result.get() == btnSi) {
                 propietario.setIdPropietario(idViejo);
                 propietario.setEstado("REACTIVAR");
-                
+
                 if (logic.guardarPropietario(propietario)) {
                     mostrarAlerta("Operacion Exitosa", "El propietario ha sido reactivado y actualizado con éxito.", AlertType.INFORMATION);
                     actionLimpiar(null);
@@ -230,7 +258,7 @@ public class RegistroPropietarioController {
         vboxFormulario.setVisible(false);
         vboxTabla.setVisible(true);
     }
-    
+
     @FXML
     void actionLimpiar(ActionEvent event) {
         txtPrimerNombre.clear();
@@ -241,7 +269,7 @@ public class RegistroPropietarioController {
         txtNumeroTelefono.clear();
         txtCorreoElectronico.clear();
         cmbNumeroCasa.getSelectionModel().clearSelection();
-        
+
         idPropietarioExistente = -1;
         casaActualAlEditar = null;
         btnGuardar.setText("Guardar");
@@ -251,22 +279,36 @@ public class RegistroPropietarioController {
     @FXML
     void actionRegresar(ActionEvent event) {
         try {
-            java.net.URL urlVista = getClass().getResource("/condominio/proyecto_condominio/ui/Inicio.fxml");
-            FXMLLoader loader = new FXMLLoader(urlVista);
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/condominio/proyecto_condominio/ui/Inicio.fxml"
+                    )
+            );
+
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) { 
-            mostrarAlerta("Error", "No se pudo volver a Inicio.", AlertType.ERROR);
-        }   
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.getScene().setRoot(root);
+
+        } catch (IOException e) {
+
+            mostrarAlerta(
+                    "Error",
+                    "No se pudo volver a Inicio.",
+                    AlertType.ERROR
+            );
+        }
     }
 
-    public void cargarDatosPropietario(int id, String pNombre, String sNombre, String tNombre, 
-                                      String pApellido, String sApellido, String casa, 
-                                      String tel, String correo) {
+    public void cargarDatosPropietario(int id, String pNombre, String sNombre, String tNombre,
+            String pApellido, String sApellido, String casa,
+            String tel, String correo) {
         this.idPropietarioExistente = id;
-        this.casaActualAlEditar = casa; 
+        this.casaActualAlEditar = casa;
         txtPrimerNombre.setText(pNombre);
         txtSegundoNombre.setText(sNombre == null ? "" : sNombre);
         txtTercerNombre.setText(tNombre == null ? "" : tNombre);
@@ -274,7 +316,7 @@ public class RegistroPropietarioController {
         txtSegundoApellido.setText(sApellido == null ? "" : sApellido);
         cargarCasasFiltroCoordinador();
         cmbNumeroCasa.setValue(casa);
-        txtNumeroTelefono.setText(tel); 
+        txtNumeroTelefono.setText(tel);
         txtCorreoElectronico.setText(correo);
         btnGuardar.setText("Actualizar");
     }
@@ -314,10 +356,12 @@ public class RegistroPropietarioController {
 
     private void configurarFiltroSoloLetras(TextField campo) {
         campo.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.isEmpty()) return;
-            
+            if (newValue == null || newValue.isEmpty()) {
+                return;
+            }
+
             String textoFiltrado = newValue.replaceAll("[^a-zA-ZáéíóúÁÉÍÓÚñÑ]", "");
-            
+
             if (!textoFiltrado.isEmpty()) {
                 textoFiltrado = textoFiltrado.substring(0, 1).toUpperCase() + textoFiltrado.substring(1).toLowerCase();
             }
