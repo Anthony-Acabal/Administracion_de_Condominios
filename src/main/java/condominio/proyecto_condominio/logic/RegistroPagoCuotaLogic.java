@@ -129,7 +129,7 @@ public class RegistroPagoCuotaLogic {
         return null;
     }
 
-    public boolean registrarPago(
+    public int registrarPago(
             int numeroCasa,
             int mes,
             int anio
@@ -142,7 +142,7 @@ public class RegistroPagoCuotaLogic {
 
         if (propietario == null) {
 
-            return false;
+            return -1;
         }
 
         PagoCuota pago = new PagoCuota();
@@ -161,6 +161,8 @@ public class RegistroPagoCuotaLogic {
 
         pago.setIdUsuarioCreacion(1);
 
-        return pagoDAO.registrarPago(pago);
+        int idPagoCuota = pagoDAO.registrarPago(pago);
+
+            return idPagoCuota;
     }
 }

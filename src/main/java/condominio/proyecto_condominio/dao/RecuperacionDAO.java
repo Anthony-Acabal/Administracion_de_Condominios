@@ -21,8 +21,8 @@ public class RecuperacionDAO {
                      """;
 
         try (
-                Connection conn = Conexion.getConnection(); PreparedStatement stmt
-                = conn.prepareStatement(sql)) {
+                Connection conn = Conexion.getInstancia().getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, nuevaClave);
             stmt.setString(2, usuario);

@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="450.0"
+            prefWidth="820.0"
+            stylesheets="@../../../css/styles.css"
+            xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="condominio.proyecto_condominio.controller.EstadoCuentaController">
+
+    <children>
+
+        <StackPane AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0">
+
+            <children>
+
+                <!-- FONDO -->
+                <Pane prefHeight="450.0"
+                      prefWidth="820.0"
+                      styleClass="fondo-pane"
+                      StackPane.alignment="CENTER">
+
+                    <children>
+
+                        <Circle fill="DODGERBLUE"
+                                layoutX="-40.0"
+                                layoutY="-40.0"
+                                radius="260.0"
+                                stroke="BLACK"
+                                strokeType="INSIDE"
+                                styleClass="circulo-1" />
+
+                        <Circle fill="DODGERBLUE"
+                                layoutX="-40.0"
+                                layoutY="-40.0"
+                                radius="210.0"
+                                stroke="BLACK"
+                                strokeType="INSIDE"
+                                styleClass="circulo-2" />
+
+                        <Circle fill="DODGERBLUE"
+                                layoutX="-40.0"
+                                layoutY="-40.0"
+                                radius="160.0"
+                                stroke="BLACK"
+                                strokeType="INSIDE"
+                                styleClass="circulo-4" />
+
+                        <Circle fill="DODGERBLUE"
+                                layoutX="1550.0"
+                                layoutY="850.0"
+                                radius="260.0"
+                                stroke="BLACK"
+                                strokeType="INSIDE"
+                                styleClass="circulo-1" />
+
+                        <Circle fill="DODGERBLUE"
+                                layoutX="1550.0"
+                                layoutY="850.0"
+                                radius="210.0"
+                                stroke="BLACK"
+                                strokeType="INSIDE"
+                                styleClass="circulo-2" />
+
+                        <Circle fill="DODGERBLUE"
+                                layoutX="1550.0"
+                                layoutY="850.0"
+                                radius="160.0"
+                                stroke="BLACK"
+                                strokeType="INSIDE"
+                                styleClass="circulo-4" />
+
+                    </children>
+
+                </Pane>
+
+                <!-- SCROLL -->
+                <ScrollPane fitToHeight="true"
+                            fitToWidth="true"
+                            hbarPolicy="AS_NEEDED"
+                            pannable="true"
+                            style="-fx-background-color: transparent;"
+                            vbarPolicy="AS_NEEDED"
+                            StackPane.alignment="CENTER">
+
+                    <content>
+
+                        <StackPane alignment="CENTER"
+                                   prefHeight="1200.0"
+                                   prefWidth="2000.0">
+
+                            <children>
+
+                                <!-- CARD -->
+                                <AnchorPane maxHeight="450.0"
+                                            maxWidth="820.0"
+                                            minHeight="450.0"
+                                            minWidth="820.0"
+                                            prefHeight="450.0"
+                                            prefWidth="820.0"
+                                            styleClass="card-central"
+                                            StackPane.alignment="CENTER">
+
+                                    <clip>
+
+                                        <Rectangle arcHeight="30.0"
+                                                   arcWidth="30.0"
+                                                   height="450.0"
+                                                   width="820.0" />
+
+                                    </clip>
+
+                                    <children>
+
+                                        <!-- CIRCULOS INTERNOS -->
+                                        <Pane managed="false"
+                                              mouseTransparent="true">
+
+                                            <children>
+
+                                                <Circle fill="DODGERBLUE"
+                                                        layoutX="880.0"
+                                                        layoutY="225.0"
+                                                        radius="260.0"
+                                                        stroke="BLACK"
+                                                        strokeType="INSIDE"
+                                                        styleClass="circulo-1" />
+
+                                                <Circle fill="DODGERBLUE"
+                                                        layoutX="880.0"
+                                                        layoutY="225.0"
+                                                        radius="205.0"
+                                                        stroke="BLACK"
+                                                        strokeType="INSIDE"
+                                                        styleClass="circulo-2" />
+
+                                                <Circle fill="DODGERBLUE"
+                                                        layoutX="880.0"
+                                                        layoutY="225.0"
+                                                        radius="150.0"
+                                                        stroke="BLACK"
+                                                        strokeType="INSIDE"
+                                                        styleClass="circulo-4" />
+
+                                            </children>
+
+                                        </Pane>
+
+                                        <!-- CONTENIDO -->
+                                        <VBox alignment="TOP_CENTER"
+                                              fillWidth="true"
+                                              maxWidth="920.0"
+                                              prefWidth="820.0"
+                                              spacing="20.0"
+                                              AnchorPane.bottomAnchor="0.0"
+                                              AnchorPane.leftAnchor="0.0"
+                                              AnchorPane.rightAnchor="0.0"
+                                              AnchorPane.topAnchor="0.0">
+
+                                            <children>
+
+                                                <!-- FILA SUPERIOR -->
+                                                <HBox alignment="BOTTOM_CENTER"
+                                                      spacing="20.0">
+
+                                                    <children>
+
+                                                        <!-- COMBO CASA -->
+                                                        <VBox spacing="5.0">
+
+                                                            <children>
+
+                                                                <Label text="Número de Casa"
+                                                                       styleClass="label-form"/>
+
+                                                                <HBox alignment="CENTER_LEFT"
+                                                                      prefWidth="220.0"
+                                                                      prefHeight="43.0"
+                                                                      spacing="0">
+
+                                                                    <children>
+
+                                                                        <!-- ICONO -->
+                                                                        <Pane prefWidth="40.0"
+                                                                              prefHeight="43.0"
+                                                                              styleClass="icono-container">
+
+                                                                            <children>
+
+                                                                                <ImageView fitHeight="20.0"
+                                                                                           fitWidth="20.0"
+                                                                                           layoutX="11.0"
+                                                                                           layoutY="5.0"
+                                                                                           pickOnBounds="true"
+                                                                                           preserveRatio="true">
+
+                                                                                    <image>
+                                                                                        <Image url="@../../../images/icon_casa.png"/>
+                                                                                    </image>
+
+                                                                                </ImageView>
+
+                                                                            </children>
+
+                                                                        </Pane>
+
+                                                                        <!-- COMBO -->
+                                                                        <ComboBox fx:id="cmbNumeroCasa"
+                                                                                  prefHeight="43.0"
+                                                                                  prefWidth="180.0"
+                                                                                  promptText="Número de Casa"
+                                                                                  styleClass="textfield-interno combo-uniforme"/>
+
+                                                                    </children>
+
+                                                                </HBox>
+
+                                                            </children>
+
+                                                        </VBox>
+
+                                                        <!-- PROPIETARIO -->
+                                                        <VBox spacing="5.0">
+
+                                                            <children>
+
+                                                                <Label text="Propietario:"
+                                                                       styleClass="label-form"/>
+
+                                                                <HBox alignment="CENTER_LEFT"
+                                                                      prefWidth="220.0"
+                                                                      prefHeight="35.0"
+                                                                      spacing="0">
+
+                                                                    <children>
+
+                                                                        <!-- ICONO -->
+                                                                        <Pane prefWidth="40.0"
+                                                                              prefHeight="35.0"
+                                                                              styleClass="icono-container">
+
+                                                                            <children>
+
+                                                                                <ImageView fitHeight="35.0"
+                                                                                           fitWidth="35.0"
+                                                                                           layoutX="3.0"
+                                                                                           layoutY="0.0"
+                                                                                           pickOnBounds="true"
+                                                                                           preserveRatio="true">
+
+                                                                                    <image>
+                                                                                        <Image url="@../../../images/Icon Persona.png"/>
+                                                                                    </image>
+
+                                                                                </ImageView>
+
+                                                                            </children>
+
+                                                                        </Pane>
+
+                                                                        <TextField fx:id="txtPropietario"
+                                                                                   prefHeight="43.0"
+                                                                                   prefWidth="180.0"
+                                                                                   styleClass="textfield-interno"/>
+
+                                                                    </children>
+
+                                                                </HBox>
+
+                                                            </children>
+
+                                                        </VBox>
+
+                                                        <!-- TELEFONO -->
+                                                        <VBox spacing="5.0">
+
+                                                            <children>
+
+                                                                <Label text="Teléfono"
+                                                                       styleClass="label-form"/>
+
+                                                                <HBox alignment="CENTER_LEFT"
+                                                                      prefWidth="220.0"
+                                                                      prefHeight="35.0"
+                                                                      spacing="0">
+
+                                                                    <children>
+
+                                                                        <!-- ICONO -->
+                                                                        <Pane prefWidth="40.0"
+                                                                              prefHeight="35.0"
+                                                                              styleClass="icono-container">
+
+                                                                            <children>
+
+                                                                                <ImageView fitHeight="35.0"
+                                                                                           fitWidth="35.0"
+                                                                                           layoutX="4.0"
+                                                                                           layoutY="0.0"
+                                                                                           pickOnBounds="true"
+                                                                                           preserveRatio="true">
+
+                                                                                    <image>
+                                                                                        <Image url="@../../../images/Icon Telefono.png"/>
+                                                                                    </image>
+
+                                                                                </ImageView>
+
+                                                                            </children>
+
+                                                                        </Pane>
+
+                                                                        <!-- TEXTFIELD -->
+                                                                        <TextField fx:id="txtTelefono"
+                                                                                   prefHeight="43.0"
+                                                                                   prefWidth="180.0"
+                                                                                   styleClass="textfield-interno"/>
+
+                                                                    </children>
+
+                                                                </HBox>
+
+                                                            </children>
+
+                                                        </VBox>
+
+                                                    </children>
+
+                                                </HBox>
+
+                                                <!-- FILTROS -->
+                                                <VBox prefHeight="42.0"
+                                                      prefWidth="583.0">
+
+                                                    <children>
+
+                                                        <HBox alignment="CENTER"
+                                                              spacing="110.0">
+
+                                                            <children>
+
+                                                                <!-- DESDE -->
+                                                                <VBox prefHeight="42.0"
+                                                                      prefWidth="220.0">
+
+                                                                    <children>
+
+                                                                        <Label prefHeight="17.0"
+                                                                               prefWidth="71.0"
+                                                                               styleClass="label-form"
+                                                                               text="Desde" />
+
+                                                                        <HBox prefHeight="25.0"
+                                                                              prefWidth="289.0"
+                                                                              spacing="20.0">
+
+                                                                            <children>
+
+                                                                                <ComboBox fx:id="cmbMesInicio"
+                                                                                          prefHeight="25.0"
+                                                                                          prefWidth="113.0"
+                                                                                          promptText="Mes"
+                                                                                          styleClass="combo-box" />
+
+                                                                                <ComboBox fx:id="cmbAnioInicio"
+                                                                                          prefHeight="25.0"
+                                                                                          prefWidth="109.0"
+                                                                                          promptText="Año"
+                                                                                          styleClass="combo-box" />
+
+                                                                            </children>
+
+                                                                        </HBox>
+
+                                                                    </children>
+
+                                                                </VBox>
+
+                                                                <!-- HASTA -->
+                                                                <VBox>
+
+                                                                    <children>
+
+                                                                        <Label prefHeight="17.0"
+                                                                               prefWidth="71.0"
+                                                                               styleClass="label-form"
+                                                                               text="Hasta" />
+
+                                                                        <HBox prefHeight="25.0"
+                                                                              prefWidth="242.0"
+                                                                              spacing="20.0">
+
+                                                                            <children>
+
+                                                                                <ComboBox fx:id="cmbMesFin"
+                                                                                          prefHeight="25.0"
+                                                                                          prefWidth="113.0"
+                                                                                          promptText="Mes"
+                                                                                          styleClass="combo-box" />
+
+                                                                                <ComboBox fx:id="cmbAnioFin"
+                                                                                          prefHeight="25.0"
+                                                                                          prefWidth="107.0"
+                                                                                          promptText="Año"
+                                                                                          styleClass="combo-box" />
+
+                                                                            </children>
+
+                                                                        </HBox>
+
+                                                                    </children>
+
+                                                                </VBox>
+
+                                                            </children>
+
+                                                        </HBox>
+
+                                                    </children>
+
+                                                </VBox>
+
+                                                <!-- BOTON -->
+                                                <HBox alignment="CENTER">
+
+                                                    <children>
+
+                                                        <Button fx:id="btnBuscar"
+                                                                mnemonicParsing="false"
+                                                                onAction="#buscar"
+                                                                styleClass="boton-primario"
+                                                                text="Buscar" />
+
+                                                    </children>
+
+                                                </HBox>
+
+                                                <!-- TABLA -->
+                                                <TableView fx:id="tbEstadosCuenta"
+                                                           maxWidth="760.0"
+                                                           prefWidth="760.0"
+                                                           VBox.vgrow="ALWAYS">
+
+                                                    <columns>
+
+                                                        <TableColumn fx:id="colCuota"
+                                                                     prefWidth="222.4"
+                                                                     text="Cuota" />
+
+                                                        <TableColumn fx:id="colMes"
+                                                                     prefWidth="166.4"
+                                                                     text="Mes" />
+
+                                                        <TableColumn fx:id="colAnio"
+                                                                     prefWidth="151.2"
+                                                                     text="Año" />
+
+                                                        <TableColumn fx:id="colEstado"
+                                                                     prefWidth="219.2"
+                                                                     text="Estado" />
+
+                                                    </columns>
+
+                                                </TableView>
+
+                                            </children>
+
+                                            <padding>
+
+                                                <Insets bottom="20.0"
+                                                        left="20.0"
+                                                        right="20.0"
+                                                        top="20.0" />
+
+                                            </padding>
+
+                                        </VBox>
+
+                                    </children>
+
+                                </AnchorPane>
+
+                            </children>
+
+                        </StackPane>
+
+                    </content>
+
+                </ScrollPane>
+
+            </children>
+
+        </StackPane>
+
+    </children>
+
+</AnchorPane>
