@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recibo" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df0fb88b-4251-4dd4-95e6-4584d09f9c1e">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CondominioDB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="P_ID_PROPIETARIO" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Solicitar id del propietario]]></parameterDescription>
+	</parameter>
+	<parameter name="P_ID_PAGO_CUOTA" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Solicitar id de pago de cuota]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+    a.id_pago_cuota, 
+    CONCAT(b.primer_nombre, ' ', b.primer_apellido) nombre, 
+    b.id_casa,
+    b.telefono,
+    CONCAT('Q', c.cuota, '.00') cuota,
+    FORMAT(a.pago, 'MMMM ''del'' yyyy', 'es-ES') pago,
+    FORMAT(a.fecha_pago, 'MMMM ''del'' yyyy', 'es-ES') fecha_pago
+FROM pago_cuota a
+INNER JOIN propietario b 
+    ON a.id_propietario = b.id_propietario
+INNER JOIN cuota c 
+    ON a.id_cuota = c.id_cuota
+WHERE a.id_propietario = $P{P_ID_PROPIETARIO} 
+AND a.id_pago_cuota = $P{P_ID_PAGO_CUOTA} ]]>
+	</queryString>
+	<field name="id_pago_cuota" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_pago_cuota"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_pago_cuota"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+	</field>
+	<field name="id_casa" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_casa"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_casa"/>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+	</field>
+	<field name="cuota" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cuota"/>
+		<property name="com.jaspersoft.studio.field.label" value="cuota"/>
+	</field>
+	<field name="pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pago"/>
+		<property name="com.jaspersoft.studio.field.label" value="pago"/>
+	</field>
+	<field name="fecha_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_pago"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_pago"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="243" splitType="Stretch">
+			<image>
+				<reportElement x="20" y="2" width="110" height="98" uuid="e974d403-6551-4a6a-ab39-3dc8ea18f774"/>
+				<imageExpression><![CDATA["C:\\Users\\Antony\\Downloads\\VistaVerde.png"]]></imageExpression>
+			</image>
+			<textField pattern="dd &apos;de&apos; MMMM &apos;del&apos; yyyy">
+				<reportElement x="645" y="66" width="98" height="30" uuid="1c2431b6-af4b-4a4a-a935-8f5af3cb2eaa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="271" y="20" width="211" height="30" uuid="24b0702c-9fd2-42c8-b57c-7c0d35a02308"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="22"/>
+				</textElement>
+				<text><![CDATA[RECIBO DE PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="271" y="58" width="211" height="30" forecolor="rgba(1, 56, 17, 0.6745098)" uuid="60740d45-7c1e-4262-a417-2ed8bee5c881"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="16"/>
+				</textElement>
+				<text><![CDATA[Condominio Vista Verde]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="600" y="17" width="142" height="40" uuid="e314894c-c0bd-4d77-913e-f5d0bfbe5f03"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<pen lineWidth="30.0" lineColor="#013811"/>
+					<topPen lineWidth="0.0" lineColor="#086624"/>
+					<leftPen lineWidth="0.0" lineColor="#086624"/>
+					<bottomPen lineWidth="0.0" lineColor="#086624"/>
+					<rightPen lineWidth="0.0" lineColor="#086624"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Cooper Black"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RECIBO No. \n"
++ $F{id_pago_cuota}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="600" y="75" width="47" height="15" uuid="14cc3c42-e86b-4a7a-bbe2-9679438a7e18"/>
+				<textElement>
+					<font fontName="Cooper Black" size="11"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="600" y="17" width="142" height="43" backcolor="rgba(255, 255, 255, 0.0)" uuid="db1ff77e-1dc7-48f5-a286-ca80deb62aac"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(8, 102, 36, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="18" y="112" width="723" height="40" backcolor="rgba(255, 255, 255, 0.0)" uuid="14fe33be-4da4-4d2b-ad51-277b144f3b30"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(8, 102, 36, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="31" y="122" width="170" height="20" uuid="8b506b12-b49a-4335-ab82-6c4fd2ba8e65"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["PROPIETARIO: " + $F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="122" width="170" height="20" uuid="d02a4128-b7ef-4525-bc51-ff4071f232bf"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["NÚMERO DE CASA: " + $F{id_casa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="559" y="122" width="170" height="20" uuid="3b1551ac-989e-42dc-8254-a80d0998c81e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["TELÉFONO: " + $F{telefono}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement x="182" y="203" width="65" height="40" backcolor="#417552" uuid="d07668ab-362c-4079-89a8-b53c6a57ff5d"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="200" y="214" width="30" height="21" forecolor="#FFFFFF" uuid="e9bf26b0-6af9-4f65-9ee3-3e878df4876d"/>
+				<textElement>
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="247" y="203" width="180" height="40" backcolor="#417552" uuid="f7c7b89e-0537-47a0-81b3-e2caa3fa4e2a"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="287" y="214" width="130" height="21" forecolor="#FFFFFF" uuid="e428e14d-ac83-4f77-9512-72a095e59c20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Mes Cancelado]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="427" y="203" width="151" height="40" backcolor="#417552" uuid="9c456e50-698b-4c7c-b96b-d17d4575954c"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="437" y="214" width="130" height="21" forecolor="#FFFFFF" uuid="15425632-f783-46e4-b32b-594910ad1e6f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Monto (Q)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<rectangle radius="0">
+				<reportElement x="182" y="2" width="65" height="30" backcolor="rgba(255, 255, 255, 0.0)" uuid="be0d6f86-b242-49de-82fe-2956e26db830"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="247" y="2" width="180" height="30" backcolor="rgba(255, 255, 255, 0.0)" uuid="9f4df52c-22a6-4adf-a8b8-1f64f357e15a"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="427" y="2" width="151" height="30" backcolor="rgba(255, 255, 255, 0.0)" uuid="9969e25c-41eb-46d2-917d-a7266473952f"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="190" y="9" width="46" height="14" uuid="77650a20-d478-4d2d-bc78-8dce6ba3598a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9d25a40b-c53a-42f1-aad9-946d6f14ff29"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_pago_cuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="302" y="9" width="100" height="15" uuid="1d554bd5-8c65-4c86-b63d-83359b656e83">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8d175f1-e871-4c39-bd98-ab39c0baf268"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="437" y="9" width="130" height="15" uuid="83fe56eb-f850-4167-b26f-97d5425d5fec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f36fd1a6-33c6-4349-aa09-4d13baa07903"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cuota}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+</jasperReport>

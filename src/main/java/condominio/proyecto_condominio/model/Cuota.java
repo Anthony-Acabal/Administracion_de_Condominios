@@ -4,15 +4,27 @@
  */
 package condominio.proyecto_condominio.model;
 
+import java.time.LocalDate;
+
 public class Cuota {
 
     private int idCuota;
 
-    private double montoCuota;
+    private String mes;
+
+    private int anio;
+
+    private int montoCuota;
+
+    private String estado;
+
+    private LocalDate fechaPago;
 
     private double recaudacionMensual;
 
     private String usuarioModificacion;
+
+    private int idPagoCuota;
 
     public Cuota() {
 
@@ -20,13 +32,21 @@ public class Cuota {
 
     public Cuota(
             int idCuota,
-            double montoCuota,
+            String mes,
+            int anio,
+            int montoCuota,
+            String estado,
+            LocalDate fechaPago,
             double recaudacionMensual,
             String usuarioModificacion
     ) {
 
         this.idCuota = idCuota;
+        this.mes = mes;
+        this.anio = anio;
         this.montoCuota = montoCuota;
+        this.estado = estado;
+        this.fechaPago = fechaPago;
         this.recaudacionMensual = recaudacionMensual;
         this.usuarioModificacion = usuarioModificacion;
     }
@@ -39,12 +59,44 @@ public class Cuota {
         this.idCuota = idCuota;
     }
 
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+
     public double getMontoCuota() {
         return montoCuota;
     }
 
-    public void setMontoCuota(double montoCuota) {
+    public void setMontoCuota(int montoCuota) {
         this.montoCuota = montoCuota;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public LocalDate getFechaPago() {
+        return fechaPago;
+    }
+
+    public void setFechaPago(LocalDate fechaPago) {
+        this.fechaPago = fechaPago;
     }
 
     public double getRecaudacionMensual() {
@@ -54,8 +106,7 @@ public class Cuota {
     public void setRecaudacionMensual(
             double recaudacionMensual
     ) {
-        this.recaudacionMensual
-                = recaudacionMensual;
+        this.recaudacionMensual = recaudacionMensual;
     }
 
     public String getUsuarioModificacion() {
@@ -65,8 +116,15 @@ public class Cuota {
     public void setUsuarioModificacion(
             String usuarioModificacion
     ) {
-        this.usuarioModificacion
-                = usuarioModificacion;
+        this.usuarioModificacion = usuarioModificacion;
+    }
+
+    public int getIdPagoCuota() {
+        return idPagoCuota;
+    }
+
+    public void setIdPagoCuota(int idPagoCuota) {
+        this.idPagoCuota = idPagoCuota;
     }
 
     @Override
@@ -74,7 +132,11 @@ public class Cuota {
 
         return "Cuota{"
                 + "idCuota=" + idCuota
+                + ", mes=" + mes
+                + ", anio=" + anio
                 + ", montoCuota=" + montoCuota
+                + ", estado=" + estado
+                + ", fechaPago=" + fechaPago
                 + ", recaudacionMensual=" + recaudacionMensual
                 + ", usuarioModificacion=" + usuarioModificacion
                 + '}';

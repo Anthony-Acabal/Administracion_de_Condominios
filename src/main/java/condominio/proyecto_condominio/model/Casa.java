@@ -1,21 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package condominio.proyecto_condominio.model;
 
 public class Casa {
-
-    public Casa(
-            int idCasa,
-            int numeroCasa,
-            String estado
-    ) {
-
-        this.idCasa = idCasa;
-        this.numeroCasa = numeroCasa;
-        this.estado = estado;
-    }
 
     private int idCasa;
 
@@ -23,8 +8,23 @@ public class Casa {
 
     private String estado;
 
-    public Casa() {
+    private String propietario;
 
+    private String telefono;
+
+    private String correo;
+
+    public Casa() {
+    }
+
+    public Casa(
+            int idCasa,
+            int numeroCasa,
+            String estado
+    ) {
+        this.idCasa = idCasa;
+        this.numeroCasa = numeroCasa;
+        this.estado = estado;
     }
 
     public int getIdCasa() {
@@ -49,5 +49,29 @@ public class Casa {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }

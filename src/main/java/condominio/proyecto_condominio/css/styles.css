@@ -538,3 +538,39 @@
 
     -fx-font-weight: bold;
 }
+
+/* =========================
+   MENSAJES
+========================= */
+
+.label-error {
+
+    -fx-font-size: 12px;
+
+    -fx-font-family: "Montserrat Regular";
+
+    -fx-font-weight: bold;
+
+    -fx-alignment: center;
+
+    -fx-wrap-text: true;
+
+    -fx-text-alignment: center;
+}
+
+.label-exito {
+
+    -fx-font-size: 14px;
+
+    -fx-font-family: "Montserrat Regular";
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #10b981;
+
+    -fx-alignment: center;
+
+    -fx-wrap-text: true;
+
+    -fx-text-alignment: center;
+}

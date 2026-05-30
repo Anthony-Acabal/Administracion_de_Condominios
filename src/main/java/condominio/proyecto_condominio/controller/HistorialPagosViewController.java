@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 
 import condominio.proyecto_condominio.logic.HistorialPagoLogic;
 import condominio.proyecto_condominio.model.HistorialPago;
+import condominio.proyecto_condominio.service.GenerarRecibo;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -65,6 +66,30 @@ public class HistorialPagosViewController
     @FXML
     private Button btnBuscar;
 
+    @FXML
+    private void imprimirRecibo() {
+
+        HistorialPago pago = tblPagos.getSelectionModel().getSelectedItem();
+
+        if (pago == null) {
+            System.out.println("Selecciona un pago");
+            return;
+        }
+
+        try {
+
+            GenerarRecibo service = new GenerarRecibo();
+
+            service.mostrarRecibo(
+                    pago.getIdPropietario(),
+                    pago.getIdPagoCuota()
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private ObservableList<HistorialPago> listaPagos
             = FXCollections.observableArrayList();
 
@@ -72,33 +97,33 @@ public class HistorialPagosViewController
             = new HistorialPagoLogic();
 
     @FXML
-private void regresarRegistroPago() {
+    private void regresarRegistroPago() {
 
-    try {
+        try {
 
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource(
-                        "/condominio/proyecto_condominio/ui/RegistroPagoView.fxml"
-                )
-        );
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/condominio/proyecto_condominio/ui/RegistroPagoView.fxml"
+                    )
+            );
 
-        Parent root = loader.load();
+            Parent root = loader.load();
 
-        Stage stage = (Stage) btnRegresar
-                .getScene()
-                .getWindow();
+            Stage stage = (Stage) btnRegresar
+                    .getScene()
+                    .getWindow();
 
-        stage.setScene(
-                new Scene(root)
-        );
+            stage.setScene(
+                    new Scene(root)
+            );
 
-        stage.show();
+            stage.show();
 
-    } catch (Exception e) {
+        } catch (Exception e) {
 
-        e.printStackTrace();
+            e.printStackTrace();
+        }
     }
-}
 
     @Override
     public void initialize(
@@ -212,55 +237,50 @@ private void regresarRegistroPago() {
         }
         );
 
-        colComprobante.setCellFactory(
-                columna -> new TableCell<
-                HistorialPago, String>() {
+        colComprobante.setCellFactory(columna -> new TableCell<HistorialPago, String>() {
 
-            private final Button btnImprimir
-                    = new Button("Imprimir");
+            private final Button btnImprimir = new Button("Imprimir");
 
             {
+                btnImprimir.setOnAction(event -> {
 
-                btnImprimir.setOnAction(
-                        event -> {
+                    HistorialPago pago = getTableView()
+                            .getItems()
+                            .get(getIndex());
 
-                            HistorialPago pago
-                                    = getTableView()
-                                            .getItems()
-                                            .get(getIndex());
+                    if (pago == null) {
+                        return;
+                    }
 
-                            // TODO:
-                            // Lógica impresión
-                        }
-                );
+                    try {
+
+                        GenerarRecibo service = new GenerarRecibo();
+
+                        service.mostrarRecibo(
+                                pago.getIdPropietario(),
+                                pago.getIdPagoCuota()
+                        );
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             }
 
             @Override
-            protected void updateItem(
-                    String item,
-                    boolean empty
-            ) {
+            protected void updateItem(String item, boolean empty) {
 
-                super.updateItem(
-                        item,
-                        empty
-                );
+                super.updateItem(item, empty);
 
-                if (empty) {
-
+                if (empty || item == null) {
                     setGraphic(null);
-
-                } else {
-
-                    setGraphic(btnImprimir);
-
-                    setStyle(
-                            "-fx-alignment: CENTER;"
-                    );
+                    return;
                 }
+
+                setGraphic(btnImprimir);
+                setStyle("-fx-alignment: CENTER;");
             }
-        }
-        );
+        });
 
         cargarCombos();
 
@@ -307,11 +327,9 @@ private void regresarRegistroPago() {
                 = LocalDate.now()
                         .getYear();
 
-        for (
-                int i = 2026;
+        for (int i = 2026;
                 i <= anioActual;
-                i++
-        ) {
+                i++) {
 
             cbAnio.getItems().add(
                     String.valueOf(i)
@@ -432,10 +450,8 @@ private void regresarRegistroPago() {
                     = LocalDate.now()
                             .getMonthValue();
 
-        } else if (
-                Integer.parseInt(anioSeleccionado)
-                == anioActual
-        ) {
+        } else if (Integer.parseInt(anioSeleccionado)
+                == anioActual) {
 
             limiteMes
                     = LocalDate.now()
@@ -446,11 +462,9 @@ private void regresarRegistroPago() {
             limiteMes = 12;
         }
 
-        for (
-                int i = 0;
+        for (int i = 0;
                 i < limiteMes;
-                i++
-        ) {
+                i++) {
 
             cbMes.getItems().add(
                     meses[i]
