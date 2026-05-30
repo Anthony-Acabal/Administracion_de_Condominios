@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CasasPendientePago" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e15388e1-5541-498c-bc47-f1bfbc3a5bcc">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CondominioDB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="P_MES" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Solicitar mes]]></parameterDescription>
+	</parameter>
+	<parameter name="P_ANIO" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Solicitar año]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[    WITH Meses AS
+(
+    SELECT 1 mes
+    UNION ALL SELECT 2
+    UNION ALL SELECT 3
+    UNION ALL SELECT 4
+    UNION ALL SELECT 5
+    UNION ALL SELECT 6
+    UNION ALL SELECT 7
+    UNION ALL SELECT 8
+    UNION ALL SELECT 9
+    UNION ALL SELECT 10
+    UNION ALL SELECT 11
+    UNION ALL SELECT 12
+)
+
+SELECT
+    p.id_casa,
+
+    p.primer_nombre
+    + ' '
+    + ISNULL(p.segundo_nombre + ' ', '')
+    + p.primer_apellido AS nombre_propietario,
+
+    p.telefono,
+	(SELECT TOP 1 CONCAT('Q',cuota) FROM cuota WHERE id_estado = 2 ORDER BY 1 DESC) cuota,
+    FORMAT(
+        DATEFROMPARTS($P{P_ANIO}, m.mes, 1),
+        'MMMM - yyyy',
+        'es-ES'
+    ) AS fecha_pendiente
+
+FROM propietario p
+
+CROSS JOIN Meses m
+
+WHERE
+(
+    $P{P_MES} IS NULL
+    OR m.mes = $P{P_MES}
+)
+AND
+(
+    2026 < YEAR(GETDATE())
+    OR m.mes <= MONTH(GETDATE())
+)
+AND NOT EXISTS
+(
+    SELECT 1
+    FROM pago_cuota pc
+    WHERE pc.id_propietario = p.id_propietario
+    AND MONTH(pc.pago) = m.mes
+    AND YEAR(pc.pago) = $P{P_ANIO}
+)
+
+ORDER BY m.mes ASC, p.id_casa ASC]]>
+	</queryString>
+	<field name="id_casa" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_casa"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_casa"/>
+	</field>
+	<field name="nombre_propietario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_propietario"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_propietario"/>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+	</field>
+	<field name="cuota" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cuota"/>
+		<property name="com.jaspersoft.studio.field.label" value="cuota"/>
+	</field>
+	<field name="fecha_pendiente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_pendiente"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_pendiente"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="146" splitType="Stretch">
+			<image>
+				<reportElement x="20" y="2" width="110" height="98" uuid="96f11acc-cfb6-4a61-8b6b-e8f6191a78c7"/>
+				<imageExpression><![CDATA["C:\\Users\\Antony\\Downloads\\VistaVerde.png"]]></imageExpression>
+			</image>
+			<textField pattern="dd &apos;de&apos; MMMM &apos;del&apos; yyyy">
+				<reportElement x="470" y="48" width="98" height="15" uuid="3eb1bdd9-ec56-4ef8-826e-748eecfe1477"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="10" width="211" height="43" uuid="405a0bcf-5d4c-4220-8ad5-c2da701657b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="18"/>
+				</textElement>
+				<text><![CDATA[CASAS PENDIENTES DE PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="57" width="211" height="30" forecolor="rgba(1, 56, 17, 0.6745098)" uuid="2d10bc37-12b2-4f29-9705-4b6e6e1e2bd6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="15"/>
+				</textElement>
+				<text><![CDATA[Condominio Vista Verde]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="49" width="47" height="15" uuid="b24b20f9-ffbe-4938-a193-a6569bb129a6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="11"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="75" y="116" width="50" height="29" backcolor="#417552" uuid="694ed6a7-86c7-4843-bd48-cadec82c1ebc"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="81" y="120" width="39" height="21" forecolor="#FFFFFF" uuid="3c4b41f0-23b0-48b8-975d-164c9e317b13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Casa]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="125" y="116" width="141" height="29" backcolor="#417552" uuid="2aad87be-3619-43c0-9752-c0b364e470e9"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="130" y="120" width="130" height="21" forecolor="#FFFFFF" uuid="48250654-9124-4090-b8b7-af44e46d2adf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Propietario]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="342" y="116" width="87" height="29" backcolor="#417552" uuid="aacbac2d-fbc4-40d4-9d31-0d0b9e94da1e"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="348" y="120" width="76" height="21" forecolor="#FFFFFF" uuid="bce9f508-7908-427b-8237-d3c5ffa20b08"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Monto (Q)]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="267" y="116" width="74" height="29" backcolor="#417552" uuid="8a26ceb1-725a-4f6c-a7bd-399efaa2dc9b"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="273" y="120" width="64" height="21" forecolor="#FFFFFF" uuid="f96a1f53-50ef-44e0-b159-d62bb69bd04f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement x="430" y="116" width="87" height="29" backcolor="#417552" uuid="fb790377-0978-4e16-b1be-f43768abb444"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="rgba(140, 140, 140, 0.8627451)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="436" y="120" width="76" height="21" forecolor="#FFFFFF" uuid="2b577ee5-67f9-4b04-8906-0efb45d72b32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<rectangle radius="0">
+				<reportElement x="75" y="-1" width="49" height="22" backcolor="rgba(255, 255, 255, 0.0)" uuid="83146c12-f97e-453e-867d-80e517b48ee0"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="125" y="-1" width="141" height="22" backcolor="rgba(255, 255, 255, 0.0)" uuid="5f6d6635-dc04-4357-a6af-4fe91c2c9a16"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="430" y="-1" width="87" height="22" backcolor="rgba(255, 255, 255, 0.0)" uuid="79f7988b-fd1e-40d2-8933-682c16300e08"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="267" y="-1" width="74" height="22" backcolor="rgba(255, 255, 255, 0.0)" uuid="e5211be5-7c98-46e1-ae3a-6fb0bf959bff"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="342" y="-1" width="87" height="22" backcolor="rgba(255, 255, 255, 0.0)" uuid="11563637-5d2f-40e4-9b9c-1d314e5908be"/>
+				<graphicElement>
+					<pen lineWidth="2.5" lineColor="#8C8C8C"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="81" y="2" width="38" height="16" uuid="fee601ac-c6ea-464a-b7af-7f3867d6520c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_casa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="2" width="130" height="16" uuid="f1514e50-63ad-4ad8-bc98-a34d14865d4e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre_propietario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="2" width="64" height="16" uuid="95dbe64b-3311-49d8-86ff-4e6bf4bfbac6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="2" width="76" height="16" uuid="96670937-73c8-4e82-8223-f63a006bc363"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="2" width="76" height="16" uuid="04e69c6f-668b-43c2-ae20-761af175c23f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_pendiente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

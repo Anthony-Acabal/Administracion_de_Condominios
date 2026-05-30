@@ -187,7 +187,7 @@ public class ConfiguracionCuotaViewController
         }
 
         cuota.setMontoCuota(
-                Double.parseDouble(
+                Integer.parseInt(
                         txtNuevaCuota.getText()
                 )
         );
@@ -281,8 +281,7 @@ public class ConfiguracionCuotaViewController
 
     private void cargarCuotaActual() {
 
-        double ultimaCuota
-                = cuotaDAO.obtenerUltimaCuota();
+        int ultimaCuota = cuotaDAO.obtenerUltimaCuota();
 
         cuota.setMontoCuota(ultimaCuota);
 

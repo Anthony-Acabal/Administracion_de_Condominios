@@ -16,12 +16,17 @@ public class HistorialPago {
 
     private String comprobante;
 
+    private int idPropietario;
+    private int idPagoCuota;
+
     public HistorialPago(
             int casa,
             String propietario,
             String fecha,
             double monto,
-            String comprobante
+            String comprobante,
+            int idPropietario,
+            int idPagoCuota
     ) {
 
         this.casa = casa;
@@ -33,6 +38,10 @@ public class HistorialPago {
         this.monto = monto;
 
         this.comprobante = comprobante;
+        
+        this.idPropietario = idPropietario;
+        
+        this.idPagoCuota = idPagoCuota;
     }
 
     public int getCasa() {
@@ -50,7 +59,24 @@ public class HistorialPago {
     public double getMonto() {
         return monto;
     }
+
     public String getComprobante() {
         return comprobante;
+    }
+
+    public int getIdPropietario() {
+        return idPropietario;
+    }
+
+    public void setIdPropietario(int idPropietario) {
+        this.idPropietario = idPropietario;
+    }
+
+    public int getIdPagoCuota() {
+        return idPagoCuota;
+    }
+
+    public void setIdPagoCuota(int idPagoCuota) {
+        this.idPagoCuota = idPagoCuota;
     }
 }

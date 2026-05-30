@@ -1,6 +1,6 @@
 package condominio.proyecto_condominio.dao;
 
-import condominio.proyecto_condominio.model.Conexion;
+import condominio.proyecto_condominio.dao.Conexion;
 import condominio.proyecto_condominio.model.Propietario;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,12 @@ import java.time.LocalDate;
 public class RegistroPropietarioDAO {
 
     private Connection obtenerConexionSegura() {
-        return Conexion.getConexion();
+        return Conexion.getInstancia().getConnection();
     }
 
     public String verificarDuplicados(int idPropietario, int idCasa, String telefono, String correo) {
         String sql = """
-                     SELECT id_propietario, id_casa, telefono, correo, estado
+                     SELECT id_propietario, id_casa, telefono, correo, id_estado
                      FROM Propietario
                      WHERE (id_casa = ? OR telefono = ? OR correo = ?)
                      """;
@@ -38,14 +38,14 @@ public class RegistroPropietarioDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    String estado = rs.getString("estado");
+                    String estado = rs.getString("id_estado");
                     int idEncontrado = rs.getInt("id_propietario");
 
-                    if ("Activo".equalsIgnoreCase(estado)) {
+                    if ("2".equalsIgnoreCase(estado)) {
                         if (rs.getInt("id_casa") == idCasa) return "La casa número " + idCasa + " ya se encuentra asignada.";
                         if (rs.getString("telefono") != null && rs.getString("telefono").equalsIgnoreCase(telefono)) return "El teléfono ya existe registrado.";
                         if (rs.getString("correo") != null && rs.getString("correo").equalsIgnoreCase(correo)) return "El correo ya existe registrado.";
-                    } else if ("Eliminado".equalsIgnoreCase(estado)) {
+                    } else if ("7".equalsIgnoreCase(estado)) {
                         // AQUÍ ESTÁ EL FIX: Verificamos qué fue lo que coincidió
                         boolean coincideTelefono = rs.getString("telefono") != null && rs.getString("telefono").equalsIgnoreCase(telefono);
                         boolean coincideCorreo = rs.getString("correo") != null && rs.getString("correo").equalsIgnoreCase(correo);
@@ -70,8 +70,8 @@ public class RegistroPropietarioDAO {
         String sql = """
                      INSERT INTO Propietario
                      (primer_nombre, segundo_nombre, tercer_nombre, primer_apellido, segundo_apellido,
-                      id_casa, telefono, correo, fecha_creacion, id_usuario_creacion, estado)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Activo')
+                      id_casa, telefono, correo, fecha_creacion, id_usuario_creacion, id_estado)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 2)
                      """;
 
         Connection con = obtenerConexionSegura();
@@ -126,7 +126,7 @@ public class RegistroPropietarioDAO {
 
     public List<Propietario> obtenerTodosLosPropietarios() {
         List<Propietario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Propietario WHERE estado = 'Activo' ORDER BY id_propietario DESC";
+        String sql = "SELECT * FROM Propietario WHERE id_estado = 2 ORDER BY id_propietario DESC";
 
         Connection con = obtenerConexionSegura();
         if (con == null) return lista;
@@ -144,7 +144,7 @@ public class RegistroPropietarioDAO {
                 p.setIdCasa(rs.getInt("id_casa")); 
                 p.setTelefono(rs.getString("telefono"));
                 p.setCorreoElectronico(rs.getString("correo"));
-                p.setEstado(rs.getString("estado"));
+                p.setEstado(rs.getString("id_estado"));
                 lista.add(p);
             }
         } catch (Exception e) {
@@ -155,7 +155,7 @@ public class RegistroPropietarioDAO {
 
     public List<Integer> obtenerCasasOcupadas(int idPropietarioExistente) {
         List<Integer> casasOcupadas = new ArrayList<>();
-        String sql = "SELECT id_casa FROM Propietario WHERE estado = 'Activo'"; 
+        String sql = "SELECT id_casa FROM Propietario WHERE id_estado = 2"; 
         if (idPropietarioExistente != -1) sql += " AND id_propietario <> ?";
 
         Connection con = obtenerConexionSegura();
@@ -175,7 +175,7 @@ public class RegistroPropietarioDAO {
     }
 
     public boolean darBajaLogicaPropietario(int idPropietario) {
-        String sql = "UPDATE Propietario SET estado = 'Eliminado' WHERE id_propietario = ?";
+        String sql = "UPDATE Propietario SET id_estado = 7 WHERE id_propietario = ?";
         Connection con = obtenerConexionSegura();
         if (con == null) return false;
 
@@ -193,7 +193,7 @@ public class RegistroPropietarioDAO {
                      UPDATE Propietario SET
                      primer_nombre = ?, segundo_nombre = ?, tercer_nombre = ?,
                      primer_apellido = ?, segundo_apellido = ?, id_casa = ?,
-                     telefono = ?, correo = ?, estado = 'Activo'
+                     telefono = ?, correo = ?, id_estado = 2
                      WHERE id_propietario = ?
                      """;
 

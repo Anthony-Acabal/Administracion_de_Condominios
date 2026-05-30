@@ -18,11 +18,11 @@ public class ConfiguracionCuotaLogic {
             return "Debe ingresar una cuota.";
         }
 
-        double monto;
+        int monto;
 
         try {
 
-            monto = Double.parseDouble(nuevaCuota);
+            monto = Integer.parseInt(nuevaCuota);
 
         } catch (NumberFormatException e) {
 
@@ -48,7 +48,7 @@ public class ConfiguracionCuotaLogic {
     }
 
     public boolean guardarCuota(
-            double monto,
+            int monto,
             int idUsuario
     ) {
 

@@ -17,6 +17,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import condominio.proyecto_condominio.logic.LoginLogic;
+import condominio.proyecto_condominio.model.Sesion;
 
 public class LoginController extends Application {
 
@@ -116,6 +117,8 @@ public class LoginController extends Application {
         if (user != null) {
 
             intentosFallidos = 0;
+            
+            Sesion.setUsuarioActual(user);
 
             procesarDireccionamiento(user);
 

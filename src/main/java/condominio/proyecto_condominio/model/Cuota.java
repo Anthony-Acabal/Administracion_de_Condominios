@@ -24,6 +24,8 @@ public class Cuota {
 
     private String usuarioModificacion;
 
+    private int idPagoCuota;
+
     public Cuota() {
 
     }
@@ -115,6 +117,14 @@ public class Cuota {
             String usuarioModificacion
     ) {
         this.usuarioModificacion = usuarioModificacion;
+    }
+
+    public int getIdPagoCuota() {
+        return idPagoCuota;
+    }
+
+    public void setIdPagoCuota(int idPagoCuota) {
+        this.idPagoCuota = idPagoCuota;
     }
 
     @Override

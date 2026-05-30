@@ -2,6 +2,10 @@ package condominio.proyecto_condominio.controller;
 
 import condominio.proyecto_condominio.logic.CasaPendientePagoLogic;
 import condominio.proyecto_condominio.model.CasasPendientesPago;
+import condominio.proyecto_condominio.model.Sesion;
+import condominio.proyecto_condominio.model.Usuario;
+import condominio.proyecto_condominio.service.CorreoService;
+import condominio.proyecto_condominio.service.ReporteService;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -18,6 +22,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class CasasPendientesPagoController
         implements Initializable {
+
+    private CasaPendientePagoLogic logic = new CasaPendientePagoLogic();
 
     @FXML
     private Label lblCPPFecha;
@@ -52,7 +58,55 @@ public class CasasPendientesPagoController
     @FXML
     private Button btnCPPGenerarReporte;
 
-    private CasaPendientePagoLogic logic = new CasaPendientePagoLogic();
+    @FXML
+    private void generarReporteCPP() {
+
+        try {
+
+            String mesTexto = choiceBoxCPPFiltroMes.getValue();
+            Integer anio = choiceBoxCPPFiltroAno.getValue();
+
+            if (mesTexto == null || anio == null) {
+                System.out.println("Filtros inválidos");
+                return;
+            }
+
+            Usuario usuario = Sesion.getUsuarioActual();
+
+            if (usuario == null) {
+                System.out.println("No hay usuario en sesión");
+                return;
+            }
+
+            String correoDestino = usuario.getCorreo();
+
+            int mesNumero;
+
+            if (mesTexto.equals("Ver todo")) {
+                mesNumero = 0;
+            } else {
+                mesNumero = logic.convertirMesAInt(mesTexto);
+            }
+
+            ReporteService service = new ReporteService();
+
+            String pdf = service.generarReportePagosPendientes(mesNumero, anio);
+
+            CorreoService correoService = new CorreoService();
+
+            correoService.enviarCorreoPagosPendientes(
+                    pdf,
+                    correoDestino,
+                    mesTexto,
+                    anio
+            );
+
+            System.out.println("Reporte enviado a: " + correoDestino);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private ObservableList<CasasPendientesPago> listaCasas;
 

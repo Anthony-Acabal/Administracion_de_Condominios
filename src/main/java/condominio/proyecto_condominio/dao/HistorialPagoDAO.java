@@ -16,23 +16,19 @@ public class HistorialPagoDAO {
         List<String> casas = new ArrayList<>();
 
         String sql = """
-            SELECT DISTINCT numero_casa
+            SELECT DISTINCT id_casa
             FROM propietario
-            ORDER BY numero_casa ASC
+            ORDER BY id_casa ASC
         """;
 
-        
         try (
-                Connection conn = Conexion.getInstancia().getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                Connection conn = Conexion.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
                 casas.add(
                         String.valueOf(
-                                rs.getInt("numero_casa")
+                                rs.getInt("id_casa")
                         )
                 );
             }
@@ -61,13 +57,16 @@ public class HistorialPagoDAO {
 
         String sql = """
             SELECT
-                p.numero_casa,
+                pc.id_pago_cuota,
+                pc.id_propietario,
+                p.id_casa,
 
-                p.primer_nombre + ' ' +
-                p.segundo_nombre + ' ' +
-                p.primer_apellido + ' ' +
-                p.segundo_apellido
-                AS propietario,
+                CONCAT(
+                    p.primer_nombre, ' ',
+                    p.segundo_nombre, ' ',
+                    p.primer_apellido, ' ',
+                    p.segundo_apellido
+                ) AS propietario,
 
                 pc.fecha_pago,
 
@@ -88,7 +87,7 @@ public class HistorialPagoDAO {
 
         if (casa != null) {
 
-            sql += " AND p.numero_casa = ?";
+            sql += " AND p.id_casa = ?";
         }
 
         if (mes != null) {
@@ -106,11 +105,8 @@ public class HistorialPagoDAO {
             ORDER BY pc.fecha_pago DESC
         """;
 
-        
         try (
-                Connection conn = Conexion.getInstancia().getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Conexion.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             int i = 1;
 
@@ -144,11 +140,13 @@ public class HistorialPagoDAO {
 
                     lista.add(
                             new HistorialPago(
-                                    rs.getInt("numero_casa"),
+                                    rs.getInt("id_casa"),
                                     rs.getString("propietario"),
                                     rs.getString("fecha_pago"),
                                     rs.getDouble("cuota"),
-                                    rs.getString("imprime_comprobante")
+                                    rs.getString("imprime_comprobante"),
+                                    rs.getInt("id_propietario"),
+                                    rs.getInt("id_pago_cuota")
                             )
                     );
                 }

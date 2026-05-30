@@ -10,17 +10,18 @@ public class LoginDAO {
     public Usuario validarLogin(String correo, String contrasena) {
 
         String sql = """
-                     SELECT id_usuario,
-                            usuario,
-                            contrasena,
-                            id_rol
-                     FROM usuario
-                     WHERE correo = ?
-                     AND contrasena = ?
-                     """;
+            SELECT id_usuario,
+                   usuario,
+                   correo,
+                   contrasena,
+                   id_rol
+            FROM usuario
+            WHERE correo = ?
+            AND contrasena = ?
+        """;
 
         try (
-                Connection conn = Conexion.getConnection();
+                Connection conn = Conexion.getInstancia().getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
 
@@ -31,31 +32,21 @@ public class LoginDAO {
 
             if (rs.next()) {
 
-                Usuario user = new Usuario();
-
-                user.setIdUsuario(
-                        rs.getInt("id_usuario")
-                );
-
-                user.setUsuario(
-                        rs.getString("usuario")
-                );
-
-                user.setPassword(
-                        rs.getString("contrasena")
-                );
-
-                user.setRol(
-                        String.valueOf(
-                                rs.getInt("id_rol")
-                        )
+                Usuario user = new Usuario(
+                        rs.getInt("id_usuario"),
+                        rs.getString("usuario"),
+                        rs.getString("correo"),
+                        rs.getString("contrasena"),
+                        false, // primerIngreso (no viene en query)
+                        String.valueOf(rs.getInt("id_rol")),
+                        0,     // intentosFallidos
+                        false  // bloqueado
                 );
 
                 return user;
             }
 
         } catch (Exception e) {
-
             System.out.println("Error al validar login");
             e.printStackTrace();
         }
